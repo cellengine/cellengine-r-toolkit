@@ -9,15 +9,19 @@ reference:
       - setServer
       - authenticate
 
-  - title: Experiments, Projects and Attachments
+  - title: Experiments
     contents:
       - createExperiment
       - getExperiments
       - getExperiment
       - updateExperiment
       - deleteExperiment
+
+  - title: Attachments
+    contents:
       - getAttachments
       - uploadAttachment
+      - downloadAttachment
 
   - title: FCS Files
     contents:
