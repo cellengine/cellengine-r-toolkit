@@ -31,8 +31,8 @@ downloadFcsFiles(
 
 \item{overwrite}{[Logical] Allows a destination file to be overwritten.}
 
-\item{fcsFileIds}{[Array<String>] Optional. Defaults to returning all files
-in the experiment.}
+\item{fcsFileIds}{[Array<String>] Optional. Defaults to returning all
+non-control files in the experiment.}
 
 \item{populationIds}{[Array<String>] Optional. If provided, only events from
 these populations will be included in the output files. Defaults to ungated.}
@@ -46,24 +46,24 @@ numerical values will be the compensated values. For FCS format, the
 numerical values will be unchanged, but the file header will contain the
 compensation as the spill string (file-internal compensation).}
 
-\item{preSubsampleN}{[Integer] Randomly subsample the file to contain this many events
-before gating.}
+\item{preSubsampleN}{[Integer] Randomly subsample the file to contain this
+many events before gating.}
 
-\item{preSubsampleP}{[Numeric] Randomly subsample the file to contain this percent of
-events (0 to 1) before gating.}
+\item{preSubsampleP}{[Numeric] Randomly subsample the file to contain this
+percent of events (0 to 1) before gating.}
 
-\item{seed}{[Numeric] Seed for random number generator used for subsampling. Use for
-deterministic (reproducible) subsampling. If omitted, a pseudo-random value
-is used.}
+\item{postSubsampleN}{[Integer] Randomly subsample the file to contain this
+many events after gating.}
 
-\item{filenameTemplate}{[String]    Tokenized template to dynamically name each
-file in the resulting archive, like "{file.name}-{population.name}"}
+\item{postSubsampleP}{[Numeric] Randomly subsample the file to contain this
+percent of events (0 to 1) after gating.}
 
-\item{postSubSampleN}{[Integer] Randomly subsample the file to contain this many events
-after gating.}
+\item{seed}{[Numeric] Seed for random number generator used for
+subsampling. Use for deterministic (reproducible) subsampling. If omitted, a
+pseudo-random value is used.}
 
-\item{postSubSampleP}{[Numeric] Randomly subsample the file to contain this percent of
-events (0 to 1) after gating.}
+\item{filenameTemplate}{[String]    Tokenized template to dynamically name
+each file in the resulting archive, like "{file.name}-{population.name}"}
 }
 \description{
 Downloads multiple files bundled into a ZIP archive.
@@ -72,7 +72,8 @@ Downloads multiple files bundled into a ZIP archive.
 \dontrun{
 # Download all FCS files in the experiment
 downloadFcsFiles(experimentId, "fcs", "archive.zip", overwrite = T)
-# Download specific FCS file
-downloadFcsFiles(experimentId, "fcs", "archive.zip", fcsFileIds=c("5d2f8b4b21fd0676fb3a6a72", "5d2f8b4b21fd0676fb3a6a74"))
+# Download specific FCS files
+fcsFileIds=c("5d2f8b4b21fd0676fb3a6a72", "5d2f8b4b21fd0676fb3a6a74")
+downloadFcsFiles(experimentId, "fcs", "archive.zip", fcsFileIds=fcsFileIds)
 }
 }

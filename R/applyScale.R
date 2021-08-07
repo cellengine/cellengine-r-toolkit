@@ -4,6 +4,8 @@
 #'
 #' @param scale Scale (named list with keys ['type', 'maximum', 'minimum', 'cofactor']).
 #' @param data List of values for a channel.
+#' @param clamp_q If true, values will be clamped to fall within the scale's
+#' minimum and maximum.
 #' @export
 #' @examples
 #' \dontrun{

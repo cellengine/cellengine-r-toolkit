@@ -22,9 +22,9 @@
 #' many events before gating.
 #' @param preSubsampleP [Numeric] Randomly subsample the file to contain this
 #' percent of events (0 to 1) before gating.
-#' @param postSubSampleN [Integer] Randomly subsample the file to contain this
+#' @param postSubsampleN [Integer] Randomly subsample the file to contain this
 #' many events after gating.
-#' @param postSubSampleP [Numeric] Randomly subsample the file to contain this
+#' @param postSubsampleP [Numeric] Randomly subsample the file to contain this
 #' percent of events (0 to 1) after gating.
 #' @param seed [Numeric] Seed for random number generator used for
 #' subsampling. Use for deterministic (reproducible) subsampling. If omitted, a
@@ -36,8 +36,9 @@
 #' \dontrun{
 #' # Download all FCS files in the experiment
 #' downloadFcsFiles(experimentId, "fcs", "archive.zip", overwrite = T)
-#' # Download specific FCS file
-#' downloadFcsFiles(experimentId, "fcs", "archive.zip", fcsFileIds=c("5d2f8b4b21fd0676fb3a6a72", "5d2f8b4b21fd0676fb3a6a74"))
+#' # Download specific FCS files
+#' fcsFileIds=c("5d2f8b4b21fd0676fb3a6a72", "5d2f8b4b21fd0676fb3a6a74")
+#' downloadFcsFiles(experimentId, "fcs", "archive.zip", fcsFileIds=fcsFileIds)
 #' }
 downloadFcsFiles <- function(
   experimentId,

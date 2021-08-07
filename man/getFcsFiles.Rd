@@ -12,8 +12,10 @@ getFcsFiles(experimentId, params = list())
 \item{params}{Optional query parameters.}
 }
 \description{
-Retrieves the list of FCS files in an experiment. This does not download the
-FCS files themselves; this only returns information about the FCS files.
+Retrieves the list of FCS files in an experiment. This does not download
+the FCS files themselves; this only returns information about the FCS files.
+Only returns non-control FCS files unless "includeControls"=T is passed in
+params.
 }
 \examples{
 \dontrun{
