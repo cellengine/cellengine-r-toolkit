@@ -6,3 +6,6 @@
 ^docs$
 ^_pkgdown.yml$
 ^_pkgdown\.yml$
+.github
+CHANGELOG.md
+vignettes/

@@ -10,6 +10,9 @@ applyScale(scale, data, clamp_q = FALSE)
 \item{scale}{Scale (named list with keys ['type', 'maximum', 'minimum', 'cofactor']).}
 
 \item{data}{List of values for a channel.}
+
+\item{clamp_q}{If true, values will be clamped to fall within the scale's
+minimum and maximum.}
 }
 \description{
 Applies a scale to a list of channel values
