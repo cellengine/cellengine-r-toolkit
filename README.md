@@ -1,13 +1,20 @@
-[![CircleCI](https://circleci.com/gh/primitybio/cellengine-r-toolkit.svg?style=svg&circle-token=8d7119878c06e63cb77f1743afc0782db13d7ce1)](https://circleci.com/gh/primitybio/cellengine-r-toolkit)
-
- 
 CellEngine R API Toolkit
 -----
 
-Installing:
+This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+We are currently working on several breaking changes that will be released in
+our first stable release, [v1.0](https://github.com/primitybio/cellengine-r-toolkit/milestone/1).
+
+To install the v0.x version (no breaking changes will be made):
 ```R
 library("devtools")
 install_github("primitybio/cellengine-r-toolkit")
+```
+
+To install a preview of the upcoming v1.0 version (unstable):
+```R
+library("devtools")
+install_github("primitybio/cellengine-r-toolkit", ref="v1-dev")
 ```
 
 Quick start:
