@@ -4,12 +4,10 @@
 \alias{getExperiment}
 \title{Get experiment}
 \usage{
-getExperiment(experimentId, params = list())
+getExperiment(experimentId)
 }
 \arguments{
 \item{experimentId}{ID of experiment.}
-
-\item{params}{Optional query parameters.}
 }
 \description{
 Retrieves an experiment.
