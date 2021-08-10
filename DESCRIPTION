@@ -1,7 +1,7 @@
 Package: cellengine
 Type: Package
 Title: CellEngine API Toolkit
-Version: 0.2.0
+Version: 1.0.0
 Authors@R: c(
     person("Zach", "Bjornson", email = "zbjornson@primitybio.com", role = c("aut", "cre")),
     person("Gerrit", "Egnew", email = "g.egnew@gmail.com", role = c("aut")))

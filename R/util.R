@@ -11,7 +11,7 @@ handleResponse = function(response) {
 
 ua = (function (){
   versions <- c(
-    `CellEngine API Toolkit` = "0.1.0", # TODO see if utils::packageVersion works
+    `CellEngine API Toolkit` = utils::packageVersion("cellengine"),
     libcurl = curl::curl_version()$version,
     `r-curl` = as.character(utils::packageVersion("curl")),
     httr = as.character(utils::packageVersion("httr")))
