@@ -10,7 +10,7 @@ getEvents(
   populationId = NULL,
   compensation = NULL,
   compensatedQ = FALSE,
-  headerQ = FALSE,
+  headerQ = TRUE,
   format = "FCS",
   destination = NULL,
   overwrite = FALSE,
@@ -48,10 +48,10 @@ file to be overwritten.}
 \item{subsampling}{Optional, subsampling parameters in the form
 \code{list(preSubsampleN = number, preSubsampleP = number,
 postSubsampleN = number, postSubsampleP = number, seed = number)}.
-Subsample-N options specify absolute subsampling values, and subsample-P options
-specify a fractional subsampling value (0 to 1); specify only one pre-
-and/or one post-subsample option. Specify a \code{seed} for reproducible
-downsampling.}
+Subsample-N options specify absolute subsampling values, and subsample-P
+options specify a fractional subsampling value (0 to 1); specify only one
+pre-and/or one post-subsample option. Specify a \code{seed} for
+reproducible downsampling.}
 }
 \description{
 Retrieves events from an FCS file or gated population as either an FCS or
@@ -67,13 +67,13 @@ downloads. Use a library such as flowCore to parse FCS files.
 getEvents(experimentId, fcsFileId)
 
 # Returns a data.frame:
-getEvents(experimentId, fcsFileId, populationId, format = "TSV", headerQ = T)
+getEvents(experimentId, fcsFileId, populationId, format = "TSV")
 
 # Saves as an FCS file to disk:
 getEvents(experimentId, fcsFileId, destination = "/path/to/output.fcs")
 
 # Saves as a TSV file to disk:
-getEvents(experimentId, fcsFileId, destination = "/path/to/output.tsv", format = "TSV", headerQ = T)
+getEvents(experimentId, fcsFileId, destination = "/path/to/output.tsv", format = "TSV")
 
 # Subsamples and gates to only contain events in the specified population:
 subsampling = list(preSubsampleN = 5000, seed = 1.5)
