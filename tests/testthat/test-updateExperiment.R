@@ -5,6 +5,9 @@ test_that("Correct HTTP request is made", {
     `httr::request_perform` = function(req, handle, refresh) {
       expect_equal(req$method, "PATCH")
       expect_equal(req$url, "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda")
+      body = rawToChar(req$options$postfields)
+      expect_equal(body, '{"name":"new name"}')
+
       response = httptest::fake_response(
         req$url,
         req$method,

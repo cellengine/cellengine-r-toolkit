@@ -4,14 +4,12 @@
 \alias{updateExperiment}
 \title{Update experiment}
 \usage{
-updateExperiment(experimentId, properties = list(), params = list())
+updateExperiment(experimentId, properties = list())
 }
 \arguments{
 \item{experimentId}{ID of experiment.}
 
 \item{properties}{Properties to set on the experiment.}
-
-\item{params}{Optional query parameters.}
 }
 \description{
 Updates an experiment.
