@@ -3,7 +3,6 @@
 #' Retrieves an experiment.
 #'
 #' @param experimentId ID of experiment.
-#' @param params Optional query parameters.
 #' @export
 #' @examples
 #' \dontrun{
@@ -13,8 +12,8 @@
 #' # Lookup by name
 #' getExperiment(byName("my experiment"))
 #' }
-getExperiment = function(experimentId, params = list()) {
+getExperiment = function(experimentId) {
   checkDefined(experimentId)
   experimentId = lookupByName("experiments", experimentId)
-  baseGet(paste("experiments", experimentId, sep = "/"), params)
+  baseGet(paste("experiments", experimentId, sep = "/"))
 }
