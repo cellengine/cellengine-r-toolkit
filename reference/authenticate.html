@@ -40,8 +40,7 @@
 
 
 <meta property="og:title" content="Authenticate — authenticate" />
-<meta property="og:description" content="Authenticates with the server. Call setServer before this
-function." />
+<meta property="og:description" content="Authenticates with the server." />
 
 
 
@@ -113,11 +112,10 @@ function." />
     </div>
 
     <div class="ref-description">
-    <p>Authenticates with the server. Call <code><a href='setServer.html'>setServer</a></code> before this
-function.</p>
+    <p>Authenticates with the server.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>authenticate</span><span class='op'>(</span><span class='va'>username</span>, <span class='va'>password</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>authenticate</span><span class='op'>(</span><span class='va'>username</span>, password <span class='op'>=</span> <span class='cn'>NA</span>, otp <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -128,22 +126,25 @@ function.</p>
     </tr>
     <tr>
       <th>password</th>
-      <td><p>Your password.</p></td>
+      <td><p>Your password. If omitted and running in RStudio or the
+getPass library is installed, a prompt will be displayed.</p></td>
+    </tr>
+    <tr>
+      <th>otp</th>
+      <td><p>A one-time passcode, if your account is configured with two-factor
+authentication. If omitted and in an interactive session, a prompt will be
+displayed. Note that this must be a string.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>For security reasons, you should not store your password in plain text, and
-you should ensure that your R history does not store your password. Instead,
-consider setting an environment variable and using something like
-<code>authenticate("myusername", Sys.getenv("API_PASSWORD"))</code></p>
+    <p>For security, you should not store your password in plain text, and you
+should ensure that your R history does not store your password. Instead,
+consider setting an environment variable (see examples).</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='fu'>authenticate</span><span class='op'>(</span><span class='st'>"username"</span>, <span class='st'>"password"</span><span class='op'>)</span>
-<span class='op'>}</span>
-</div></pre>
+    <pre class="examples"></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

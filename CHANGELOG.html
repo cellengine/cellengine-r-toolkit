@@ -123,14 +123,17 @@
 <code>downloadFcsFiles</code> function</li>
 <li>
 <code>downloadAttachment</code> function</li>
+<li>The <code>authenticate</code> function will now prompt for a password if omitted and running in RStudio or the <code>getPass</code> library is installed.</li>
+<li>The <code>authenticate</code> function now supports two-factor authentication.</li>
 </ul>
 </div>
 <div id="changed" class="section level3">
 <h3 class="hasAnchor">
 <a href="#changed" class="anchor"></a>Changed</h3>
 <ul>
-<li>fix for <a href="https://github.com/primitybio/cellengine-r-toolkit/issues/48">confusing bulk entity retrieval</a>
+<li>Fix for <a href="https://github.com/primitybio/cellengine-r-toolkit/issues/48">confusing bulk entity retrieval</a>
 </li>
+<li>For performance, <code>applyScale</code> now only accepts atomic vectors. Lists can no longer be used.</li>
 </ul>
 </div>
 <div id="removed" class="section level3">
