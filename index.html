@@ -63,23 +63,25 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-
-
 <div id="cellengine-r-api-toolkit" class="section level2">
 <h2 class="hasAnchor">
 <a href="#cellengine-r-api-toolkit" class="anchor"></a>CellEngine R API Toolkit</h2>
-<p>Installing:</p>
+<p>This project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>. We are currently working on several breaking changes that will be released in our first stable release, <a href="https://github.com/primitybio/cellengine-r-toolkit/milestone/1">v1.0</a>.</p>
+<p>To install the v0.x version (no breaking changes will be made):</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
 <span class="fu">install_github</span><span class="op">(</span><span class="st">"primitybio/cellengine-r-toolkit"</span><span class="op">)</span></code></pre></div>
-<p>Quick start:</p>
+<p>To install a preview of the upcoming v1.0 version (unstable):</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
+<span class="fu">install_github</span><span class="op">(</span><span class="st">"primitybio/cellengine-r-toolkit"</span>, ref<span class="op">=</span><span class="st">"v1-dev"</span><span class="op">)</span></code></pre></div>
+<p>Quick start:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st">"cellengine"</span><span class="op">)</span>
 <span class="fu"><a href="reference/authenticate.html">authenticate</a></span><span class="op">(</span><span class="st">"username"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html">Sys.getenv</a></span><span class="op">(</span><span class="st">"CELLENGINE_PASSWORD"</span><span class="op">)</span><span class="op">)</span>
 
 <span class="va">experiments</span> <span class="op">=</span> <span class="fu"><a href="reference/getExperiments.html">getExperiments</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 </div>
-
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -97,13 +99,7 @@
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
-<ul class="list-unstyled">
-<li><a href="https://circleci.com/gh/primitybio/cellengine-r-toolkit"><img src="https://circleci.com/gh/primitybio/cellengine-r-toolkit.svg?style=svg&amp;circle-token=8d7119878c06e63cb77f1743afc0782db13d7ce1" alt="CircleCI"></a></li>
-</ul>
-</div>
-</div>
+  </div>
 </div>
 
 
