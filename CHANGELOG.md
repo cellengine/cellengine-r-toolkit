@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - `downloadFcsFiles` function
 - `downloadAttachment` function
+- The `authenticate` function will now prompt for a password if omitted and
+  running in RStudio or the `getPass` library is installed.
+- The `authenticate` function now supports two-factor authentication.
 
 ### Changed
 - Fix for [confusing bulk entity retrieval](https://github.com/primitybio/cellengine-r-toolkit/issues/48)

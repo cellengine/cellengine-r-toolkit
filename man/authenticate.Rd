@@ -4,25 +4,35 @@
 \alias{authenticate}
 \title{Authenticate}
 \usage{
-authenticate(username, password)
+authenticate(username, password = NA, otp = NA)
 }
 \arguments{
 \item{username}{Your username.}
 
-\item{password}{Your password.}
+\item{password}{Your password. If omitted and running in RStudio or the
+getPass library is installed, a prompt will be displayed.}
+
+\item{otp}{A one-time passcode, if your account is configured with two-factor
+authentication. If omitted and in an interactive session, a prompt will be
+displayed. Note that this must be a string.}
 }
 \description{
-Authenticates with the server. Call \code{\link{setServer}} before this
-function.
+Authenticates with the server.
 }
 \details{
-For security reasons, you should not store your password in plain text, and
-you should ensure that your R history does not store your password. Instead,
-consider setting an environment variable and using something like
-\code{authenticate("myusername", Sys.getenv("API_PASSWORD"))}
+For security, you should not store your password in plain text, and you
+should ensure that your R history does not store your password. Instead,
+consider setting an environment variable (see examples).
 }
 \examples{
 \dontrun{
+# Use with caution, don't let prying eyes see your password.
 authenticate("username", "password")
+# Instead, you could store it in an environment variable.
+authenticate("username", Sys.getenv("API_PASSWORD"))
+
+# If the password is omitted and you're running in RStudio or the getPass
+library is installed, a prompt will be displayed.
+authenticate("username")
 }
 }
