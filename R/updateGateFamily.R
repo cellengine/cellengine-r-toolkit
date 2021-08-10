@@ -14,10 +14,9 @@
 
 updateGateFamily = function(experimentId, gid, properties = list(), params = list()) {
   checkDefined(experimentId)
-  checkDefined(gid)
   experimentId = lookupByName("experiments", experimentId)
-  body = jsonlite::toJSON(properties, null = "null")
-  base = paste("experiments", experimentId, "gates", sep = "/")
-  url = sprintf("%s?gid=%s", base, gid)
+  checkDefined(gid)
+  body = jsonlite::toJSON(properties, null = "null", auto_unbox = TRUE)
+  url = sprintf("experiments/%s/gates?gid=%s", experimentId, gid)
   basePatch(url, body, params)
 }
