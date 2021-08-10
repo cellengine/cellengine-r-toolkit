@@ -4,16 +4,14 @@
 \alias{updateGate}
 \title{Update gate}
 \usage{
-updateGate(experimentId, gateId, properties = list(), params = list())
+updateGate(experimentId, gateId, properties = list())
 }
 \arguments{
 \item{experimentId}{ID of experiment.}
 
-\item{gateId}{gate ID}
+\item{gateId}{ID of gate or a \code{byName} expression.}
 
 \item{properties}{Properties to set on the gate.}
-
-\item{params}{Optional query parameters.}
 }
 \description{
 Updates a gate.
