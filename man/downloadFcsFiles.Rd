@@ -63,7 +63,8 @@ subsampling. Use for deterministic (reproducible) subsampling. If omitted, a
 pseudo-random value is used.}
 
 \item{filenameTemplate}{[String]    Tokenized template to dynamically name
-each file in the resulting archive, like "{file.name}-{population.name}"}
+each file in the resulting archive, like
+\code{"{fcsfile.filename}-{population._id}"}.}
 }
 \description{
 Downloads multiple files bundled into a ZIP archive.
