@@ -13,4 +13,4 @@ LazyData: true
 Depends: R (>= 3.0.0)
 Imports: httr(>= 1.3.0), jsonlite, utils
 RoxygenNote: 7.1.1
-Suggests: httptest(>= 3.2.2), testthat
+Suggests: httptest(>= 3.2.2), testthat, getPass, rstudioapi
