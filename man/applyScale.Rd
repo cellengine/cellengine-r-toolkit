@@ -7,18 +7,24 @@
 applyScale(scale, data, clamp_q = FALSE)
 }
 \arguments{
-\item{scale}{Scale (named list with keys ['type', 'maximum', 'minimum', 'cofactor']).}
+\item{scale}{Scale (named list with keys "type", "maximum", "minimum",
+and "cofactor").}
 
-\item{data}{List of values for a channel.}
+\item{data}{Vector of values for a channel.}
 
 \item{clamp_q}{If true, values will be clamped to fall within the scale's
 minimum and maximum.}
 }
 \description{
-Applies a scale to a list of channel values
+Applies a scale to a vector of channel values
 }
 \examples{
 \dontrun{
-applyScale(list(type='LinearScale', minimum=1, maximum=10), list(1, 2, 3, 4, 5))
+applyScale(list(type='LinearScale', minimum=1, maximum=10), c(1, 2, 3, 4, 5))
+
+# Using a Scale from a CellEngine ScaleSet
+scaleSet = getScaleSets(experimentId)
+chanIdx = 5
+applyScale(scaleSet$scales[[1]][chanIdx, "scale"], c(1, 2, 3, 4, 5))
 }
 }
