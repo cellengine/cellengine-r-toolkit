@@ -14,6 +14,5 @@ getGate = function(experimentId, gateId) {
   experimentId = lookupByName("experiments", experimentId)
   checkDefined(gateId)
   gateId = lookupByName(paste("experiments", experimentId, "gates", sep = "/"), gateId)
-  res = baseGet(paste("experiments", experimentId, "gates", gateId, sep = "/"))
-  res
+  baseGet(paste("experiments", experimentId, "gates", gateId, sep = "/"))
 }
