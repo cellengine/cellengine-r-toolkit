@@ -38,6 +38,7 @@ reference:
     contents:
       - getScaleSets
       - applyScale
+      - applyScaleSet
 
   - title: Compensations
     contents:
