@@ -18,6 +18,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Introduce `lintr` as a linter with an Actions workflow
 
 ### Changed
+- **Breaking** `getEvents()` now uses `check.names=FALSE`, so data.frame column
+  names will be identical to the parameter names found in the FCS file. For
+  example, "CD4 (Ax647-A)" will no longer be converted to "CD4..Ax647.A.".
+- **Breaking** `getEvents()` now defaults to `headerQ=TRUE`, so data.frames will
+  have column names by default now.
 - Fix for [confusing bulk entity retrieval](https://github.com/primitybio/cellengine-r-toolkit/issues/48)
 - For performance, `applyScale()` now only accepts atomic vectors. Lists can no
   longer be used.
