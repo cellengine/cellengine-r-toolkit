@@ -7,15 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- `downloadFcsFiles` function
-- `downloadAttachment` function
-- The `authenticate` function will now prompt for a password if omitted and
+- `downloadFcsFiles()` function
+- `downloadAttachment()` function
+- `updatePopulation()` function
+- The `authenticate()` function will now prompt for a password if omitted and
   running in RStudio or the `getPass` library is installed.
 - The `authenticate` function now supports two-factor authentication.
+- Support `byName()` for the `gateId` argument in `updateGate()`.
 
 ### Changed
 - Fix for [confusing bulk entity retrieval](https://github.com/primitybio/cellengine-r-toolkit/issues/48)
-- For performance, `applyScale` now only accepts atomic vectors. Lists can no
+- For performance, `applyScale()` now only accepts atomic vectors. Lists can no
   longer be used.
+- Fix mangling of experiment properties in `updateExperiment()`.
+- Fix mangling of experiment properties in `updateGateFamily()`.
+- Fix mangling of experiment properties in `updateGate()`.
+- Remove unused `params` argument from `getExperiment()`.
 
 ### Removed
