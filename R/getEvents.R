@@ -27,10 +27,10 @@
 #' @param subsampling Optional, subsampling parameters in the form
 #'   \code{list(preSubsampleN = number, preSubsampleP = number,
 #'   postSubsampleN = number, postSubsampleP = number, seed = number)}.
-#'   Subsample-N options specify absolute subsampling values, and subsample-P options
-#'   specify a fractional subsampling value (0 to 1); specify only one pre-
-#'   and/or one post-subsample option. Specify a \code{seed} for reproducible
-#'   downsampling.
+#'   Subsample-N options specify absolute subsampling values, and subsample-P
+#'   options specify a fractional subsampling value (0 to 1); specify only one
+#'   pre- and/or one post-subsample option. Specify a \code{seed} for
+#'   reproducible downsampling.
 #' @param addEventNumber Optional. Add an event number column to the exported
 #'   file. When a `populationId` is specified (when gating), this number
 #'   corresponds to the index of the event in the original file.
@@ -41,13 +41,13 @@
 #' getEvents(experimentId, fcsFileId)
 #'
 #' # Returns a data.frame:
-#' getEvents(experimentId, fcsFileId, populationId, format = "TSV", headerQ = T)
+#' getEvents(experimentId, fcsFileId, populationId, format = "TSV")
 #'
 #' # Saves as an FCS file to disk:
 #' getEvents(experimentId, fcsFileId, destination = "/path/to/output.fcs")
 #'
 #' # Saves as a TSV file to disk:
-#' getEvents(experimentId, fcsFileId, destination = "/path/to/output.tsv", format = "TSV", headerQ = T)
+#' getEvents(experimentId, fcsFileId, destination = "/path/to/output.tsv", format = "TSV")
 #'
 #' # Subsamples and gates to only contain events in the specified population:
 #' subsampling <- list(preSubsampleN = 5000, seed = 1.5)
@@ -58,7 +58,7 @@ getEvents <- function(experimentId,
                       populationId = NULL,
                       compensation = NULL,
                       compensatedQ = FALSE,
-                      headerQ = FALSE,
+                      headerQ = TRUE,
                       format = "FCS",
                       destination = NULL,
                       overwrite = FALSE,
@@ -110,7 +110,7 @@ getEvents <- function(experimentId,
     httr::warn_for_status(response)
     if (format == "TSV") {
       content <- httr::content(response, "text")
-      content <- utils::read.table(text = content, header = headerQ, sep = "\t")
+      content <- utils::read.table(text = content, header = headerQ, sep = "\t", check.names = F)
     } else {
       content <- httr::content(response, "raw")
     }
