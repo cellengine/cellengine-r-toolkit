@@ -120,11 +120,14 @@
 <a href="#added" class="anchor"></a>Added</h3>
 <ul>
 <li>
-<code>downloadFcsFiles</code> function</li>
+<code><a href="reference/downloadFcsFiles.html">downloadFcsFiles()</a></code> function</li>
 <li>
-<code>downloadAttachment</code> function</li>
-<li>The <code>authenticate</code> function will now prompt for a password if omitted and running in RStudio or the <code>getPass</code> library is installed.</li>
+<code><a href="reference/downloadAttachment.html">downloadAttachment()</a></code> function</li>
+<li>
+<code><a href="reference/updatePopulation.html">updatePopulation()</a></code> function</li>
+<li>The <code><a href="reference/authenticate.html">authenticate()</a></code> function will now prompt for a password if omitted and running in RStudio or the <code>getPass</code> library is installed.</li>
 <li>The <code>authenticate</code> function now supports two-factor authentication.</li>
+<li>Support <code><a href="reference/byName.html">byName()</a></code> for the <code>gateId</code> argument in <code><a href="reference/updateGate.html">updateGate()</a></code>.</li>
 </ul>
 </div>
 <div id="changed" class="section level3">
@@ -133,7 +136,11 @@
 <ul>
 <li>Fix for <a href="https://github.com/primitybio/cellengine-r-toolkit/issues/48">confusing bulk entity retrieval</a>
 </li>
-<li>For performance, <code>applyScale</code> now only accepts atomic vectors. Lists can no longer be used.</li>
+<li>For performance, <code><a href="reference/applyScale.html">applyScale()</a></code> now only accepts atomic vectors. Lists can no longer be used.</li>
+<li>Fix mangling of experiment properties in <code><a href="reference/updateExperiment.html">updateExperiment()</a></code>.</li>
+<li>Fix mangling of experiment properties in <code><a href="reference/updateGateFamily.html">updateGateFamily()</a></code>.</li>
+<li>Fix mangling of experiment properties in <code><a href="reference/updateGate.html">updateGate()</a></code>.</li>
+<li>Remove unused <code>params</code> argument from <code><a href="reference/getExperiment.html">getExperiment()</a></code>.</li>
 </ul>
 </div>
 <div id="removed" class="section level3">
