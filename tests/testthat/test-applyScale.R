@@ -8,7 +8,7 @@ test_that("applies linear scale to list", {
     type = "LinearScale"
   )
 
-  result <- applyScale(scale, data, clamp_q = FALSE)
+  result <- applyScale(scale, data, clampQ = FALSE)
   expect_equal(data, result)
 })
 
@@ -20,7 +20,7 @@ test_that("clamps linear scale", {
     type = "LinearScale"
   )
 
-  result <- applyScale(scale, data, clamp_q = TRUE)
+  result <- applyScale(scale, data, clampQ = TRUE)
   expected <- c(10.0, 7.0, 5.0, 9.0, 10.0)
   expect_equal(expected, result)
 })
@@ -33,7 +33,7 @@ test_that("applies log scale", {
     type = "LogScale"
   )
 
-  result <- applyScale(scale, data, clamp_q = FALSE)
+  result <- applyScale(scale, data, clampQ = FALSE)
   expected <- c(1.0, 0, 0.845098, 0.07918125, 0.9542425, 1.60206)
   expect_equal(expected, result, tolerance = 0.001)
 })
@@ -46,7 +46,7 @@ test_that("applies clamped log scale", {
     type = "LogScale"
   )
 
-  result <- applyScale(scale, data, clamp_q = TRUE)
+  result <- applyScale(scale, data, clampQ = TRUE)
   expected <- c(1.0, 0.845098, 0.30103, 0.9542425, 1.0)
   expect_equal(expected, result, tolerance = 0.001)
 })
@@ -60,7 +60,7 @@ test_that("applies arcsinh scale", {
     type = "ArcSinhScale"
   )
 
-  result <- applyScale(scale, data, clamp_q = FALSE)
+  result <- applyScale(scale, data, clampQ = FALSE)
   expected <- c(-4.60527, -2.094713, -0.3900353, -0.001999999, 0, 0.03998934, 0.09983408, 0.1986901)
   expect_equal(expected, result, tolerance = 0.001)
 })
@@ -74,7 +74,7 @@ test_that("applies clamped arcsinh scale", {
     type = "ArcSinhScale"
   )
 
-  result <- applyScale(scale, data, clamp_q = TRUE)
+  result <- applyScale(scale, data, clampQ = TRUE)
   expected <- c(-4.382183, -2.094713, -0.3900353, -0.001999999, 0, 0.03998934, 0.09983408, 0.1986901)
   expect_equal(expected, result, tolerance = 0.001)
 })

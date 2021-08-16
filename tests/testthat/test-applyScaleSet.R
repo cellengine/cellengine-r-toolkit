@@ -14,7 +14,7 @@ test_that("clamps linear scale", {
   # FSC-A: min = 5, max = 10, type = LinearScale
   scaleSet <- jsonlite::fromJSON('[{"scales":[{"channelName":"FSC-A","scale":{"type":"LinearScale","minimum":5,"maximum":10}}],"_id":"5d2f8b4b21fd0676fb3a6a8c","experimentId":"5d2f8b4b21fd0676fb3a6a70","name":"Scale Set 1","__v":1,"updated":"2020-10-27T18:38:55.554Z"}]') # nolint
 
-  result <- applyScaleSet(scaleSet, data, clamp_q = TRUE)
+  result <- applyScaleSet(scaleSet, data, clampQ = TRUE)
   expected <- data.frame("FSC-A" = c(10.0, 7.0, 5.0, 9.0, 10.0), check.names = F)
   expect_equal(expected, result)
 })
@@ -34,7 +34,7 @@ test_that("applies clamped log scale", {
   # FSC-A: min = 2, max = 10, type = LogScale
   scaleSet <- jsonlite::fromJSON('[{"scales":[{"channelName":"FSC-A","scale":{"type":"LogScale","minimum":2,"maximum":10}}],"_id":"5d2f8b4b21fd0676fb3a6a8c","experimentId":"5d2f8b4b21fd0676fb3a6a70","name":"Scale Set 1","__v":1,"updated":"2020-10-27T18:38:55.554Z"}]') # nolint
 
-  result <- applyScaleSet(scaleSet, data, clamp_q = TRUE)
+  result <- applyScaleSet(scaleSet, data, clampQ = TRUE)
   expected <- data.frame("FSC-A" = c(1.0, 0.845098, 0.30103, 0.9542425, 1.0), check.names = F)
   expect_equal(expected, result, tolerance = 0.001)
 })
