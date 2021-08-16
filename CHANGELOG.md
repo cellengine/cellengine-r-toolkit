@@ -32,6 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   example, "CD4 (Ax647-A)" will no longer be converted to "CD4..Ax647.A.".
 - **Breaking** `getEvents()` now defaults to `headerQ=TRUE`, so data.frames will
   have column names by default now.
+- **Breaking** In `getEvents()`, the argument `clamp_q` was renamed to `clampQ`.
 - Fix for [confusing bulk entity retrieval](https://github.com/primitybio/cellengine-r-toolkit/issues/48)
 - For performance, `applyScale()` now only accepts atomic vectors. Lists can no
   longer be used.

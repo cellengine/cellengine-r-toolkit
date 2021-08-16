@@ -5,7 +5,7 @@
 #' @param scale Scale (named list with keys "type", "maximum", "minimum",
 #' and "cofactor").
 #' @param data Vector of values for a channel.
-#' @param clamp_q If true, values will be clamped to fall within the scale's
+#' @param clampQ If true, values will be clamped to fall within the scale's
 #' minimum and maximum.
 #' @export
 #' @examples
@@ -17,7 +17,7 @@
 #' chanIdx <- 5
 #' applyScale(scaleSet$scales[[1]][chanIdx, "scale"], c(1, 2, 3, 4, 5))
 #' }
-applyScale <- function(scale, data, clamp_q = FALSE) {
+applyScale <- function(scale, data, clampQ = FALSE) {
   fn <- switch(scale$type,
     "LinearScale" = function(a) {
       a
@@ -30,9 +30,8 @@ applyScale <- function(scale, data, clamp_q = FALSE) {
     },
   )
 
-  if (clamp_q) {
+  if (clampQ) {
     data <- pmax(pmin(data, scale$maximum), scale$minimum)
   }
-
   fn(data)
 }

@@ -107,9 +107,9 @@ subtractHistograms <- function(experimentId,
   file1col = file1data[, grepl(sub("^X", "", make.names(channel)), colnames(file1data))]
   file2col = file2data[, grepl(sub("^X", "", make.names(channel)), colnames(file2data))]
 
-  # Warning: if clamp_q = FALSE, then ultra-negative values can impact histograms.
-  file1col = applyScale(scale, file1col, clamp_q = FALSE)
-  file2col = applyScale(scale, file2col, clamp_q = FALSE)
+  # Warning: if clampQ = FALSE, then ultra-negative values can impact histograms.
+  file1col = applyScale(scale, file1col, clampQ = FALSE)
+  file2col = applyScale(scale, file2col, clampQ = FALSE)
 
   if (method == "KS") {
     ks = ks.test(file2col, file1col, alternative="greater")

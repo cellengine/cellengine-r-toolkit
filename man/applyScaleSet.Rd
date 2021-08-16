@@ -4,14 +4,14 @@
 \alias{applyScaleSet}
 \title{Apply a ScaleSet}
 \usage{
-applyScaleSet(scaleset, data, clamp_q = FALSE)
+applyScaleSet(scaleset, data, clampQ = FALSE)
 }
 \arguments{
 \item{scaleset}{ScaleSet. Accepts a ScaleSet or \code{scaleSet$scales}.}
 
 \item{data}{Events data from an FcsFile, i.e. \code{events@expr}}
 
-\item{clamp_q}{If true, values will be clamped to fall within the scale's
+\item{clampQ}{If true, values will be clamped to fall within the scale's
 minimum and maximum. Applies clamping to all scales in a ScaleSet}
 }
 \description{
