@@ -107,75 +107,8 @@ getStatistics <- function(experimentId,
   checkDefined(experimentId)
   experimentId <- lookupByName("experiments", experimentId)
 
-  # FCS file arguments
-  if (!is.null(fcsFileIds) && !is.null(fcsFiles)) {
-    stop("Please specify only one of 'fcsFiles' or 'fcsFileIds'.")
-  }
-  if (is.null(fcsFileIds) && !is.null(fcsFiles)) { # lookup FCS files by name
-    queryFilenames <- paste0(shQuote(fcsFiles, type = "cmd"), collapse = ",")
-    serverFiles <- getFcsFiles(experimentId, params = list(
-      fields = "+filename",
-      query = sprintf("in(filename, [%s])", queryFilenames)
-    ))
-    if (!is.data.frame(serverFiles)) { # zero-length results are not data.frames
-      pkg.env$lastError <- fcsFiles
-      stop(sprintf(
-        "%i file(s) were not found. Call getErrorInfo() for a list of missing files.",
-        length(fcsFiles)
-      ))
-    }
-    diff <- setdiff(fcsFiles, serverFiles$filename) # files absent from server
-    if (length(diff) != 0) {
-      pkg.env$lastError <- diff
-      stop(sprintf(
-        "%i file(s) were not found. Call getErrorInfo() for a list of missing files.",
-        length(diff)
-      ))
-    }
-    if (anyDuplicated(serverFiles$filename)) { # files with non-unique names
-      pkg.env$lastError <- serverFiles$filename[duplicated(serverFiles$filename)]
-      stop(paste0(
-        "One or more files have the same filenames and cannot be selected unambiguously. ",
-        "Call getErrorInfo() for a list of duplicate filenames."
-      ))
-    }
-    fcsFileIds <- serverFiles$`_id`
-  }
-
-  # population arguments
-  if (!is.null(populationIds) && !is.null(populations)) {
-    stop("Please specify only one of 'populations' or 'populationIds'.")
-  }
-  if (is.null(populationIds) && !is.null(populations)) { # lookup populations by name
-    queryPopulations <- paste0(shQuote(populations, type = "cmd"), collapse = ",")
-    serverPops <- getPopulations(experimentId, params = list(
-      fields = "+name",
-      query = sprintf("in(name, [%s])", queryPopulations)
-    ))
-    if (!is.data.frame(serverPops)) { # zero-length results are not data.frames
-      pkg.env$lastError <- populations
-      stop(sprintf(
-        "%i population(s) were not found. Call getErrorInfo() for a list of missing populations.",
-        length(populations)
-      ))
-    }
-    diff <- setdiff(populations, serverPops$name) # populations absent from server
-    if (length(diff) != 0) {
-      pkg.env$lastError <- diff
-      stop(sprintf(
-        "%i population(s) were not found. Call getErrorInfo() for a list of missing populations.",
-        length(diff)
-      ))
-    }
-    if (anyDuplicated(serverPops$name)) { # populations with non-unique names
-      pkg.env$lastError <- serverPops$name[duplicated(serverPops$name)]
-      stop(paste0(
-        "One or more populations have the same names and cannot be selected unambiguously. ",
-        "Call getErrorInfo() for a list of duplicate names."
-      ))
-    }
-    populationIds <- serverPops$`_id`
-  }
+  fcsFileIds <- lookupFilesByName(experimentId, fcsFileIds, fcsFiles)
+  populationIds <- lookupPopulationsByName(experimentId, populationIds, populations)
 
   # statistics argument
   allowedStatistics <- c("mean", "median", "quantile", "stddev", "cv", "eventcount", "percent", "mad")
@@ -184,17 +117,7 @@ getStatistics <- function(experimentId,
     stop(sprintf("Statistics [%s] are not allowed.", paste0(statsDiff, collapse = ", ")))
   }
 
-  # scale set argument
-  if (is.null(scaleSetId)) {
-    serverScaleSets <- getScaleSets(experimentId, params = list(fields = "+_id"))
-    if (!is.data.frame(serverScaleSets)) { # zero-length results are not data.frames
-      stop("No scalesets found in experiment.")
-    }
-    if (nrow(serverScaleSets) > 1) {
-      stop("More than one scaleset exists in experiment. Please specify a scaleSetId to select one.")
-    }
-    scaleSetId <- serverScaleSets$`_id`
-  }
+  scaleSetId <- verifyScaleSets(experimentId, scaleSetId)
 
   # percentOf argument
   if (length(percentOf) > 1 && length(percentOf) != length(populationIds)) {
@@ -270,4 +193,92 @@ getStatistics <- function(experimentId,
   path <- paste("experiments", experimentId, "bulkstatistics", sep = "/")
   body <- jsonlite::toJSON(body, null = "null", digits = NA)
   basePost(path, body, list())
+}
+
+lookupFilesByName <- function(experimentId, fcsFileIds, fcsFiles) {
+  if (!is.null(fcsFileIds) && !is.null(fcsFiles)) {
+    stop("Please specify only one of 'fcsFiles' or 'fcsFileIds'.")
+  }
+  if (is.null(fcsFileIds) && !is.null(fcsFiles)) {
+    queryFilenames <- paste0(shQuote(fcsFiles, type = "cmd"), collapse = ",")
+    serverFiles <- getFcsFiles(experimentId, params = list(
+      fields = "+filename",
+      query = sprintf("in(filename, [%s])", queryFilenames)
+    ))
+    if (!is.data.frame(serverFiles)) { # zero-length results are not data.frames
+      pkg.env$lastError <- fcsFiles
+      stop(sprintf(
+        "%i file(s) were not found. Call getErrorInfo() for a list of missing files.",
+        length(fcsFiles)
+      ))
+    }
+    diff <- setdiff(fcsFiles, serverFiles$filename) # files absent from server
+    if (length(diff) != 0) {
+      pkg.env$lastError <- diff
+      stop(sprintf(
+        "%i file(s) were not found. Call getErrorInfo() for a list of missing files.",
+        length(diff)
+      ))
+    }
+    if (anyDuplicated(serverFiles$filename)) { # files with non-unique names
+      pkg.env$lastError <- serverFiles$filename[duplicated(serverFiles$filename)]
+      stop(paste0(
+        "One or more files have the same filenames and cannot be selected unambiguously. ",
+        "Call getErrorInfo() for a list of duplicate filenames."
+      ))
+    }
+    fcsFileIds <- serverFiles$`_id`
+  }
+  return(fcsFileIds)
+}
+
+lookupPopulationsByName <- function(experimentId, populationIds, populations) {
+  if (!is.null(populationIds) && !is.null(populations)) {
+    stop("Please specify only one of 'populations' or 'populationIds'.")
+  }
+  if (is.null(populationIds) && !is.null(populations)) { # lookup populations by name
+    queryPopulations <- paste0(shQuote(populations, type = "cmd"), collapse = ",")
+    serverPops <- getPopulations(experimentId, params = list(
+      fields = "+name",
+      query = sprintf("in(name, [%s])", queryPopulations)
+    ))
+    if (!is.data.frame(serverPops)) { # zero-length results are not data.frames
+      pkg.env$lastError <- populations
+      stop(sprintf(
+        "%i population(s) were not found. Call getErrorInfo() for a list of missing populations.",
+        length(populations)
+      ))
+    }
+    diff <- setdiff(populations, serverPops$name) # populations absent from server
+    if (length(diff) != 0) {
+      pkg.env$lastError <- diff
+      stop(sprintf(
+        "%i population(s) were not found. Call getErrorInfo() for a list of missing populations.",
+        length(diff)
+      ))
+    }
+    if (anyDuplicated(serverPops$name)) { # populations with non-unique names
+      pkg.env$lastError <- serverPops$name[duplicated(serverPops$name)]
+      stop(paste0(
+        "One or more populations have the same names and cannot be selected unambiguously. ",
+        "Call getErrorInfo() for a list of duplicate names."
+      ))
+    }
+    populationIds <- serverPops$`_id`
+  }
+  return(populationIds)
+}
+
+verifyScaleSets <- function(experimentId, scaleSetId) {
+  if (is.null(scaleSetId)) {
+    serverScaleSets <- getScaleSets(experimentId, params = list(fields = "+_id"))
+    if (!is.data.frame(serverScaleSets)) { # zero-length results are not data.frames
+      stop("No scalesets found in experiment.")
+    }
+    if (nrow(serverScaleSets) > 1) {
+      stop("More than one scaleset exists in experiment. Please specify a scaleSetId to select one.")
+    }
+    scaleSetId <- serverScaleSets$`_id`
+  }
+  return(scaleSetId)
 }
