@@ -4,7 +4,7 @@
 \alias{applyScale}
 \title{Apply a scale}
 \usage{
-applyScale(scale, data, clamp_q = FALSE)
+applyScale(scale, data, clampQ = FALSE)
 }
 \arguments{
 \item{scale}{Scale (named list with keys "type", "maximum", "minimum",
@@ -12,7 +12,7 @@ and "cofactor").}
 
 \item{data}{Vector of values for a channel.}
 
-\item{clamp_q}{If true, values will be clamped to fall within the scale's
+\item{clampQ}{If true, values will be clamped to fall within the scale's
 minimum and maximum.}
 }
 \description{
