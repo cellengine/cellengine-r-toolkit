@@ -8,8 +8,8 @@
 #' \dontrun{
 #' deleteExperiment(experimentId)
 #' }
-deleteExperiment = function(experimentId) {
+deleteExperiment <- function(experimentId) {
   checkDefined(experimentId)
-  experimentId = lookupByName("experiments", experimentId)
+  experimentId <- lookupByName("experiments", experimentId)
   baseDelete(paste("experiments", experimentId, sep = "/"))
 }

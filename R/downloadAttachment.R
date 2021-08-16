@@ -12,7 +12,7 @@
 #' @examples
 #' \dontrun{
 #' # Returns the attachment as a binary blob:
-#' attachment = downloadAttachment(experimentId, attachmentId)
+#' attachment <- downloadAttachment(experimentId, attachmentId)
 #' # Parse it as text:
 #' readBin(attachment, character())
 #'
@@ -22,26 +22,25 @@
 #' # Use the byName helper to avoid finding the attachment ID:
 #' downloadAttachment(experimentId, byName("file.txt"))
 #' }
-downloadAttachment = function(experimentId,
-                     attachmentId,
-                     destination = NULL,
-                     overwrite = FALSE) {
-
+downloadAttachment <- function(experimentId,
+                               attachmentId,
+                               destination = NULL,
+                               overwrite = FALSE) {
   checkDefined(experimentId)
-  experimentId = lookupByName("experiments", experimentId)
+  experimentId <- lookupByName("experiments", experimentId)
   checkDefined(attachmentId)
-  attachmentId = lookupByName(paste("experiments", experimentId, "attachments", sep = "/"), attachmentId, "filename")
+  attachmentId <- lookupByName(paste("experiments", experimentId, "attachments", sep = "/"), attachmentId, "filename")
   ensureBaseUrl()
 
-  fullURL = paste(pkg.env$baseURL, "experiments", experimentId, "attachments", attachmentId, sep = "/")
+  fullURL <- paste(pkg.env$baseURL, "experiments", experimentId, "attachments", attachmentId, sep = "/")
 
   if (is.null(destination)) {
-    response = httr::GET(fullURL, httr::user_agent(ua))
+    response <- httr::GET(fullURL, httr::user_agent(ua))
     httr::stop_for_status(response, "download attachment")
-    content = httr::content(response, "raw")
+    content <- httr::content(response, "raw")
     return(content)
   } else {
-    response = httr::GET(fullURL, httr::user_agent(ua), httr::write_disk(destination, overwrite))
+    response <- httr::GET(fullURL, httr::user_agent(ua), httr::write_disk(destination, overwrite))
     httr::stop_for_status(response, "download attachment")
   }
 }

@@ -9,10 +9,10 @@
 #' \dontrun{
 #' getGate(experimentId, gateId)
 #' }
-getGate = function(experimentId, gateId) {
+getGate <- function(experimentId, gateId) {
   checkDefined(experimentId)
-  experimentId = lookupByName("experiments", experimentId)
+  experimentId <- lookupByName("experiments", experimentId)
   checkDefined(gateId)
-  gateId = lookupByName(paste("experiments", experimentId, "gates", sep = "/"), gateId)
+  gateId <- lookupByName(paste("experiments", experimentId, "gates", sep = "/"), gateId)
   baseGet(paste("experiments", experimentId, "gates", gateId, sep = "/"))
 }

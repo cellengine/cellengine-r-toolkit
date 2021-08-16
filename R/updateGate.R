@@ -10,12 +10,12 @@
 #' \dontrun{
 #' updateGate(experimentId, gateId, list("name" = "new gate name"))
 #' }
-
-updateGate = function(experimentId, gateId, properties = list()) {
+#'
+updateGate <- function(experimentId, gateId, properties = list()) {
   checkDefined(experimentId)
-  experimentId = lookupByName("experiments", experimentId)
+  experimentId <- lookupByName("experiments", experimentId)
   checkDefined(gateId)
-  gateId = lookupByName(paste("experiments", experimentId, "gates", sep = "/"), gateId)
-  body = jsonlite::toJSON(properties, null = "null", auto_unbox = TRUE)
+  gateId <- lookupByName(paste("experiments", experimentId, "gates", sep = "/"), gateId)
+  body <- jsonlite::toJSON(properties, null = "null", auto_unbox = TRUE)
   basePatch(paste("experiments", experimentId, "gates", gateId, sep = "/"), body)
 }

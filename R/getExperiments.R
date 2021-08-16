@@ -12,6 +12,6 @@
 #' # List the names of the first five experiments
 #' getExperiments(params = list("limit" = "5", "fields" = "+name"))
 #' }
-getExperiments = function(params = list()) {
+getExperiments <- function(params = list()) {
   baseGet(paste("experiments", sep = "/"), params)
 }

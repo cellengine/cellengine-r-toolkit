@@ -9,10 +9,10 @@
 #' \dontrun{
 #' deleteFcsFile(experimentId, fcsFileId)
 #' }
-deleteFcsFile = function(experimentId, fcsFileId) {
+deleteFcsFile <- function(experimentId, fcsFileId) {
   checkDefined(experimentId)
-  experimentId = lookupByName("experiments", experimentId)
+  experimentId <- lookupByName("experiments", experimentId)
   checkDefined(fcsFileId)
-  fcsFileId = lookupByName(paste("experiments", experimentId, "fcsfiles", sep = "/"), fcsFileId, "filename")
+  fcsFileId <- lookupByName(paste("experiments", experimentId, "fcsfiles", sep = "/"), fcsFileId, "filename")
   baseDelete(paste("experiments", experimentId, "fcsfiles", fcsFileId, sep = "/"))
 }

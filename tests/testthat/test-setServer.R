@@ -11,5 +11,5 @@ test_that("Tolerates trailing /", {
 })
 
 test_that("Requires https", {
-  expect_error((function () setServer("http://my.server.com/"))())
+  expect_error((function() setServer("http://my.server.com/"))())
 })

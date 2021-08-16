@@ -23,27 +23,25 @@
 #' deleteGate(experimentId, gid = gateFamilyID)
 #' deleteGate(experimentId, gateId = gateID)
 #' }
-
-deleteGates = function(experimentId, gid = NULL, gateId = NULL, exclude = NULL) {
+#'
+deleteGates <- function(experimentId, gid = NULL, gateId = NULL, exclude = NULL) {
   checkDefined(experimentId)
-  experimentId = lookupByName("experiments", experimentId)
-  base = paste("experiments", experimentId, "gates", sep = "/")
-  #TODO:(ge) Add byName functionality for gateId
+  experimentId <- lookupByName("experiments", experimentId)
+  base <- paste("experiments", experimentId, "gates", sep = "/")
+  # TODO:(ge) Add byName functionality for gateId
 
-  if ((is.null(gid) & is.null(gateId)) | (!is.null(gid) & !is.null(gateId))){
-
-      stop("Either the gid or the gateId must be specified")
+  if ((is.null(gid) & is.null(gateId)) | (!is.null(gid) & !is.null(gateId))) {
+    stop("Either the gid or the gateId must be specified")
   }
 
-  if (!is.null(gateId)){
+  if (!is.null(gateId)) {
     checkDefined(gateId)
-    url = sprintf("%s/%s", base, gateId)
+    url <- sprintf("%s/%s", base, gateId)
   } else if (!is.null(gid)) {
-    url = sprintf("%s?gid=%s", base, gid)
+    url <- sprintf("%s?gid=%s", base, gid)
     if (!is.null(exclude)) {
-        url = sprintf("$s&exclude=%s", url, exclude)
+      url <- sprintf("$s&exclude=%s", url, exclude)
     }
   }
   baseDelete(url)
 }
-

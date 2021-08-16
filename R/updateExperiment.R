@@ -9,9 +9,9 @@
 #' \dontrun{
 #' updateExperiment(experimentId, list("name" = "my experiment"))
 #' }
-updateExperiment = function(experimentId, properties = list()) {
+updateExperiment <- function(experimentId, properties = list()) {
   checkDefined(experimentId)
-  experimentId = lookupByName("experiments", experimentId)
-  body = jsonlite::toJSON(properties, null = "null", auto_unbox = TRUE)
+  experimentId <- lookupByName("experiments", experimentId)
+  body <- jsonlite::toJSON(properties, null = "null", auto_unbox = TRUE)
   basePatch(paste("experiments", experimentId, sep = "/"), body)
 }

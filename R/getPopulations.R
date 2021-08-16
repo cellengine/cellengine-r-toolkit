@@ -13,8 +13,8 @@
 #' # List the names of the first five populations
 #' getPopulations(experimentId, params = list("limit" = "5", "fields" = "+name"))
 #' }
-getPopulations = function(experimentId, params = list()) {
+getPopulations <- function(experimentId, params = list()) {
   checkDefined(experimentId)
-  experimentId = lookupByName("experiments", experimentId)
+  experimentId <- lookupByName("experiments", experimentId)
   baseGet(paste("experiments", experimentId, "populations", sep = "/"), params)
 }

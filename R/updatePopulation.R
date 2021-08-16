@@ -10,14 +10,14 @@
 #' \dontrun{
 #' updatePopulation(experimentId, populationId, list("name" = "new pop name"))
 #' }
-
-updatePopulation = function(experimentId,
-                            populationId,
-                            properties = list()) {
+#'
+updatePopulation <- function(experimentId,
+                             populationId,
+                             properties = list()) {
   checkDefined(experimentId)
-  experimentId = lookupByName("experiments", experimentId)
+  experimentId <- lookupByName("experiments", experimentId)
   checkDefined(populationId)
-  populationId = lookupByName(paste("experiments", experimentId, "populations", sep = "/"), populationId)
-  body = jsonlite::toJSON(properties, null = "null", auto_unbox = TRUE)
+  populationId <- lookupByName(paste("experiments", experimentId, "populations", sep = "/"), populationId)
+  body <- jsonlite::toJSON(properties, null = "null", auto_unbox = TRUE)
   basePatch(paste("experiments", experimentId, "populations", populationId, sep = "/"), body)
 }

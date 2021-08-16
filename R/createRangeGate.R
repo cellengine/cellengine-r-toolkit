@@ -32,15 +32,14 @@
 #' \dontrun{
 #' createRangeGate(experimentId, "FSC-A", "my gate", 12.502, 95.102)
 #' }
-createRangeGate = function(experimentId, xChannel, name,
-                           x1, x2, y = 0.5,
-                           label = c(mean(c(x1, x2)), y),
-                           gid = generateId(),
-                           parentPopulationId = NULL, parentPopulation = NULL,
-                           tailoredPerFile = FALSE, fcsFileId = NULL, fcsFile = NULL,
-                           locked = FALSE, createPopulation = TRUE) {
-
-  body = list(
+createRangeGate <- function(experimentId, xChannel, name,
+                            x1, x2, y = 0.5,
+                            label = c(mean(c(x1, x2)), y),
+                            gid = generateId(),
+                            parentPopulationId = NULL, parentPopulation = NULL,
+                            tailoredPerFile = FALSE, fcsFileId = NULL, fcsFile = NULL,
+                            locked = FALSE, createPopulation = TRUE) {
+  body <- list(
     model = list(
       locked = jsonlite::unbox(locked),
       range = list(
@@ -54,6 +53,8 @@ createRangeGate = function(experimentId, xChannel, name,
     type = jsonlite::unbox("RangeGate")
   )
 
-  commonGateCreate(body, name, gid, experimentId, parentPopulationId, parentPopulation,
-    tailoredPerFile, fcsFileId, fcsFile, createPopulation)
+  commonGateCreate(
+    body, name, gid, experimentId, parentPopulationId, parentPopulation,
+    tailoredPerFile, fcsFileId, fcsFile, createPopulation
+  )
 }

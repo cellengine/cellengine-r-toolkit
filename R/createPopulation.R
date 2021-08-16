@@ -22,17 +22,16 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' gid1 = "59262d84b1a1fc1193f12b0e"
+#' gid1 <- "59262d84b1a1fc1193f12b0e"
 #' createPopulation(experimentId, "Singlets", list(`$and` = c(gid1)), gid1)
 #' }
-createPopulation = function(experimentId, name, gates, terminalGateGid,
-                            parentId = NULL) {
-
+createPopulation <- function(experimentId, name, gates, terminalGateGid,
+                             parentId = NULL) {
   checkDefined(experimentId)
 
-  if (!is.character(gates)) gates = jsonlite::toJSON(gates)
+  if (!is.character(gates)) gates <- jsonlite::toJSON(gates)
 
-  body = jsonlite::toJSON(list(
+  body <- jsonlite::toJSON(list(
     name = jsonlite::unbox(name),
     gates = jsonlite::unbox(gates),
     terminalGateGid = jsonlite::unbox(terminalGateGid),

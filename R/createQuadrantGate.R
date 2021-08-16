@@ -37,40 +37,48 @@
 #' \dontrun{
 #' createQuadrantGate(experimentId, "FSC-A", "FSC-W", "my gate", 160000, 200000)
 #' }
-createQuadrantGate = function(experimentId, xChannel, yChannel, name,
+createQuadrantGate <- function(experimentId, xChannel, yChannel, name,
                                x, y, labels = NULL,
                                gid = generateId(), gids = replicate(4, generateId()),
                                parentPopulationId = NULL, parentPopulation = NULL,
                                tailoredPerFile = FALSE, fcsFileId = NULL, fcsFile = NULL,
                                locked = FALSE, createPopulations = TRUE) {
-  #future args:
-  skewable = FALSE
-  angles = c(pi/2, pi, 3/2*pi, 0.000000)
-# @param angles Angles at which the quadrant lines appear, in radians.
-# Zero (0) points horizontally to the right; angles proceed counter-clockwise.
-# Currently these must be 0, pi / 2, pi and 3 * pi / 2.
+  # future args:
+  skewable <- FALSE
+  angles <- c(pi / 2, pi, 3 / 2 * pi, 0.000000)
+  # @param angles Angles at which the quadrant lines appear, in radians.
+  # Zero (0) points horizontally to the right; angles proceed counter-clockwise.
+  # Currently these must be 0, pi / 2, pi and 3 * pi / 2.
 
   if (length(labels) == 0) {
-    scales = data.frame(getScaleSets(experimentId)$scales)
-    labels = list(
-               c(scales[scales$channelName==xChannel, ]$scale$maximum, # upper right
-               scales[scales$channelName==yChannel, ]$scale$maximum), # upper right
-               c(scales[scales$channelName==xChannel, ]$scale$minimum, # upper left
-               scales[scales$channelName==yChannel, ]$scale$maximum), # upper left
-               c(scales[scales$channelName==xChannel, ]$scale$minimum, # lower left
-               scales[scales$channelName==yChannel, ]$scale$minimum),  # lower left
-               c(scales[scales$channelName==xChannel, ]$scale$maximum, # lower right
-               scales[scales$channelName==yChannel, ]$scale$minimum)  # lower right
-               )
-  } else if (all(dim(data.frame(labels)) == list(2,4))){
-    labels = labels
+    scales <- data.frame(getScaleSets(experimentId)$scales)
+    labels <- list(
+      c(
+        scales[scales$channelName == xChannel, ]$scale$maximum, # upper right
+        scales[scales$channelName == yChannel, ]$scale$maximum
+      ), # upper right
+      c(
+        scales[scales$channelName == xChannel, ]$scale$minimum, # upper left
+        scales[scales$channelName == yChannel, ]$scale$maximum
+      ), # upper left
+      c(
+        scales[scales$channelName == xChannel, ]$scale$minimum, # lower left
+        scales[scales$channelName == yChannel, ]$scale$minimum
+      ), # lower left
+      c(
+        scales[scales$channelName == xChannel, ]$scale$maximum, # lower right
+        scales[scales$channelName == yChannel, ]$scale$minimum
+      ) # lower right
+    )
+  } else if (all(dim(data.frame(labels)) == list(2, 4))) {
+    labels <- labels
   } else {
-    stop('Labels must be a list of 4 length-2 vectors.')
+    stop("Labels must be a list of 4 length-2 vectors.")
   }
 
-  names = paste(name, (c("(UR)", "(UL)", "(LL)", "(LR)")))
+  names <- paste(name, (c("(UR)", "(UL)", "(LL)", "(LR)")))
 
-  body = list(
+  body <- list(
     model = list(
       locked = jsonlite::unbox(locked),
       quadrant = list(
@@ -88,6 +96,8 @@ createQuadrantGate = function(experimentId, xChannel, yChannel, name,
     type = jsonlite::unbox("QuadrantGate")
   )
 
-  compoundGateCreate(body, names, gid, gids, experimentId, parentPopulationId, parentPopulation,
-    tailoredPerFile, fcsFileId, fcsFile, createPopulations)
+  compoundGateCreate(
+    body, names, gid, gids, experimentId, parentPopulationId, parentPopulation,
+    tailoredPerFile, fcsFileId, fcsFile, createPopulations
+  )
 }

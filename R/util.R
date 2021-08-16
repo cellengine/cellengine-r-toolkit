@@ -1,59 +1,60 @@
-pkg.env = new.env()
+pkg.env <- new.env() # nolint
 
 # Set your development base url in .Renviron in the package directory
-pkg.env$baseURL = Sys.getenv("CELLENGINE_API_URL", "https://cellengine.com/api/v1")
+pkg.env$baseURL <- Sys.getenv("CELLENGINE_API_URL", "https://cellengine.com/api/v1")
 
-handleResponse = function(response) {
+handleResponse <- function(response) {
   httr::warn_for_status(response)
-  content = httr::content(response, "text", encoding = "UTF-8")
+  content <- httr::content(response, "text", encoding = "UTF-8")
   return(jsonlite::fromJSON(content))
 }
 
-ua = (function (){
+ua <- (function() {
   versions <- c(
     `CellEngine API Toolkit` = "0.1.0", # TODO see if utils::packageVersion works
     libcurl = curl::curl_version()$version,
     `r-curl` = as.character(utils::packageVersion("curl")),
-    httr = as.character(utils::packageVersion("httr")))
+    httr = as.character(utils::packageVersion("httr"))
+  )
   paste0(names(versions), "/", versions, collapse = " ")
 })()
 
-ensureBaseUrl = function() {
+ensureBaseUrl <- function() {
   if (pkg.env$baseURL == "") stop("Please call setServer(host) first.")
 }
 
-baseGet = function(url, params = list()) {
+baseGet <- function(url, params = list()) {
   ensureBaseUrl()
-  fullURL = paste(pkg.env$baseURL, url, sep = "/")
+  fullURL <- paste(pkg.env$baseURL, url, sep = "/")
   handleResponse(httr::GET(fullURL, query = params, httr::user_agent(ua)))
 }
 
-basePatch = function(url, body, params = list()) {
+basePatch <- function(url, body, params = list()) {
   ensureBaseUrl()
-  fullURL = paste(pkg.env$baseURL, url, sep = "/")
+  fullURL <- paste(pkg.env$baseURL, url, sep = "/")
   handleResponse(httr::PATCH(fullURL, body = body, query = params, httr::content_type_json(), httr::user_agent(ua)))
 }
 
-basePut = function(url, body, params = list()) {
+basePut <- function(url, body, params = list()) {
   ensureBaseUrl()
-  fullURL = paste(pkg.env$baseURL, url, sep = "/")
+  fullURL <- paste(pkg.env$baseURL, url, sep = "/")
   handleResponse(httr::PUT(fullURL, body = body, query = params, httr::content_type_json(), httr::user_agent(ua)))
 }
 
-basePost = function(url, body, params = list()) {
+basePost <- function(url, body, params = list()) {
   ensureBaseUrl()
-  fullURL = paste(pkg.env$baseURL, url, sep = "/")
+  fullURL <- paste(pkg.env$baseURL, url, sep = "/")
   handleResponse(httr::POST(fullURL, body = body, query = params, httr::content_type_json(), httr::user_agent(ua)))
 }
 
-baseDelete = function(url, params = list()) {
+baseDelete <- function(url, params = list()) {
   ensureBaseUrl()
-  fullURL = paste(pkg.env$baseURL, url, sep = "/")
-  response = httr::DELETE(fullURL, query = params, httr::user_agent(ua))
+  fullURL <- paste(pkg.env$baseURL, url, sep = "/")
+  response <- httr::DELETE(fullURL, query = params, httr::user_agent(ua))
   httr::warn_for_status(response)
 }
 
-checkDefined = function(param) {
+checkDefined <- function(param) {
   if (is.null(param)) {
     stop(paste0("parameter '", deparse(substitute(param)), "' is NULL"))
   }
@@ -64,21 +65,21 @@ checkDefined = function(param) {
 #' A constant representing no compensation.
 #'
 #' @export
-UNCOMPENSATED = 0
+UNCOMPENSATED <- 0 # nolint
 
 #' File-internal compensation.
 #'
 #' A constant representing file-internal compensation.
 #'
 #' @export
-FILE_INTERNAL = -1
+FILE_INTERNAL <- -1 # nolint
 
 #' Ungated.
 #'
 #' A constant representing the ungated population.
 #'
 #' @export
-UNGATED = ""
+UNGATED <- "" # nolint
 
 #' Returns more information about the last error.
 #'
@@ -86,7 +87,7 @@ UNGATED = ""
 #' that it is retrievable using \code{getErrorInfo()}.
 #'
 #' @export
-getErrorInfo = function() {
+getErrorInfo <- function() {
   pkg.env$lastError
 }
 
@@ -113,21 +114,25 @@ getErrorInfo = function() {
 #' getGates(experimentId = byName("my experiment"))
 #' }
 #' @export
-byName = function(name) {
+byName <- function(name) {
   class(name) <- "_boxed_by_name"
   name
 }
 
-byNameHash = new.env(hash = TRUE, parent = emptyenv())
+byNameHash <- new.env(hash = TRUE, parent = emptyenv())
 
-lookupByName = function(listpath, name, prop = "name") {
-  if (class(name) != "_boxed_by_name") return(name)
-  name = unclass(name)
+lookupByName <- function(listpath, name, prop = "name") {
+  if (class(name) != "_boxed_by_name") {
+    return(name)
+  }
+  name <- unclass(name)
 
-  key = paste(listpath, name, sep="$$$")
-  if (exists(key, envir = byNameHash)) return(get(key, envir = byNameHash))
+  key <- paste(listpath, name, sep = "$$$")
+  if (exists(key, envir = byNameHash)) {
+    return(get(key, envir = byNameHash))
+  }
 
-  vals = baseGet(listpath, params = list(
+  vals <- baseGet(listpath, params = list(
     query = sprintf("eq(%s, \"%s\")", prop, name),
     limit = 2 # need >1 so we can detect ambiguous matches
   ))
@@ -138,7 +143,7 @@ lookupByName = function(listpath, name, prop = "name") {
     stop(sprintf("More than one resource with the name '%s' exists.", name))
   }
 
-  val = vals$`_id`
+  val <- vals$`_id`
   assign(key, val, envir = byNameHash)
   val
 }
@@ -156,30 +161,29 @@ lookupByName = function(listpath, name, prop = "name") {
 #'   name Name of resource to search for.
 #' @examples
 #' \dontrun{
-#' lookup = createLookup("5e1f66a06f5f3f0759b479c9")
+#' lookup <- createLookup("5e1f66a06f5f3f0759b479c9")
 #' lookup("gates", "test_gate")
 #' # or:
 #' lookup("gates")
 #' }
 #' @export
 createLookup <- function(experimentId) {
-  function(resource, name='') {
-    allowedArgs = c("gates", "populations", "fcsfiles", "compensations")
+  function(resource, name = "") {
+    allowedArgs <- c("gates", "populations", "fcsfiles", "compensations")
     if (resource %in% allowedArgs == FALSE) {
       stop(sprintf("Resource must be one of %s", paste(allowedArgs, collapse = ", ")))
     }
-    listpath = sprintf("experiments/%s/%s", experimentId, resource)
+    listpath <- sprintf("experiments/%s/%s", experimentId, resource)
 
-    if (name == '') {
-      data = baseGet(listpath)
-
+    if (name == "") {
+      data <- baseGet(listpath)
     } else {
-      args <- list(listpath=listpath, name=byName(name))
+      args <- list(listpath = listpath, name = byName(name))
       if (resource == "fcsfiles") {
         args <- c(args, list(prop = "filename"))
       }
-      id = do.call(lookupByName, args)
-      data = baseGet(sprintf("%s/%s/", listpath, id))
+      id <- do.call(lookupByName, args)
+      data <- baseGet(sprintf("%s/%s/", listpath, id))
     }
     data
   }

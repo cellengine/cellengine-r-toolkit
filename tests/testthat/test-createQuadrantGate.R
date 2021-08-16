@@ -5,14 +5,14 @@ test_that("Correct HTTP request is made", {
     `httr::request_perform` = function(req, handle, refresh) {
       expect_equal(req$method, "POST")
       expect_equal(req$url, "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/gates")
-      body = rawToChar(req$options$postfields)
+      body <- rawToChar(req$options$postfields)
       # Literal except for the gid values
-      expect_match(body, '{"model":{"locked":false,"quadrant":{"x":118010.391752577,"y":182870.515463918,"angles":\\[1.5707963267949,3.14159265358979,4.71238898038469,0\\]},"gids":\\["[0-9A-Za-z]{24}","[0-9A-Za-z]{24}","[0-9A-Za-z]{24}","[0-9A-Za-z]{24}"\\],"labels":\\[\\[196608,196608\\],\\[0.75,196608\\],\\[0.75,0.75\\],\\[196608,0.75\\]\\],"skewable":false},"xChannel":"FSC-A","yChannel":"FSC-W","names":\\["my gate \\(UR\\)","my gate \\(UL\\)","my gate \\(LL\\)","my gate \\(LR\\)"\\],"type":"QuadrantGate\","parentPopulationId":null,"gid":"[0-9A-Za-z]{24}","tailoredPerFile":false}', perl=T)
-      response = httptest::fake_response(
+      expect_match(body, '{"model":{"locked":false,"quadrant":{"x":118010.391752577,"y":182870.515463918,"angles":\\[1.5707963267949,3.14159265358979,4.71238898038469,0\\]},"gids":\\["[0-9A-Za-z]{24}","[0-9A-Za-z]{24}","[0-9A-Za-z]{24}","[0-9A-Za-z]{24}"\\],"labels":\\[\\[196608,196608\\],\\[0.75,196608\\],\\[0.75,0.75\\],\\[196608,0.75\\]\\],"skewable":false},"xChannel":"FSC-A","yChannel":"FSC-W","names":\\["my gate \\(UR\\)","my gate \\(UL\\)","my gate \\(LL\\)","my gate \\(LR\\)"\\],"type":"QuadrantGate\","parentPopulationId":null,"gid":"[0-9A-Za-z]{24}","tailoredPerFile":false}', perl = T) # nolint
+      response <- httptest::fake_response(
         req$url,
         req$method,
         # Fixed GID, not the one passed in
-        content='{"__v":0,"experimentId":"591a3b441d725115208a6fda","model":{"locked":false,"labels":[[196608.00, 0.75], [0.75, 196608.00], [196608.00, 196608.00], [0.75, 0.75]],"quadrant":{"x":118010.391752577,"y":182870.515463918,"angles":[1.5707963267949,3.14159265358979,4.71238898038469,0]},"gids":["5d30960a417e4bc767a428a3","5d30960a417e4bc767a428a4","5d30960a417e4bc767a428a5","5d30960a417e4bc767a428a6"]},"gid":"592640a5a6a1d6256ec9b08a","xChannel":"FSC-A","yChannel":"FSC-W","type":"QuadrantGate","name":"my gate","parentPopulationId":null,"_id":"592640aa298f1480900e10e4","tailoredPerFile":false,"id":"592640aa298f1480900e10e4"}',
+        content = '{"__v":0,"experimentId":"591a3b441d725115208a6fda","model":{"locked":false,"labels":[[196608.00, 0.75], [0.75, 196608.00], [196608.00, 196608.00], [0.75, 0.75]],"quadrant":{"x":118010.391752577,"y":182870.515463918,"angles":[1.5707963267949,3.14159265358979,4.71238898038469,0]},"gids":["5d30960a417e4bc767a428a3","5d30960a417e4bc767a428a4","5d30960a417e4bc767a428a5","5d30960a417e4bc767a428a6"]},"gid":"592640a5a6a1d6256ec9b08a","xChannel":"FSC-A","yChannel":"FSC-W","type":"QuadrantGate","name":"my gate","parentPopulationId":null,"_id":"592640aa298f1480900e10e4","tailoredPerFile":false,"id":"592640aa298f1480900e10e4"}', # nolint
         status_code = 201,
         headers = list(`Content-Type` = "application/json")
       )
@@ -20,24 +20,25 @@ test_that("Correct HTTP request is made", {
     },
     {
       setServer("https://my.server.com")
-      resp = createQuadrantGate("591a3b441d725115208a6fda", "FSC-A", "FSC-W", "my gate",
-        118010.39175257733, 182870.51546391752, labels = list(c(196608.00, 196608.00), c(0.75, 196608.00), c(0.75, 0.75), c(196608.00, 0.75)), createPopulation = FALSE)
-      resp = resp$gate
+      resp <- createQuadrantGate("591a3b441d725115208a6fda", "FSC-A", "FSC-W", "my gate",
+        118010.39175257733, 182870.51546391752,
+        labels = list(c(196608.00, 196608.00), c(0.75, 196608.00), c(0.75, 0.75), c(196608.00, 0.75)), createPopulation = FALSE # nolint
+      )
+      resp <- resp$gate
       expect_equal(resp$experimentId, "591a3b441d725115208a6fda")
       expect_equal(resp$`_id`, "592640aa298f1480900e10e4") # assigned server-side
       expect_equal(resp$xChannel, "FSC-A")
       expect_equal(resp$yChannel, "FSC-W")
       expect_equal(resp$name, "my gate")
-      expect_equal(resp$model$labels, matrix(c(c(196608.00,0.75), c(0.75, 196608.00), c(196608.00, 196608.00), c(0.75, 0.75)), byrow=T, ncol=2))
+      expect_equal(resp$model$labels, matrix(c(c(196608.00, 0.75), c(0.75, 196608.00), c(196608.00, 196608.00), c(0.75, 0.75)), byrow = T, ncol = 2)) # nolint
       expect_equal(resp$model$quadrant$x, 118010.391752577)
       expect_equal(resp$model$quadrant$y, 182870.515463918)
       expect_equal(resp$model$locked, FALSE)
-      expect_equal(resp$model$gids, c("5d30960a417e4bc767a428a3", "5d30960a417e4bc767a428a4", "5d30960a417e4bc767a428a5", "5d30960a417e4bc767a428a6"))
+      expect_equal(resp$model$gids, c("5d30960a417e4bc767a428a3", "5d30960a417e4bc767a428a4", "5d30960a417e4bc767a428a5", "5d30960a417e4bc767a428a6")) # nolint
       expect_equal(resp$gid, "592640a5a6a1d6256ec9b08a")
       expect_equal(resp$parentPopulationId, NULL) # default assigned client-side
       expect_equal(resp$type, "QuadrantGate")
       expect_equal(resp$tailoredPerFile, FALSE)
-
     }
   )
 })
@@ -47,14 +48,14 @@ test_that("Correct HTTP request is made, fcsFileId specified", {
     `httr::request_perform` = function(req, handle, refresh) {
       expect_equal(req$method, "POST")
       expect_equal(req$url, "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/gates")
-      body = rawToChar(req$options$postfields)
+      body <- rawToChar(req$options$postfields)
       # Literal except for the gid values
-      expect_match(body, '{"model":{"locked":false,"quadrant":{"x":118010.391752577,"y":182870.515463918,"angles":\\[1.5707963267949,3.14159265358979,4.71238898038469,0\\]},"gids":\\["[0-9A-Za-z]{24}","[0-9A-Za-z]{24}","[0-9A-Za-z]{24}","[0-9A-Za-z]{24}"\\],"labels":\\[\\[196608,196608\\],\\[0.75,196608\\],\\[0.75,0.75\\],\\[196608,0.75\\]\\],"skewable":false},"xChannel":"FSC-A","yChannel":"FSC-W","names":\\["my gate \\(UR\\)","my gate \\(UL\\)","my gate \\(LL\\)","my gate \\(LR\\)"\\],"type":"QuadrantGate\","parentPopulationId":null,"gid":"[0-9A-Za-z]{24}","tailoredPerFile":true,"fcsFileId":"591a3b441d725115208a6fdf"}', perl=T)
-      response = httptest::fake_response(
+      expect_match(body, '{"model":{"locked":false,"quadrant":{"x":118010.391752577,"y":182870.515463918,"angles":\\[1.5707963267949,3.14159265358979,4.71238898038469,0\\]},"gids":\\["[0-9A-Za-z]{24}","[0-9A-Za-z]{24}","[0-9A-Za-z]{24}","[0-9A-Za-z]{24}"\\],"labels":\\[\\[196608,196608\\],\\[0.75,196608\\],\\[0.75,0.75\\],\\[196608,0.75\\]\\],"skewable":false},"xChannel":"FSC-A","yChannel":"FSC-W","names":\\["my gate \\(UR\\)","my gate \\(UL\\)","my gate \\(LL\\)","my gate \\(LR\\)"\\],"type":"QuadrantGate\","parentPopulationId":null,"gid":"[0-9A-Za-z]{24}","tailoredPerFile":true,"fcsFileId":"591a3b441d725115208a6fdf"}', perl = T) # nolint
+      response <- httptest::fake_response(
         req$url,
         req$method,
         # Fixed GID, not the one passed in
-        content='{"__v":0,"experimentId":"591a3b441d725115208a6fda","model":{"locked":false,"labels":[[196608.00, 0.75], [0.75, 196608.00], [196608.00, 196608.00], [0.75, 0.75]],"quadrant":{"x":118010.391752577,"y":182870.515463918,"angles":[1.5707963267949,3.14159265358979,4.71238898038469,0]},"gids":["5d30960a417e4bc767a428a3","5d30960a417e4bc767a428a4","5d30960a417e4bc767a428a5","5d30960a417e4bc767a428a6"]},"gid":"592640a5a6a1d6256ec9b08a","xChannel":"FSC-A","yChannel":"FSC-W","type":"QuadrantGate","name":"my gate","parentPopulationId":null,"_id":"592640aa298f1480900e10e4","tailoredPerFile":true,"id":"592640aa298f1480900e10e4","fcsFileId":"591a3b441d725115208a6fdf"}',
+        content = '{"__v":0,"experimentId":"591a3b441d725115208a6fda","model":{"locked":false,"labels":[[196608.00, 0.75], [0.75, 196608.00], [196608.00, 196608.00], [0.75, 0.75]],"quadrant":{"x":118010.391752577,"y":182870.515463918,"angles":[1.5707963267949,3.14159265358979,4.71238898038469,0]},"gids":["5d30960a417e4bc767a428a3","5d30960a417e4bc767a428a4","5d30960a417e4bc767a428a5","5d30960a417e4bc767a428a6"]},"gid":"592640a5a6a1d6256ec9b08a","xChannel":"FSC-A","yChannel":"FSC-W","type":"QuadrantGate","name":"my gate","parentPopulationId":null,"_id":"592640aa298f1480900e10e4","tailoredPerFile":true,"id":"592640aa298f1480900e10e4","fcsFileId":"591a3b441d725115208a6fdf"}', # nolint
         status_code = 201,
         headers = list(`Content-Type` = "application/json")
       )
@@ -62,20 +63,33 @@ test_that("Correct HTTP request is made, fcsFileId specified", {
     },
     {
       setServer("https://my.server.com")
-      resp = createQuadrantGate("591a3b441d725115208a6fda", "FSC-A", "FSC-W", "my gate",
-        118010.39175257733, 182870.51546391752, labels = list(c(196608.00, 196608.00), c(0.75, 196608.00), c(0.75, 0.75), c(196608.00, 0.75)),
-        tailoredPerFile = TRUE, fcsFileId = "591a3b441d725115208a6fdf", createPopulation = FALSE)
-      resp = resp$gate
+      resp <- createQuadrantGate("591a3b441d725115208a6fda", "FSC-A", "FSC-W", "my gate",
+        118010.39175257733, 182870.51546391752,
+        labels = list(c(196608.00, 196608.00), c(0.75, 196608.00), c(0.75, 0.75), c(196608.00, 0.75)),
+        tailoredPerFile = TRUE, fcsFileId = "591a3b441d725115208a6fdf", createPopulation = FALSE
+      )
+      resp <- resp$gate
       expect_equal(resp$experimentId, "591a3b441d725115208a6fda")
       expect_equal(resp$`_id`, "592640aa298f1480900e10e4") # assigned server-side
       expect_equal(resp$xChannel, "FSC-A")
       expect_equal(resp$yChannel, "FSC-W")
       expect_equal(resp$name, "my gate")
-      expect_equal(resp$model$labels, matrix(c(c(196608.00,0.75), c(0.75, 196608.00), c(196608.00, 196608.00), c(0.75, 0.75)), byrow=T, ncol=2))
+      expect_equal(
+        resp$model$labels,
+        matrix(c(c(196608.00, 0.75), c(0.75, 196608.00), c(196608.00, 196608.00), c(0.75, 0.75)), byrow = T, ncol = 2)
+      )
       expect_equal(resp$model$quadrant$x, 118010.391752577)
       expect_equal(resp$model$quadrant$y, 182870.515463918)
       expect_equal(resp$model$locked, FALSE)
-      expect_equal(resp$model$gids, c("5d30960a417e4bc767a428a3", "5d30960a417e4bc767a428a4", "5d30960a417e4bc767a428a5", "5d30960a417e4bc767a428a6"))
+      expect_equal(
+        resp$model$gids,
+        c(
+          "5d30960a417e4bc767a428a3",
+          "5d30960a417e4bc767a428a4",
+          "5d30960a417e4bc767a428a5",
+          "5d30960a417e4bc767a428a6"
+        )
+      )
       expect_equal(resp$gid, "592640a5a6a1d6256ec9b08a")
       expect_equal(resp$parentPopulationId, NULL) # default assigned client-side
       expect_equal(resp$type, "QuadrantGate")
@@ -90,13 +104,17 @@ test_that("Correct HTTP request is made, parentPopulation specified", {
   with_mock(
     `httr::request_perform` = function(req, handle, refresh) {
       switch(req$url,
-        "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/populations?query=eq%28name%2C%20%22singlets%22%29" = {
+        "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/populations?query=eq%28name%2C%20%22singlets%22%29" = { # nolint
           expect_equal(req$method, "GET")
-          response = httptest::fake_response(
+          response <- httptest::fake_response(
             req$url,
             req$method,
             content = '[
-              {"_id":"591a3b5f1d725115208a7087","experimentId":"591a3b441d725115208a6fda","name":"singlets","gates":"{\\"$and\\":[\\"591a3b5961a8a2302d15a33a\\"]}","parentId":null,"terminalGateGid":"591a3b5961a8a2302d15a33a","__v":0,"id":"591a3b5f1d725115208a7087"}
+              {
+                "_id":"591a3b5f1d725115208a7087","experimentId":"591a3b441d725115208a6fda","name":"singlets",
+                "gates":"{\\"$and\\":[\\"591a3b5961a8a2302d15a33a\\"]}","parentId":null,
+                "terminalGateGid":"591a3b5961a8a2302d15a33a","__v":0,"id":"591a3b5f1d725115208a7087"
+              }
             ]',
             status_code = 200,
             headers = list(`Content-Type` = "application/json")
@@ -104,14 +122,14 @@ test_that("Correct HTTP request is made, parentPopulation specified", {
         },
         "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/gates" = {
           expect_equal(req$method, "POST")
-          body = rawToChar(req$options$postfields)
+          body <- rawToChar(req$options$postfields)
           # Literal except for the gid values
-          expect_match(body, '{"model":{"locked":false,"quadrant":{"x":118010.391752577,"y":182870.515463918,"angles":\\[1.5707963267949,3.14159265358979,4.71238898038469,0\\]},"gids":\\["[0-9A-Za-z]{24}","[0-9A-Za-z]{24}","[0-9A-Za-z]{24}","[0-9A-Za-z]{24}"\\],"labels":\\[\\[196608,196608\\],\\[0.75,196608\\],\\[0.75,0.75\\],\\[196608,0.75\\]\\],"skewable":false},"xChannel":"FSC-A","yChannel":"FSC-W","names":\\["my gate \\(UR\\)","my gate \\(UL\\)","my gate \\(LL\\)","my gate \\(LR\\)"\\],"type":"QuadrantGate\","parentPopulationId":"591a3b5f1d725115208a7087","gid":"[0-9A-Za-z]{24}","tailoredPerFile":false}', perl=T)
-          response = httptest::fake_response(
+          expect_match(body, '{"model":{"locked":false,"quadrant":{"x":118010.391752577,"y":182870.515463918,"angles":\\[1.5707963267949,3.14159265358979,4.71238898038469,0\\]},"gids":\\["[0-9A-Za-z]{24}","[0-9A-Za-z]{24}","[0-9A-Za-z]{24}","[0-9A-Za-z]{24}"\\],"labels":\\[\\[196608,196608\\],\\[0.75,196608\\],\\[0.75,0.75\\],\\[196608,0.75\\]\\],"skewable":false},"xChannel":"FSC-A","yChannel":"FSC-W","names":\\["my gate \\(UR\\)","my gate \\(UL\\)","my gate \\(LL\\)","my gate \\(LR\\)"\\],"type":"QuadrantGate\","parentPopulationId":"591a3b5f1d725115208a7087","gid":"[0-9A-Za-z]{24}","tailoredPerFile":false}', perl = T) # nolint
+          response <- httptest::fake_response(
             req$url,
             req$method,
             # Fixed GID, not the one passed in
-            content='{"__v":0,"experimentId":"591a3b441d725115208a6fda","model":{"locked":false,"labels":[[196608.00, 0.75], [0.75, 196608.00], [196608.00, 196608.00], [0.75, 0.75]],"quadrant":{"x":118010.391752577,"y":182870.515463918,"angles":[1.5707963267949,3.14159265358979,4.71238898038469,0]},"gids":["5d30960a417e4bc767a428a3","5d30960a417e4bc767a428a4","5d30960a417e4bc767a428a5","5d30960a417e4bc767a428a6"]},"gid":"592640a5a6a1d6256ec9b08a","xChannel":"FSC-A","yChannel":"FSC-W","type":"QuadrantGate","name":"my gate","parentPopulationId":"591a3b5f1d725115208a7087","_id":"592640aa298f1480900e10e4","tailoredPerFile":false,"id":"592640aa298f1480900e10e4","fcsFileId":"591a3b441d725115208a6fdf"}',
+            content = '{"__v":0,"experimentId":"591a3b441d725115208a6fda","model":{"locked":false,"labels":[[196608.00, 0.75], [0.75, 196608.00], [196608.00, 196608.00], [0.75, 0.75]],"quadrant":{"x":118010.391752577,"y":182870.515463918,"angles":[1.5707963267949,3.14159265358979,4.71238898038469,0]},"gids":["5d30960a417e4bc767a428a3","5d30960a417e4bc767a428a4","5d30960a417e4bc767a428a5","5d30960a417e4bc767a428a6"]},"gid":"592640a5a6a1d6256ec9b08a","xChannel":"FSC-A","yChannel":"FSC-W","type":"QuadrantGate","name":"my gate","parentPopulationId":"591a3b5f1d725115208a7087","_id":"592640aa298f1480900e10e4","tailoredPerFile":false,"id":"592640aa298f1480900e10e4","fcsFileId":"591a3b441d725115208a6fdf"}', # nolint
             status_code = 201,
             headers = list(`Content-Type` = "application/json")
           )
@@ -121,24 +139,36 @@ test_that("Correct HTTP request is made, parentPopulation specified", {
           stop(sprintf("Unexpected request URL: %s", req$url))
         }
       )
-
     },
     {
       setServer("https://my.server.com")
-      resp = createQuadrantGate("591a3b441d725115208a6fda", "FSC-A", "FSC-W", "my gate",
-        118010.39175257733, 182870.51546391752, labels = list(c(196608.00, 196608.00), c(0.75, 196608.00), c(0.75, 0.75), c(196608.00, 0.75)),
-        parentPopulation = "singlets", createPopulation = FALSE, tailoredPerFile = FALSE)
-      resp = resp$gate
+      resp <- createQuadrantGate("591a3b441d725115208a6fda", "FSC-A", "FSC-W", "my gate",
+        118010.39175257733, 182870.51546391752,
+        labels = list(c(196608.00, 196608.00), c(0.75, 196608.00), c(0.75, 0.75), c(196608.00, 0.75)),
+        parentPopulation = "singlets", createPopulation = FALSE, tailoredPerFile = FALSE
+      )
+      resp <- resp$gate
       expect_equal(resp$experimentId, "591a3b441d725115208a6fda")
       expect_equal(resp$`_id`, "592640aa298f1480900e10e4") # assigned server-side
       expect_equal(resp$xChannel, "FSC-A")
       expect_equal(resp$yChannel, "FSC-W")
       expect_equal(resp$name, "my gate")
-      expect_equal(resp$model$labels, matrix(c(c(196608.00,0.75), c(0.75, 196608.00), c(196608.00, 196608.00), c(0.75, 0.75)), byrow=T, ncol=2))
+      expect_equal(
+        resp$model$labels,
+        matrix(c(c(196608.00, 0.75), c(0.75, 196608.00), c(196608.00, 196608.00), c(0.75, 0.75)), byrow = T, ncol = 2)
+      )
       expect_equal(resp$model$quadrant$x, 118010.391752577)
       expect_equal(resp$model$quadrant$y, 182870.515463918)
       expect_equal(resp$model$locked, FALSE)
-      expect_equal(resp$model$gids, c("5d30960a417e4bc767a428a3", "5d30960a417e4bc767a428a4", "5d30960a417e4bc767a428a5", "5d30960a417e4bc767a428a6"))
+      expect_equal(
+        resp$model$gids,
+        c(
+          "5d30960a417e4bc767a428a3",
+          "5d30960a417e4bc767a428a4",
+          "5d30960a417e4bc767a428a5",
+          "5d30960a417e4bc767a428a6"
+        )
+      )
       expect_equal(resp$gid, "592640a5a6a1d6256ec9b08a")
       expect_equal(resp$parentPopulationId, "591a3b5f1d725115208a7087")
       expect_equal(resp$type, "QuadrantGate")
@@ -146,5 +176,3 @@ test_that("Correct HTTP request is made, parentPopulation specified", {
     }
   )
 })
-
-

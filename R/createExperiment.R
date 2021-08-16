@@ -10,7 +10,7 @@
 #' createExperiment() # creates a blank experiment
 #' createExperiment(list("name" = "my experiment"))
 #' }
-createExperiment = function(properties = list(), params = list()) {
-  body = jsonlite::toJSON(properties, null = "null", auto_unbox = TRUE)
+createExperiment <- function(properties = list(), params = list()) {
+  body <- jsonlite::toJSON(properties, null = "null", auto_unbox = TRUE)
   basePost(paste("experiments", sep = "/"), body, params)
 }

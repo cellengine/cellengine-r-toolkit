@@ -10,8 +10,8 @@
 #' getCompensations(experimentId)
 #' getCompensations(experimentId, params = list("limit" = "5"))
 #' }
-getCompensations = function(experimentId, params = list()) {
+getCompensations <- function(experimentId, params = list()) {
   checkDefined(experimentId)
-  experimentId = lookupByName("experiments", experimentId)
+  experimentId <- lookupByName("experiments", experimentId)
   baseGet(paste("experiments", experimentId, "compensations", sep = "/"), params)
 }
