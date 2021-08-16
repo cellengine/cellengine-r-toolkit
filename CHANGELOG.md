@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   running in RStudio or the `getPass` library is installed.
 - The `authenticate` function now supports two-factor authentication.
 - Support `byName()` for the `gateId` argument in `updateGate()`.
+- Introduce `lintr` as a linter with an Actions workflow
 
 ### Changed
 - Fix for [confusing bulk entity retrieval](https://github.com/primitybio/cellengine-r-toolkit/issues/48)
@@ -23,5 +24,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix mangling of experiment properties in `updateGateFamily()`.
 - Fix mangling of experiment properties in `updateGate()`.
 - Remove unused `params` argument from `getExperiment()`.
+- Run `styler` on all files with default params
 
 ### Removed
