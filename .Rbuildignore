@@ -9,3 +9,4 @@
 .github
 CHANGELOG.md
 vignettes/
+^\.lintr$
