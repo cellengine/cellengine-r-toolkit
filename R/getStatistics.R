@@ -63,75 +63,83 @@
 #' @examples
 #' \dontrun{
 #' # Quick syntax, using population names and file names instead of IDs:
-#' fcsFiles = c("file1.fcs")
-#' channels = c("SSC-A", "YG780/60-A")
-#' statistics = c("median", "mean", "quantile", "percent")
-#' populations = c("Leukocytes")
-#' stats = getStatistics(experimentId, fcsFiles = fcsFiles, channels = channels,
+#' fcsFiles <- c("file1.fcs")
+#' channels <- c("SSC-A", "YG780/60-A")
+#' statistics <- c("median", "mean", "quantile", "percent")
+#' populations <- c("Leukocytes")
+#' stats <- getStatistics(experimentId,
+#'   fcsFiles = fcsFiles, channels = channels,
 #'   statistics = statistics, populations = populations, q = 0.95,
-#'   compensationId = cellengine::FILE_INTERNAL)
+#'   compensationId = cellengine::FILE_INTERNAL
+#' )
 #' # Returns a data.frame of statistics, including the file annotations.
 #' # Because percentOf is not specified, "percent" will be percent of parent.
 #'
 #' # Explicit syntax, using IDs instead of population and file names, and
 #' # specifying a scaleSetId:
-#' fcsFileIds = c("9ab5c6d7a8cf24a5c4f9a6c2")
-#' statistics = c("percent")
-#' populationIds = c("9ab5c6d7a8cf24a5c4f9face")
-#' scaleSetId = "9ab5c6d7a8cf24a5c4f9fdde"
-#' stats = getStatistics(experimentId, fcsFileIds = fcsFileIds,
+#' fcsFileIds <- c("9ab5c6d7a8cf24a5c4f9a6c2")
+#' statistics <- c("percent")
+#' populationIds <- c("9ab5c6d7a8cf24a5c4f9face")
+#' scaleSetId <- "9ab5c6d7a8cf24a5c4f9fdde"
+#' stats <- getStatistics(experimentId,
+#'   fcsFileIds = fcsFileIds,
 #'   statistics = statistics, populationIds = populationIds,
-#'   compensationId = cellengine::UNCOMPENSATED, scaleSetId = scaleSetId)
+#'   compensationId = cellengine::UNCOMPENSATED, scaleSetId = scaleSetId
+#' )
 #'
 #' # Percent of ungated:
-#' getStatistics(experimentId, fcsFileIds = fcsFileIds, statistics = statistics,
+#' getStatistics(experimentId,
+#'   fcsFileIds = fcsFileIds, statistics = statistics,
 #'   populationIds = populationIds, compensationId = cellengine::UNCOMPENSATED,
-#'   percentOf = cellengine::UNGATED)
+#'   percentOf = cellengine::UNGATED
+#' )
 #' }
-getStatistics = function(experimentId,
-                         fcsFileIds = NULL, fcsFiles = NULL,
-                         channels = c(),
-                         statistics,
-                         compensationId,
-                         populationIds = NULL, populations = NULL,
-                         scaleSetId = NULL,
-                         q = 0.5,
-                         percentOf = NULL,
-                         includeAnnotations = TRUE) {
-
+getStatistics <- function(experimentId,
+                          fcsFileIds = NULL, fcsFiles = NULL,
+                          channels = c(),
+                          statistics,
+                          compensationId,
+                          populationIds = NULL, populations = NULL,
+                          scaleSetId = NULL,
+                          q = 0.5,
+                          percentOf = NULL,
+                          includeAnnotations = TRUE) {
   checkDefined(experimentId)
-  experimentId = lookupByName("experiments", experimentId)
+  experimentId <- lookupByName("experiments", experimentId)
 
   # FCS file arguments
   if (!is.null(fcsFileIds) && !is.null(fcsFiles)) {
     stop("Please specify only one of 'fcsFiles' or 'fcsFileIds'.")
   }
   if (is.null(fcsFileIds) && !is.null(fcsFiles)) { # lookup FCS files by name
-    queryFilenames = paste0(shQuote(fcsFiles, type = "cmd"), collapse = ",")
-    serverFiles = getFcsFiles(experimentId, params = list(
+    queryFilenames <- paste0(shQuote(fcsFiles, type = "cmd"), collapse = ",")
+    serverFiles <- getFcsFiles(experimentId, params = list(
       fields = "+filename",
       query = sprintf("in(filename, [%s])", queryFilenames)
     ))
     if (!is.data.frame(serverFiles)) { # zero-length results are not data.frames
-      pkg.env$lastError = fcsFiles
+      pkg.env$lastError <- fcsFiles
       stop(sprintf(
         "%i file(s) were not found. Call getErrorInfo() for a list of missing files.",
-        length(fcsFiles)))
+        length(fcsFiles)
+      ))
     }
-    diff = setdiff(fcsFiles, serverFiles$filename) # files absent from server
+    diff <- setdiff(fcsFiles, serverFiles$filename) # files absent from server
     if (length(diff) != 0) {
-      pkg.env$lastError = diff
+      pkg.env$lastError <- diff
       stop(sprintf(
         "%i file(s) were not found. Call getErrorInfo() for a list of missing files.",
-        length(diff)))
+        length(diff)
+      ))
     }
     if (anyDuplicated(serverFiles$filename)) { # files with non-unique names
-      pkg.env$lastError = serverFiles$filename[duplicated(serverFiles$filename)]
+      pkg.env$lastError <- serverFiles$filename[duplicated(serverFiles$filename)]
       stop(paste0(
         "One or more files have the same filenames and cannot be selected unambiguously. ",
-        "Call getErrorInfo() for a list of duplicate filenames."))
+        "Call getErrorInfo() for a list of duplicate filenames."
+      ))
     }
-    fcsFileIds = serverFiles$`_id`
+    fcsFileIds <- serverFiles$`_id`
   }
 
   # population arguments
@@ -139,97 +147,107 @@ getStatistics = function(experimentId,
     stop("Please specify only one of 'populations' or 'populationIds'.")
   }
   if (is.null(populationIds) && !is.null(populations)) { # lookup populations by name
-    queryPopulations = paste0(shQuote(populations, type = "cmd"), collapse = ",")
-    serverPops = getPopulations(experimentId, params = list(
+    queryPopulations <- paste0(shQuote(populations, type = "cmd"), collapse = ",")
+    serverPops <- getPopulations(experimentId, params = list(
       fields = "+name",
       query = sprintf("in(name, [%s])", queryPopulations)
     ))
     if (!is.data.frame(serverPops)) { # zero-length results are not data.frames
-      pkg.env$lastError = populations
+      pkg.env$lastError <- populations
       stop(sprintf(
         "%i population(s) were not found. Call getErrorInfo() for a list of missing populations.",
-        length(populations)))
+        length(populations)
+      ))
     }
-    diff = setdiff(populations, serverPops$name) # populations absent from server
+    diff <- setdiff(populations, serverPops$name) # populations absent from server
     if (length(diff) != 0) {
-      pkg.env$lastError = diff
+      pkg.env$lastError <- diff
       stop(sprintf(
         "%i population(s) were not found. Call getErrorInfo() for a list of missing populations.",
-        length(diff)))
+        length(diff)
+      ))
     }
     if (anyDuplicated(serverPops$name)) { # populations with non-unique names
-      pkg.env$lastError = serverPops$name[duplicated(serverPops$name)]
+      pkg.env$lastError <- serverPops$name[duplicated(serverPops$name)]
       stop(paste0(
         "One or more populations have the same names and cannot be selected unambiguously. ",
-        "Call getErrorInfo() for a list of duplicate names."))
+        "Call getErrorInfo() for a list of duplicate names."
+      ))
     }
-    populationIds = serverPops$`_id`
+    populationIds <- serverPops$`_id`
   }
 
   # statistics argument
-  allowedStatistics = c("mean", "median", "quantile", "stddev", "cv", "eventcount", "percent", "mad")
-  statsDiff = setdiff(tolower(statistics), allowedStatistics)
+  allowedStatistics <- c("mean", "median", "quantile", "stddev", "cv", "eventcount", "percent", "mad")
+  statsDiff <- setdiff(tolower(statistics), allowedStatistics)
   if (length(statsDiff) > 0) {
     stop(sprintf("Statistics [%s] are not allowed.", paste0(statsDiff, collapse = ", ")))
   }
 
   # scale set argument
   if (is.null(scaleSetId)) {
-    serverScaleSets = getScaleSets(experimentId, params = list(fields = "+_id"))
+    serverScaleSets <- getScaleSets(experimentId, params = list(fields = "+_id"))
     if (!is.data.frame(serverScaleSets)) { # zero-length results are not data.frames
       stop("No scalesets found in experiment.")
     }
     if (nrow(serverScaleSets) > 1) {
       stop("More than one scaleset exists in experiment. Please specify a scaleSetId to select one.")
     }
-    scaleSetId = serverScaleSets$`_id`
+    scaleSetId <- serverScaleSets$`_id`
   }
 
   # percentOf argument
   if (length(percentOf) > 1 && length(percentOf) != length(populationIds)) {
-    stop(paste0("If an array is specified for 'percentOf', it must have the ",
-      "same length as 'populations' or 'populationIds'."))
+    stop(paste0(
+      "If an array is specified for 'percentOf', it must have the ",
+      "same length as 'populations' or 'populationIds'."
+    ))
   }
-  percentofNonIds = !grepl("^[A-Fa-f0-9]{24}$|^$", percentOf) # not ID or UNGATED
+  percentofNonIds <- !grepl("^[A-Fa-f0-9]{24}$|^$", percentOf) # not ID or UNGATED
   if (any(percentofNonIds)) { # one or more values are not IDs; lookup by name
-    queryPopulations = percentOf[percentofNonIds]
-    quotedQueryPopulations = paste0(shQuote(queryPopulations, type = "cmd"), collapse = ",")
-    serverPops = getPopulations(experimentId, params = list(
+    queryPopulations <- percentOf[percentofNonIds]
+    quotedQueryPopulations <- paste0(shQuote(queryPopulations, type = "cmd"), collapse = ",")
+    serverPops <- getPopulations(experimentId, params = list(
       fields = "+name",
       query = sprintf("in(name, [%s])", quotedQueryPopulations)
     ))
     if (!is.data.frame(serverPops)) { # zero-length results are not data.frames
-      pkg.env$lastError = queryPopulations
+      pkg.env$lastError <- queryPopulations
       stop(sprintf(
         "%i population(s) were not found. Call getErrorInfo() for a list of missing percentOf populations.",
-        length(queryPopulations)))
+        length(queryPopulations)
+      ))
     }
-    diff = setdiff(queryPopulations, serverPops$name) # populations absent from server
+    diff <- setdiff(queryPopulations, serverPops$name) # populations absent from server
     if (length(diff) != 0) {
-      pkg.env$lastError = diff
+      pkg.env$lastError <- diff
       stop(sprintf(
         "%i population(s) were not found. Call getErrorInfo() for a list of missing percentOf populations.",
-        length(diff)))
+        length(diff)
+      ))
     }
     if (anyDuplicated(serverPops$name)) { # populations with non-unique names
-      pkg.env$lastError = serverPops$name[duplicated(serverPops$name)]
+      pkg.env$lastError <- serverPops$name[duplicated(serverPops$name)]
       stop(paste0(
         "One or more populations have the same names and cannot be selected unambiguously. ",
-        "Call getErrorInfo() for a list of duplicate names."))
+        "Call getErrorInfo() for a list of duplicate names."
+      ))
     }
     # Finally, pull out _ids
     if (all(percentofNonIds)) { # fast path: all names
-      percentOf = serverPops$`_id`
+      percentOf <- serverPops$`_id`
     } else { # slow path: mixed names and IDs
-      percentOf = sapply(percentOf, function (v) {
-        idx = match(v, serverPops$name)
-        if (is.na(idx)) return(v) # with above checks, already an ID
+      percentOf <- sapply(percentOf, function(v) {
+        idx <- match(v, serverPops$name)
+        if (is.na(idx)) {
+          return(v)
+        } # with above checks, already an ID
         serverPops[idx]$`_id`
       })
     }
   }
 
-  body = list(
+  body <- list(
     fcsFileIds = fcsFileIds,
     statistics = statistics,
     populationIds = populationIds,
@@ -241,15 +259,15 @@ getStatistics = function(experimentId,
   )
 
   if (!is.null(percentOf)) {
-    if (length(percentOf) == 1) percentOf = jsonlite::unbox(percentOf)
-    body = c(body, list(percentOf = percentOf))
+    if (length(percentOf) == 1) percentOf <- jsonlite::unbox(percentOf)
+    body <- c(body, list(percentOf = percentOf))
   }
 
   if (length(channels) > 0) {
-    body = c(body, list(channels = channels))
+    body <- c(body, list(channels = channels))
   }
 
-  path = paste("experiments", experimentId, "bulkstatistics", sep = "/")
-  body = jsonlite::toJSON(body, null = "null", digits = NA)
+  path <- paste("experiments", experimentId, "bulkstatistics", sep = "/")
+  body <- jsonlite::toJSON(body, null = "null", digits = NA)
   basePost(path, body, list())
 }

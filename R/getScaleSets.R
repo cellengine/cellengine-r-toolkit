@@ -10,8 +10,8 @@
 #' \dontrun{
 #' getScaleSets(experimentId)
 #' }
-getScaleSets = function(experimentId, params = list()) {
+getScaleSets <- function(experimentId, params = list()) {
   checkDefined(experimentId)
-  experimentId = lookupByName("experiments", experimentId)
+  experimentId <- lookupByName("experiments", experimentId)
   baseGet(paste("experiments", experimentId, "scalesets", sep = "/"), params)
 }

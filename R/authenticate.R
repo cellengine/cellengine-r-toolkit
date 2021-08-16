@@ -21,48 +21,52 @@
 #' authenticate("username", Sys.getenv("API_PASSWORD"))
 #'
 #' # If the password is omitted and you're running in RStudio or the getPass
-#' library is installed, a prompt will be displayed.
+#' # library is installed, a prompt will be displayed.
 #' authenticate("username")
 #' }
-authenticate = function(username, password=NA, otp=NA) {
+authenticate <- function(username, password = NA, otp = NA) {
   if (is.na(password)) {
     if (requireNamespace("getPass")) {
-      password = getPass::getPass(msg = "Please enter your password", noblank=T)
+      password <- getPass::getPass(msg = "Please enter your password", noblank = T)
     } else if (rstudioapi::isAvailable()) {
-      password = rstudioapi::askForPassword()
+      password <- rstudioapi::askForPassword()
     }
   }
 
-  body = list(
+  body <- list(
     username = jsonlite::unbox(username),
     password = jsonlite::unbox(password)
   )
 
   if (!is.na(otp)) {
-    if (!is.character(otp))
+    if (!is.character(otp)) {
       stop("OTP must be a string")
+    }
 
-    body$otp = jsonlite::unbox(otp)
+    body$otp <- jsonlite::unbox(otp)
   }
 
   ensureBaseUrl()
-  fullURL = paste(pkg.env$baseURL, "signin", sep = "/")
-  r = httr::POST(fullURL, body = jsonlite::toJSON(body),
-    httr::content_type_json(), httr::user_agent(ua))
+  fullURL <- paste(pkg.env$baseURL, "signin", sep = "/")
+  r <- httr::POST(fullURL,
+    body = jsonlite::toJSON(body),
+    httr::content_type_json(), httr::user_agent(ua)
+  )
 
-  if (httr::status_code(r) == 200)
+  if (httr::status_code(r) == 200) {
     return(invisible())
+  }
 
-  content = httr::content(r, "text", encoding = "UTF-8")
-  parsed = jsonlite::fromJSON(content)
+  content <- httr::content(r, "text", encoding = "UTF-8")
+  parsed <- jsonlite::fromJSON(content)
 
   if (httr::status_code(r) == 400 && parsed$error == '"otp" is required.') {
     if (requireNamespace("getPass")) {
-      otp = getPass::getPass(msg = "Please enter your one-time code", noblank=T)
+      otp <- getPass::getPass(msg = "Please enter your one-time code", noblank = T)
     } else if (rstudioapi::isAvailable()) {
-      otp = rstudioapi::askForPassword("Please enter your one-time code")
+      otp <- rstudioapi::askForPassword("Please enter your one-time code")
     } else if (interactive()) {
-      otp = readline("Please enter your one-time code");
+      otp <- readline("Please enter your one-time code")
     }
     authenticate(username, password, otp)
   } else {

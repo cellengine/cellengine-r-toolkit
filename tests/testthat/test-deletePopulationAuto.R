@@ -4,11 +4,11 @@ test_that("Correct HTTP request is made", {
   with_mock(
     `httr::request_perform` = function(req, handle, refresh) {
       expect_equal(req$method, "DELETE")
-      expect_equal(req$url, "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/populations/591a3b441d725115208a6fdc?deleteBranch=true")
-      response = httptest::fake_response(
+      expect_equal(req$url, "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/populations/591a3b441d725115208a6fdc?deleteBranch=true") # nolint
+      response <- httptest::fake_response(
         req$url,
         req$method,
-        content='',
+        content = "",
         status_code = 200,
         headers = list(`Content-Type` = "application/json")
       )
@@ -16,7 +16,7 @@ test_that("Correct HTTP request is made", {
     },
     {
       setServer("https://my.server.com")
-      resp = deletePopulationAuto("591a3b441d725115208a6fda", "591a3b441d725115208a6fdc")
+      resp <- deletePopulationAuto("591a3b441d725115208a6fda", "591a3b441d725115208a6fdc")
     }
   )
 })

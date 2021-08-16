@@ -37,32 +37,32 @@
 #' \dontrun{
 #' createSplitGate(experimentId, "FSC-A", "my gate", 144000, 100000)
 #' }
-createSplitGate = function(experimentId, xChannel, name, x, y=0.5,
-                               gid = generateId(), gids = replicate(2, generateId()), labels = NULL,
-                               parentPopulationId = NULL, parentPopulation = NULL,
-                               tailoredPerFile = FALSE, fcsFileId = NULL, fcsFile = NULL,
-                               locked = FALSE, createPopulation = TRUE) {
+createSplitGate <- function(experimentId, xChannel, name, x, y = 0.5,
+                            gid = generateId(), gids = replicate(2, generateId()), labels = NULL,
+                            parentPopulationId = NULL, parentPopulation = NULL,
+                            tailoredPerFile = FALSE, fcsFileId = NULL, fcsFile = NULL,
+                            locked = FALSE, createPopulation = TRUE) {
 
 
 
   # set labels based on axis scale
   if (length(labels) == 0) {
-    scales = data.frame(getScaleSets(experimentId)$scales)
-    min = scales[scales$channelName==xChannel, ]$scale$minimum
-    max = scales[scales$channelName==xChannel, ]$scale$maximum
-    labels = list(
-      c(min + 0.1*max, 0.95),
-      c(max - 0.1*max, 0.95)
-      )
-  } else if (all(dim(data.frame(labels)) == list(2,2))){
-    labels = labels
+    scales <- data.frame(getScaleSets(experimentId)$scales)
+    min <- scales[scales$channelName == xChannel, ]$scale$minimum
+    max <- scales[scales$channelName == xChannel, ]$scale$maximum
+    labels <- list(
+      c(min + 0.1 * max, 0.95),
+      c(max - 0.1 * max, 0.95)
+    )
+  } else if (all(dim(data.frame(labels)) == list(2, 2))) {
+    labels <- labels
   } else {
-    stop('Labels must be a list of 2 length-2 vectors.')
+    stop("Labels must be a list of 2 length-2 vectors.")
   }
 
-  names = paste(name, (c("(L)", "(R)")))
+  names <- paste(name, (c("(L)", "(R)")))
 
-  body = list(
+  body <- list(
     model = list(
       locked = jsonlite::unbox(locked),
       split = list(
@@ -77,6 +77,8 @@ createSplitGate = function(experimentId, xChannel, name, x, y=0.5,
     type = jsonlite::unbox("SplitGate")
   )
 
-  compoundGateCreate(body, names, gid, gids, experimentId, parentPopulationId, parentPopulation,
-    tailoredPerFile, fcsFileId, fcsFile, createPopulation)
+  compoundGateCreate(
+    body, names, gid, gids, experimentId, parentPopulationId, parentPopulation,
+    tailoredPerFile, fcsFileId, fcsFile, createPopulation
+  )
 }

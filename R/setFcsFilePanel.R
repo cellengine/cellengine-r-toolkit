@@ -25,18 +25,18 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' panel = list(
+#' panel <- list(
 #'   list("index" = 1, "channel" = "FSC-A"),
 #'   list("index" = 7, "channel" = "Blue530-A", "reagent" = "CD3")
 #' )
 #' setFcsFilePanel(experimentId, fcsFileId, "Panel 1", panel)
 #' }
-setFcsFilePanel = function(experimentId, fcsFileId, panelName, panel) {
+setFcsFilePanel <- function(experimentId, fcsFileId, panelName, panel) {
   checkDefined(experimentId)
-  experimentId = lookupByName("experiments", experimentId)
+  experimentId <- lookupByName("experiments", experimentId)
   checkDefined(fcsFileId)
-  fcsFileId = lookupByName(paste("experiments", experimentId, "fcsfiles", sep = "/"), fcsFileId, "filename")
-  body = jsonlite::toJSON(list(
+  fcsFileId <- lookupByName(paste("experiments", experimentId, "fcsfiles", sep = "/"), fcsFileId, "filename")
+  body <- jsonlite::toJSON(list(
     panelName = panelName,
     panel = panel
   ), null = "null", auto_unbox = TRUE)

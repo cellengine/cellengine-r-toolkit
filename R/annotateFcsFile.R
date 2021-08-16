@@ -16,14 +16,14 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' annotations = list(list(name="annotations 1", value=1), list(name="annotation 2", value="myValue"))
+#' annotations <- list(list(name = "annotations 1", value = 1), list(name = "annotation 2", value = "myValue"))
 #' annotateFcsFile(experimentId, fcsFileId, annotations)
 #' }
-annotateFcsFile = function(experimentId, fcsFileId, annotations) {
+annotateFcsFile <- function(experimentId, fcsFileId, annotations) {
   checkDefined(experimentId)
-  experimentId = lookupByName("experiments", experimentId)
+  experimentId <- lookupByName("experiments", experimentId)
   checkDefined(fcsFileId)
-  fcsFileId = lookupByName(paste("experiments", experimentId, "fcsfiles", sep = "/"), fcsFileId, "filename")
-  body = jsonlite::toJSON(list("annotations" = annotations), auto_unbox = TRUE)
+  fcsFileId <- lookupByName(paste("experiments", experimentId, "fcsfiles", sep = "/"), fcsFileId, "filename")
+  body <- jsonlite::toJSON(list("annotations" = annotations), auto_unbox = TRUE)
   basePatch(paste("experiments", experimentId, "fcsfiles", fcsFileId, sep = "/"), body)
 }

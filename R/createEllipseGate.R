@@ -34,15 +34,14 @@
 #' \dontrun{
 #' createEllipseGate(experimentId, "FSC-A", "FSC-W", "my gate", c(1, 2, 3), c(4, 5, 6))
 #' }
-createEllipseGate = function(experimentId, xChannel, yChannel, name,
-                             x, y, angle, major, minor,
-                             label = c(x, y),
-                             gid = generateId(),
-                             parentPopulationId = NULL, parentPopulation = NULL,
-                             tailoredPerFile = FALSE, fcsFileId = NULL, fcsFile = NULL,
-                             locked = FALSE, createPopulation = TRUE) {
-
-  body = list(
+createEllipseGate <- function(experimentId, xChannel, yChannel, name,
+                              x, y, angle, major, minor,
+                              label = c(x, y),
+                              gid = generateId(),
+                              parentPopulationId = NULL, parentPopulation = NULL,
+                              tailoredPerFile = FALSE, fcsFileId = NULL, fcsFile = NULL,
+                              locked = FALSE, createPopulation = TRUE) {
+  body <- list(
     model = list(
       locked = jsonlite::unbox(locked),
       ellipse = list(
@@ -58,6 +57,8 @@ createEllipseGate = function(experimentId, xChannel, yChannel, name,
     type = jsonlite::unbox("EllipseGate")
   )
 
-  commonGateCreate(body, name, gid, experimentId, parentPopulationId, parentPopulation,
-    tailoredPerFile, fcsFileId, fcsFile, createPopulation)
+  commonGateCreate(
+    body, name, gid, experimentId, parentPopulationId, parentPopulation,
+    tailoredPerFile, fcsFileId, fcsFile, createPopulation
+  )
 }

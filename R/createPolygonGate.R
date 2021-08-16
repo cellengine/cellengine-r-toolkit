@@ -34,26 +34,25 @@
 #' \dontrun{
 #' createPolygonGate(experimentId, "FSC-A", "FSC-W", "my gate", c(1, 2, 3), c(4, 5, 6))
 #' }
-createPolygonGate = function(experimentId, xChannel, yChannel, name,
-                             vertices = list(),
-                             xVertices = c(), yVertices = c(),
-                             label = NULL,
-                             gid = generateId(),
-                             parentPopulationId = NULL, parentPopulation = NULL,
-                             tailoredPerFile = FALSE, fcsFileId = NULL, fcsFile = NULL,
-                             locked = FALSE, createPopulation = TRUE) {
-
+createPolygonGate <- function(experimentId, xChannel, yChannel, name,
+                              vertices = list(),
+                              xVertices = c(), yVertices = c(),
+                              label = NULL,
+                              gid = generateId(),
+                              parentPopulationId = NULL, parentPopulation = NULL,
+                              tailoredPerFile = FALSE, fcsFileId = NULL, fcsFile = NULL,
+                              locked = FALSE, createPopulation = TRUE) {
   if (length(vertices) > 0) {
-    label = c(mean(sapply(vertices, "[[", 1)), mean(sapply(vertices, "[[", 2)))
-    vertices = do.call(rbind, vertices)
+    label <- c(mean(sapply(vertices, "[[", 1)), mean(sapply(vertices, "[[", 2)))
+    vertices <- do.call(rbind, vertices)
   } else if (length(xVertices) > 0 & length(yVertices) > 0) {
-    label = c(mean(xVertices), mean(yVertices))
-    vertices = matrix(c(xVertices, yVertices), ncol = 2)
+    label <- c(mean(xVertices), mean(yVertices))
+    vertices <- matrix(c(xVertices, yVertices), ncol = 2)
   } else {
     stop("Either vertices or both xVertices and yVertices must be specified")
   }
 
-  body = list(
+  body <- list(
     model = list(
       locked = jsonlite::unbox(locked),
       polygon = list(
@@ -66,6 +65,8 @@ createPolygonGate = function(experimentId, xChannel, yChannel, name,
     type = jsonlite::unbox("PolygonGate")
   )
 
-  commonGateCreate(body, name, gid, experimentId, parentPopulationId, parentPopulation,
-    tailoredPerFile, fcsFileId, fcsFile, createPopulation)
+  commonGateCreate(
+    body, name, gid, experimentId, parentPopulationId, parentPopulation,
+    tailoredPerFile, fcsFileId, fcsFile, createPopulation
+  )
 }

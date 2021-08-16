@@ -10,23 +10,29 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' applyScale(list(type='LinearScale', minimum=1, maximum=10), c(1, 2, 3, 4, 5))
+#' applyScale(list(type = "LinearScale", minimum = 1, maximum = 10), c(1, 2, 3, 4, 5))
 #'
 #' # Using a Scale from a CellEngine ScaleSet
-#' scaleSet = getScaleSets(experimentId)
-#' chanIdx = 5
+#' scaleSet <- getScaleSets(experimentId)
+#' chanIdx <- 5
 #' applyScale(scaleSet$scales[[1]][chanIdx, "scale"], c(1, 2, 3, 4, 5))
 #' }
-applyScale = function(scale, data, clamp_q=FALSE) {
-  fn = switch(
-    scale$type,
-    "LinearScale" = function(a) { a },
-    "LogScale" = function(a) { log10(pmax(1, a)) },
-    "ArcSinhScale" = function(a) { asinh(a / scale$cofactor) },
-    )
+applyScale <- function(scale, data, clamp_q = FALSE) {
+  fn <- switch(scale$type,
+    "LinearScale" = function(a) {
+      a
+    },
+    "LogScale" = function(a) {
+      log10(pmax(1, a))
+    },
+    "ArcSinhScale" = function(a) {
+      asinh(a / scale$cofactor)
+    },
+  )
 
-  if (clamp_q)
-    data = pmax(pmin(data, scale$maximum), scale$minimum)
+  if (clamp_q) {
+    data <- pmax(pmin(data, scale$maximum), scale$minimum)
+  }
 
   fn(data)
 }

@@ -9,11 +9,11 @@
 #' \dontrun{
 #' uploadFcsFile(experimentId, "/path/to/file.fcs")
 #' }
-uploadFcsFile = function(experimentId, fcsFilePath) {
+uploadFcsFile <- function(experimentId, fcsFilePath) {
   checkDefined(experimentId)
-  experimentId = lookupByName("experiments", experimentId)
-  body = list("file" = httr::upload_file(fcsFilePath))
+  experimentId <- lookupByName("experiments", experimentId)
+  body <- list("file" = httr::upload_file(fcsFilePath))
   ensureBaseUrl()
-  fullURL = paste(pkg.env$baseURL, "experiments", experimentId, "fcsfiles", sep = "/")
+  fullURL <- paste(pkg.env$baseURL, "experiments", experimentId, "fcsfiles", sep = "/")
   handleResponse(httr::POST(fullURL, body = body, httr::user_agent(ua)))
 }

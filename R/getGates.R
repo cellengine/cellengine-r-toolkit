@@ -13,9 +13,9 @@
 #' # List the name and GID of the first five gates
 #' getGates(experimentId, params = list("limit" = "5", "fields" = "+name,+gid"))
 #' }
-getGates = function(experimentId, params = list()) {
+getGates <- function(experimentId, params = list()) {
   checkDefined(experimentId)
-  experimentId = lookupByName("experiments", experimentId)
-  res = baseGet(paste("experiments", experimentId, "gates", sep = "/"), params)
+  experimentId <- lookupByName("experiments", experimentId)
+  res <- baseGet(paste("experiments", experimentId, "gates", sep = "/"), params)
   res
 }

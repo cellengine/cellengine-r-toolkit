@@ -10,8 +10,8 @@
 #' getAttachments(experimentId)
 #' getAttachments(experimentId, params = list("limit" = "5"))
 #' }
-getAttachments = function(experimentId, params = list()) {
+getAttachments <- function(experimentId, params = list()) {
   checkDefined(experimentId)
-  experimentId = lookupByName("experiments", experimentId)
+  experimentId <- lookupByName("experiments", experimentId)
   baseGet(paste("experiments", experimentId, "attachments", sep = "/"), params)
 }

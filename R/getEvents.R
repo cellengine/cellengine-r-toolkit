@@ -47,24 +47,23 @@
 #' getEvents(experimentId, fcsFileId, destination = "/path/to/output.tsv", format = "TSV", headerQ = T)
 #'
 #' # Subsamples and gates to only contain events in the specified population:
-#' subsampling = list(preSubsampleN = 5000, seed = 1.5)
+#' subsampling <- list(preSubsampleN = 5000, seed = 1.5)
 #' getEvents(experimentId, fcsFileId, populationId, subsampling = subsampling)
 #' }
-getEvents = function(experimentId,
-                     fcsFileId,
-                     populationId = NULL,
-                     compensation = NULL,
-                     compensatedQ = FALSE,
-                     headerQ = FALSE,
-                     format = "FCS",
-                     destination = NULL,
-                     overwrite = FALSE,
-                     subsampling = list()) {
-
+getEvents <- function(experimentId,
+                      fcsFileId,
+                      populationId = NULL,
+                      compensation = NULL,
+                      compensatedQ = FALSE,
+                      headerQ = FALSE,
+                      format = "FCS",
+                      destination = NULL,
+                      overwrite = FALSE,
+                      subsampling = list()) {
   checkDefined(experimentId)
-  experimentId = lookupByName("experiments", experimentId)
+  experimentId <- lookupByName("experiments", experimentId)
   checkDefined(fcsFileId)
-  fcsFileId = lookupByName(paste("experiments", experimentId, "fcsfiles", sep = "/"), fcsFileId, "filename")
+  fcsFileId <- lookupByName(paste("experiments", experimentId, "fcsfiles", sep = "/"), fcsFileId, "filename")
 
   if (is.null(compensation) && !is.null(populationId)) {
     stop("'compensation' parameter is required for gated populations.")
@@ -81,37 +80,41 @@ getEvents = function(experimentId,
   }
 
   if (!is.null(populationId)) {
-    populationId = lookupByName(paste("experiments", experimentId, "populations", sep = "/"), populationId)
+    populationId <- lookupByName(paste("experiments", experimentId, "populations", sep = "/"), populationId)
   }
 
   ensureBaseUrl()
 
-  fullURL = paste(paste(pkg.env$baseURL, "experiments", experimentId, "fcsfiles", fcsFileId, sep = "/"), format, sep = ".")
+  fullURL <- paste(
+    paste(pkg.env$baseURL, "experiments", experimentId, "fcsfiles", fcsFileId, sep = "/"),
+    format, sep = "."
+  )
 
-  params = list(
+  params <- list(
     populationId = populationId,
     compensationId = compensation,
     compensatedQ = compensatedQ,
     headers = headerQ
   )
 
-  subsamplingParams = Filter(Negate(is.null), subsampling[
-    c("preSubsampleN", "preSubsampleP", "postSubsampleN", "postSubsampleP", "seed")])
+  subsamplingParams <- Filter(Negate(is.null), subsampling[
+    c("preSubsampleN", "preSubsampleP", "postSubsampleN", "postSubsampleP", "seed")
+  ])
 
-  params = c(params, subsamplingParams)
+  params <- c(params, subsamplingParams)
 
   if (is.null(destination)) {
-    response = httr::GET(fullURL, query = params, httr::user_agent(ua))
+    response <- httr::GET(fullURL, query = params, httr::user_agent(ua))
     httr::warn_for_status(response)
     if (format == "TSV") {
-      content = httr::content(response, "text")
-      content = utils::read.table(text = content, header = headerQ, sep = "\t")
+      content <- httr::content(response, "text")
+      content <- utils::read.table(text = content, header = headerQ, sep = "\t")
     } else {
-      content = httr::content(response, "raw")
+      content <- httr::content(response, "raw")
     }
     return(content)
   } else {
-    response = httr::GET(fullURL, query = params, httr::user_agent(ua), httr::write_disk(destination, overwrite))
+    response <- httr::GET(fullURL, query = params, httr::user_agent(ua), httr::write_disk(destination, overwrite))
     httr::warn_for_status(response)
   }
 }

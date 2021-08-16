@@ -38,26 +38,25 @@
 #' # Download all FCS files in the experiment
 #' downloadFcsFiles(experimentId, "fcs", "archive.zip", overwrite = T)
 #' # Download specific FCS files
-#' fcsFileIds=c("5d2f8b4b21fd0676fb3a6a72", "5d2f8b4b21fd0676fb3a6a74")
-#' downloadFcsFiles(experimentId, "fcs", "archive.zip", fcsFileIds=fcsFileIds)
+#' fcsFileIds <- c("5d2f8b4b21fd0676fb3a6a72", "5d2f8b4b21fd0676fb3a6a74")
+#' downloadFcsFiles(experimentId, "fcs", "archive.zip", fcsFileIds = fcsFileIds)
 #' }
-downloadFcsFiles <- function(
-  experimentId,
-  format,
-  destination,
-  overwrite=F,
-  fcsFileIds=NULL,
-  populationIds=NULL,
-  compensationId=NULL,
-  compensatedQ=NULL,
-  preSubsampleN=NULL,
-  preSubsampleP=NULL,
-  postSubsampleN=NULL,
-  postSubsampleP=NULL,
-  seed=NULL,
-  filenameTemplate=NULL) {
+downloadFcsFiles <- function(experimentId,
+                             format,
+                             destination,
+                             overwrite = F,
+                             fcsFileIds = NULL,
+                             populationIds = NULL,
+                             compensationId = NULL,
+                             compensatedQ = NULL,
+                             preSubsampleN = NULL,
+                             preSubsampleP = NULL,
+                             postSubsampleN = NULL,
+                             postSubsampleP = NULL,
+                             seed = NULL,
+                             filenameTemplate = NULL) {
   checkDefined(experimentId)
-  experimentId = lookupByName("experiments", experimentId)
+  experimentId <- lookupByName("experiments", experimentId)
 
   body <- list(
     format = jsonlite::unbox(format),
@@ -72,7 +71,7 @@ downloadFcsFiles <- function(
     seed = jsonlite::unbox(seed),
     filenameTemplate = jsonlite::unbox(filenameTemplate)
   )
-  body <- body[-which(lapply(body,is.null) == T)]
+  body <- body[-which(lapply(body, is.null) == T)]
   body <- jsonlite::toJSON(body, null = "null", digits = NA)
 
   fullURL <- paste(
@@ -80,7 +79,8 @@ downloadFcsFiles <- function(
       pkg.env$baseURL,
       "experiments",
       experimentId,
-      "fcsfiles", "zip", sep = "/"
+      "fcsfiles", "zip",
+      sep = "/"
     ),
     sep = "."
   )

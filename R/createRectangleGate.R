@@ -33,15 +33,14 @@
 #' \dontrun{
 #' createRectangleGate(experimentId, "FSC-A", "FSC-W", "my gate", 12.502, 95.102, 1020, 32021.2)
 #' }
-createRectangleGate = function(experimentId, xChannel, yChannel, name,
-                               x1, x2, y1, y2,
-                               label = c(mean(c(x1, x2)), mean(c(y1, y2))),
-                               gid = generateId(),
-                               parentPopulationId = NULL, parentPopulation = NULL,
-                               tailoredPerFile = FALSE, fcsFileId = NULL, fcsFile = NULL,
-                               locked = FALSE, createPopulation = TRUE) {
-
-  body = list(
+createRectangleGate <- function(experimentId, xChannel, yChannel, name,
+                                x1, x2, y1, y2,
+                                label = c(mean(c(x1, x2)), mean(c(y1, y2))),
+                                gid = generateId(),
+                                parentPopulationId = NULL, parentPopulation = NULL,
+                                tailoredPerFile = FALSE, fcsFileId = NULL, fcsFile = NULL,
+                                locked = FALSE, createPopulation = TRUE) {
+  body <- list(
     model = list(
       locked = jsonlite::unbox(locked),
       rectangle = list(
@@ -57,6 +56,8 @@ createRectangleGate = function(experimentId, xChannel, yChannel, name,
     type = jsonlite::unbox("RectangleGate")
   )
 
-  commonGateCreate(body, name, gid, experimentId, parentPopulationId, parentPopulation,
-    tailoredPerFile, fcsFileId, fcsFile, createPopulation)
+  commonGateCreate(
+    body, name, gid, experimentId, parentPopulationId, parentPopulation,
+    tailoredPerFile, fcsFileId, fcsFile, createPopulation
+  )
 }

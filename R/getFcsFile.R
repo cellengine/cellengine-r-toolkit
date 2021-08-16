@@ -15,10 +15,10 @@
 #' # Lookup by name
 #' getFcsFile(experimentId, byName("Sample 1.fcs"))
 #' }
-getFcsFile = function(experimentId, fcsFileId, params = list()) {
+getFcsFile <- function(experimentId, fcsFileId, params = list()) {
   checkDefined(experimentId)
-  experimentId = lookupByName("experiments", experimentId)
+  experimentId <- lookupByName("experiments", experimentId)
   checkDefined(fcsFileId)
-  fcsFileId = lookupByName(paste("experiments", experimentId, "fcsfiles", sep = "/"), fcsFileId, "filename")
+  fcsFileId <- lookupByName(paste("experiments", experimentId, "fcsfiles", sep = "/"), fcsFileId, "filename")
   baseGet(paste("experiments", experimentId, "fcsfiles", fcsFileId, sep = "/"), params)
 }
