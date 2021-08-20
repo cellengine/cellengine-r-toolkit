@@ -31,12 +31,18 @@ tailoring a large number of gates.
 }
 \examples{
 \dontrun{
-g1 = list(type = "RectangleGate", xChannel = "FSC-A", yChannel = "SSC-A",
-  model = list(rectangle = list(x1 = 1, x2 = 100, y1 = 1, y2 = 100)))
-g2 = list(type = "PolygonGate", xChannel = "FSC-A", yChannel = "SSC-A",
-  model = list(polygon = list(vertices = c(c(1, 2), c(30, 40), c(50, 60)))))
-g3 = list(type = "RangeGate", xChannel = "V450-480-A",
-  model = list(range = list(x1 = 1, x2 = 100, y = 0.5)))
+g1 <- list(
+  type = "RectangleGate", xChannel = "FSC-A", yChannel = "SSC-A",
+  model = list(rectangle = list(x1 = 1, x2 = 100, y1 = 1, y2 = 100))
+)
+g2 <- list(
+  type = "PolygonGate", xChannel = "FSC-A", yChannel = "SSC-A",
+  model = list(polygon = list(vertices = c(c(1, 2), c(30, 40), c(50, 60))))
+)
+g3 <- list(
+  type = "RangeGate", xChannel = "V450-480-A",
+  model = list(range = list(x1 = 1, x2 = 100, y = 0.5))
+)
 
 createGates(experimentId, c(g1, g2, g3))
 }

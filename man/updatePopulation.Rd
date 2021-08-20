@@ -20,4 +20,5 @@ Updates a population.
 \dontrun{
 updatePopulation(experimentId, populationId, list("name" = "new pop name"))
 }
+
 }

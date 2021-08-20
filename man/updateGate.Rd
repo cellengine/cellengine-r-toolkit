@@ -20,4 +20,5 @@ Updates a gate.
 \dontrun{
 updateGate(experimentId, gateId, list("name" = "new gate name"))
 }
+
 }

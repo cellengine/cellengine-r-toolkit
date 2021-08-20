@@ -37,7 +37,7 @@ The \code{panelName} property is used to group files by panel.
 }
 \examples{
 \dontrun{
-panel = list(
+panel <- list(
   list("index" = 1, "channel" = "FSC-A"),
   list("index" = 7, "channel" = "Blue530-A", "reagent" = "CD3")
 )

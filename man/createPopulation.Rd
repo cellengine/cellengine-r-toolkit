@@ -34,7 +34,7 @@ Creates a population.
 }
 \examples{
 \dontrun{
-gid1 = "59262d84b1a1fc1193f12b0e"
+gid1 <- "59262d84b1a1fc1193f12b0e"
 createPopulation(experimentId, "Singlets", list(`$and` = c(gid1)), gid1)
 }
 }

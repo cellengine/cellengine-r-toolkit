@@ -20,11 +20,11 @@ Applies a scale to a vector of channel values
 }
 \examples{
 \dontrun{
-applyScale(list(type='LinearScale', minimum=1, maximum=10), c(1, 2, 3, 4, 5))
+applyScale(list(type = "LinearScale", minimum = 1, maximum = 10), c(1, 2, 3, 4, 5))
 
 # Using a Scale from a CellEngine ScaleSet
-scaleSet = getScaleSets(experimentId)
-chanIdx = 5
+scaleSet <- getScaleSets(experimentId)
+chanIdx <- 5
 applyScale(scaleSet$scales[[1]][chanIdx, "scale"], c(1, 2, 3, 4, 5))
 }
 }

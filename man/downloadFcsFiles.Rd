@@ -74,7 +74,7 @@ Downloads multiple files bundled into a ZIP archive.
 # Download all FCS files in the experiment
 downloadFcsFiles(experimentId, "fcs", "archive.zip", overwrite = T)
 # Download specific FCS files
-fcsFileIds=c("5d2f8b4b21fd0676fb3a6a72", "5d2f8b4b21fd0676fb3a6a74")
-downloadFcsFiles(experimentId, "fcs", "archive.zip", fcsFileIds=fcsFileIds)
+fcsFileIds <- c("5d2f8b4b21fd0676fb3a6a72", "5d2f8b4b21fd0676fb3a6a74")
+downloadFcsFiles(experimentId, "fcs", "archive.zip", fcsFileIds = fcsFileIds)
 }
 }

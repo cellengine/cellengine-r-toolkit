@@ -32,7 +32,7 @@ authenticate("username", "password")
 authenticate("username", Sys.getenv("API_PASSWORD"))
 
 # If the password is omitted and you're running in RStudio or the getPass
-library is installed, a prompt will be displayed.
+# library is installed, a prompt will be displayed.
 authenticate("username")
 }
 }

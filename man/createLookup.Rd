@@ -22,7 +22,7 @@ If a name is not specified, a list of all requested resources will be returned.
 }
 \examples{
 \dontrun{
-lookup = createLookup("5e1f66a06f5f3f0759b479c9")
+lookup <- createLookup("5e1f66a06f5f3f0759b479c9")
 lookup("gates", "test_gate")
 # or:
 lookup("gates")
