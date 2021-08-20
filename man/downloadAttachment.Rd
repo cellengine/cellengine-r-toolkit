@@ -28,7 +28,7 @@ Downloads an attachment and returns it as a binary blob or saves it to disk.
 \examples{
 \dontrun{
 # Returns the attachment as a binary blob:
-attachment = downloadAttachment(experimentId, attachmentId)
+attachment <- downloadAttachment(experimentId, attachmentId)
 # Parse it as text:
 readBin(attachment, character())
 

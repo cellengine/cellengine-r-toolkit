@@ -95,29 +95,35 @@ all non-control FCS files.
 \examples{
 \dontrun{
 # Quick syntax, using population names and file names instead of IDs:
-fcsFiles = c("file1.fcs")
-channels = c("SSC-A", "YG780/60-A")
-statistics = c("median", "mean", "quantile", "percent")
-populations = c("Leukocytes")
-stats = getStatistics(experimentId, fcsFiles = fcsFiles, channels = channels,
+fcsFiles <- c("file1.fcs")
+channels <- c("SSC-A", "YG780/60-A")
+statistics <- c("median", "mean", "quantile", "percent")
+populations <- c("Leukocytes")
+stats <- getStatistics(experimentId,
+  fcsFiles = fcsFiles, channels = channels,
   statistics = statistics, populations = populations, q = 0.95,
-  compensationId = cellengine::FILE_INTERNAL)
+  compensationId = cellengine::FILE_INTERNAL
+)
 # Returns a data.frame of statistics, including the file annotations.
 # Because percentOf is not specified, "percent" will be percent of parent.
 
 # Explicit syntax, using IDs instead of population and file names, and
 # specifying a scaleSetId:
-fcsFileIds = c("9ab5c6d7a8cf24a5c4f9a6c2")
-statistics = c("percent")
-populationIds = c("9ab5c6d7a8cf24a5c4f9face")
-scaleSetId = "9ab5c6d7a8cf24a5c4f9fdde"
-stats = getStatistics(experimentId, fcsFileIds = fcsFileIds,
+fcsFileIds <- c("9ab5c6d7a8cf24a5c4f9a6c2")
+statistics <- c("percent")
+populationIds <- c("9ab5c6d7a8cf24a5c4f9face")
+scaleSetId <- "9ab5c6d7a8cf24a5c4f9fdde"
+stats <- getStatistics(experimentId,
+  fcsFileIds = fcsFileIds,
   statistics = statistics, populationIds = populationIds,
-  compensationId = cellengine::UNCOMPENSATED, scaleSetId = scaleSetId)
+  compensationId = cellengine::UNCOMPENSATED, scaleSetId = scaleSetId
+)
 
 # Percent of ungated:
-getStatistics(experimentId, fcsFileIds = fcsFileIds, statistics = statistics,
+getStatistics(experimentId,
+  fcsFileIds = fcsFileIds, statistics = statistics,
   populationIds = populationIds, compensationId = cellengine::UNCOMPENSATED,
-  percentOf = cellengine::UNGATED)
+  percentOf = cellengine::UNGATED
+)
 }
 }

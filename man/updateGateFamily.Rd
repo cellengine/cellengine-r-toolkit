@@ -22,4 +22,5 @@ Updates a gate family.
 \dontrun{
 updateGateFamily(experimentId, gid, list("name" = "new gate name"))
 }
+
 }
