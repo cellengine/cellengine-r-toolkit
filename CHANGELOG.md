@@ -30,6 +30,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix mangling of experiment properties in `updateGateFamily()`.
 - Fix mangling of experiment properties in `updateGate()`.
 - Remove unused `params` argument from `getExperiment()`.
-- Run `styler` on all files with default params
+- `clamp_q` -> `clampQ` in `getEvents`
 
 ### Removed
