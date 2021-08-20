@@ -29,7 +29,7 @@ authenticate = function(username, password=NA, otp=NA) {
     if (requireNamespace("getPass")) {
       password = getPass::getPass(msg = "Please enter your password", noblank=T)
     } else if (rstudioapi::isAvailable()) {
-      password = rstudioapi.askForPassword()
+      password = rstudioapi::askForPassword()
     }
   }
 
@@ -60,7 +60,7 @@ authenticate = function(username, password=NA, otp=NA) {
     if (requireNamespace("getPass")) {
       otp = getPass::getPass(msg = "Please enter your one-time code", noblank=T)
     } else if (rstudioapi::isAvailable()) {
-      otp = rstudioapi.askForPassword("Please enter your one-time code")
+      otp = rstudioapi::askForPassword("Please enter your one-time code")
     } else if (interactive()) {
       otp = readline("Please enter your one-time code");
     }
