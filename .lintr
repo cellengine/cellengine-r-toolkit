@@ -1,7 +1,7 @@
 linters: with_defaults(
   line_length_linter(120), 
   commented_code_linter = NULL,
-  object_name_linter = object_name_linter("camelCase"),
+  object_name_linter = object_name_linter(c("camelCase", "snake_case")),
   open_curly_linter = NULL,
   closed_curly_linter = NULL,
   object_usage_linter = NULL,
