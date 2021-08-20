@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add `toFlowCore` to convert CellEngine objects to flowCore
 - Add `updateFcsFile`
 - Add `getPlot` function
+- Run `styler` on all files with default params
 
 ### Changed
 - **Breaking** `getEvents()` now uses `check.names=FALSE`, so data.frame column
@@ -38,5 +39,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Run `styler` on all files with default params
 - Deprecate `createPolygonGate` args `xVertices=c()` and
   `yVertices=c()` in favor of `vertices=list(c(), c(), c())`
+- **Breaking** `clamp_q` -> `clampQ` in `getEvents`
 
 ### Removed
