@@ -144,7 +144,17 @@ should ensure that your R history does not store your password. Instead,
 consider setting an environment variable (see examples).</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"></pre>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='co'># Use with caution, don't let prying eyes see your password.</span>
+<span class='fu'>authenticate</span><span class='op'>(</span><span class='st'>"username"</span>, <span class='st'>"password"</span><span class='op'>)</span>
+<span class='co'># Instead, you could store it in an environment variable.</span>
+<span class='fu'>authenticate</span><span class='op'>(</span><span class='st'>"username"</span>, <span class='fu'><a href='https://rdrr.io/r/base/Sys.getenv.html'>Sys.getenv</a></span><span class='op'>(</span><span class='st'>"API_PASSWORD"</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='co'># If the password is omitted and you're running in RStudio or the getPass</span>
+<span class='co'># library is installed, a prompt will be displayed.</span>
+<span class='fu'>authenticate</span><span class='op'>(</span><span class='st'>"username"</span><span class='op'>)</span>
+<span class='op'>}</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
