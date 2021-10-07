@@ -19,10 +19,10 @@ Applies a ScaleSet to a dataframe of events
 }
 \examples{
 \dontrun{
-getEvents(experimentId, fcsFileId, destination = 'myFile.fcs')
-events = flowCore::read.FCS('myFile.fcs')
-data = events@exprs
-scaleSet = getScaleSets(experimentId)[1,]
+getEvents(experimentId, fcsFileId, destination = "myFile.fcs")
+events <- flowCore::read.FCS("myFile.fcs")
+data <- events@exprs
+scaleSet <- getScaleSets(experimentId)[1, ]
 applyScaleSet(scaleSet, data)
 }
 }
