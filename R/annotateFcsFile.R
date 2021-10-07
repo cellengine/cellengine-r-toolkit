@@ -8,7 +8,7 @@
 #'
 #' Note: if you retrieve FCS files in bulk, such as with \code{getFcsFiles},
 #' \code{file$annotations} will return a nested list. Be sure to extract the
-#' annotations from this list before appending new ones.
+#' annotations from this list before appending new ones (see examples below).
 #'
 #' @param experimentId ID of experiment.
 #' @param fcsFileId ID of FCS file.
@@ -21,6 +21,13 @@
 #'   list(name = "annotation 2", value = "myValue")
 #' )
 #' annotateFcsFile(experimentId, fcsFileId, annotations)
+#'
+#' # or, to append annotations
+#' files = getFcsFiles(id)
+#' file = files[1,]
+#' annos = file$annotations[[1]]
+#' annos[nrow(annos)+1,] <- list("abc", "def")
+#' annotateFcsFile(experimentId, file`_id`, annos)
 #' }
 annotateFcsFile <- function(experimentId, fcsFileId, annotations) {
   checkDefined(experimentId)
