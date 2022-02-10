@@ -61,9 +61,10 @@ reference:
     contents:
       - getStatistics
 
-  - title: Plots
+  - title: FlowCore Utilities
     contents:
-      # - getPlot
+      - toFlowCore
+      - fromFlowCore
 
   - title: Utilities
     contents:
@@ -82,6 +83,9 @@ articles:
   - title: Tailoring Gates
     contents:
       - tailoringGates
+  - title: Using with Other Cytometry Packages
+    contents:
+      - flowDensity
 
 navbar:
   structure:
