@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - The `authenticate` function now supports two-factor authentication.
 - Support `byName()` for the `gateId` argument in `updateGate()`.
 - Introduce `lintr` as a linter with an Actions workflow
+- Add `fromFlowCore` to convert flowCore objects to CellEngine
+- Add `toFlowCore` to convert CellEngine objects to flowCore
 
 ### Changed
 - Fix for [confusing bulk entity retrieval](https://github.com/primitybio/cellengine-r-toolkit/issues/48)

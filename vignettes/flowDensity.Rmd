@@ -1,0 +1,39 @@
+---
+title: "flowDensity"
+output: rmarkdown::html_vignette
+---
+
+### Converting flowDensity gates:
+[flowDensity](https://bioconductor.org/packages/release/bioc/html/flowDensity.html)
+gates can be converted to CellEngine gates. The class of a flowDensity gate is
+`"CellPopulation"`. The `flowDensity@filter` is always a polygon, so
+`cellengine::createPolygonGate` can be used for this purpose:
+
+```R
+file = "sample1.fcs"
+flowDensityGate <- flowDensity::flowDensity(file, params)@filter
+experimentId <- "5d2f8b4b21fd0676fb3a6a8c"
+
+polyGate <- createPolygonGate(
+    experimentId,
+    colnames(flowDensityGate)[1],
+    colnames(flowDensityGate)[2],
+    name,
+    vertices = list(flowDensityGate),
+)
+```
+
+As a function:
+```R
+convertFlowDensity <- function(flowDensityOutput, experimentId, name = NULL, ...) {
+  flowDensityGate <- flowDensityOutput@filter
+  createPolygonGate(
+    experimentId,
+    colnames(flowDensityGate)[1],
+    colnames(flowDensityGate)[2],
+    name,
+    vertices = list(flowDensityGate),
+    ...
+  )
+}
+```

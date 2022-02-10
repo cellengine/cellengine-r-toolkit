@@ -87,7 +87,8 @@ getEvents <- function(experimentId,
 
   fullURL <- paste(
     paste(pkg.env$baseURL, "experiments", experimentId, "fcsfiles", fcsFileId, sep = "/"),
-    format, sep = "."
+    format,
+    sep = "."
   )
 
   params <- list(
