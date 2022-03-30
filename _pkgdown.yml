@@ -91,6 +91,7 @@ articles:
       - tailoringGates
   - title: Using with Other Cytometry Packages
     contents:
+      - flowCut
       - flowDensity
 
 navbar:
