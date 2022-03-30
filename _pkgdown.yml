@@ -6,39 +6,39 @@ reference:
   - title: Authentication
     desc: Functions for authenticating with CellEngine.
     contents:
-      - setServer
       - authenticate
+      - setServer
 
   - title: Experiments
     contents:
       - createExperiment
-      - getExperiments
-      - getExperiment
-      - updateExperiment
       - deleteExperiment
+      - getExperiment
+      - getExperiments
+      - updateExperiment
 
   - title: Attachments
     contents:
+      - downloadAttachment
       - getAttachments
       - uploadAttachment
-      - downloadAttachment
 
   - title: FCS Files
     contents:
-      - uploadFcsFile
-      - getFcsFiles
-      - downloadFcsFiles
-      - getFcsFile
-      - getEvents
       - annotateFcsFile
-      - setFcsFilePanel
       - deleteFcsFile
+      - downloadFcsFiles
+      - getEvents
+      - getFcsFile
+      - getFcsFiles
+      - setFcsFilePanel
+      - uploadFcsFile
 
   - title: Scales
     contents:
-      - getScaleSets
       - applyScale
       - applyScaleSet
+      - getScaleSets
 
   - title: Compensations
     contents:
@@ -46,16 +46,22 @@ reference:
 
   - title: Gates and Populations
     contents:
-      - ends_with("Gate")
+      - createEllipseGate
       - createGates
+      - createPolygonGate
       - createPopulation
-      - getGates
+      - createQuadrantGate
+      - createRangeGate
+      - createRectangleGate
+      - createSplitGate
+      - deleteGates
+      - deletePopulationAuto
       - getGate
+      - getGates
       - getPopulation
       - getPopulations
-      - deletePopulationAuto
       - updateGateFamily
-      - deleteGates
+      - updatePopulation
 
   - title: Statistics
     contents:
@@ -63,18 +69,18 @@ reference:
 
   - title: FlowCore Utilities
     contents:
-      - toFlowCore
       - fromFlowCore
+      - toFlowCore
 
   - title: Utilities
     contents:
       - byName
       - createLookup
-      - generateId
-      - UNCOMPENSATED
       - FILE_INTERNAL
-      - UNGATED
+      - generateId
       - getErrorInfo
+      - UNCOMPENSATED
+      - UNGATED
 
 articles:
   - title: Getting Started
