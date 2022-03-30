@@ -10,26 +10,39 @@ install_github("primitybio/cellengine-r-toolkit")
 ```
 
 ### First steps
-#### Authentication:
-It is recommended that you set your password in your
-`.Renviron`. You can also pass your password as text, but remember that this is
-stored by `R`.
+
+#### Authentication
+
+For interactive sessions, calling `authenticate()` will prompt you for your
+login info:
+
+```R
+library("cellengine")
+authenticate() # prompts for username and password (and OTP if configured)
+authenticate("username") # prompts for password (and OTP if configured)
+```
+
+For non-interactive sessions, we recommend avoiding saving your password in
+plaintext because it's not secure. Consider instead using an environment
+variable or `.Renviron`.
 ```R
 library("cellengine")
 authenticate("username", Sys.getenv("CELLENGINE_PASSWORD"))
 ```
 
-#### Get experiments:
+#### Get experiments
 
-Experiments may be listed from your account, or requested individually by ID or
-name.
+You can list all experiments that you have access to:
 ```R
 experiments = getExperiments()
-exp1 = experiments[1,]
+```
+
+Or fetch individual experiments by ID or name:
+
+```R
 exp2 = getExperiment("57c4d7d4e69a1e890c4d8d2f")
 exp3 = getExperiment(byName("experiment_name"))
 ```
-
 
 ### Looking up Resources by Name:
 
@@ -41,7 +54,12 @@ experimentId = "57c4d7d4e69a1e890c4d8d2f"
 gate = getGate(expermentId, byName("gate_name"))
 ```
 
-You can also create a per-Experiment lookup object, which may be used to find
+Looking up a resource by name requires one extra API call and thus is slightly
+slower than using a resource by ID. However, by-name lookups are cached for the
+duration of the R session, so repeated by-name lookups of the same object are
+just as fast as a request by ID.
+
+You can also create a per-Experiment lookup object, which can be used to find
 resources by name or ID. This makes it convenient to query different types of
 resources from a single experiment:
 ```R
@@ -50,8 +68,3 @@ lookup = createLookup(experimentId)
 gate = lookup("gates", "gate_name")
 population = lookup("populations", "population_name")
 ```
-
-Looking up a resource by name requires one extra API call, and thus is slightly slower
-than lookup up a resource by ID. However, all by-name lookups are cached for the
-duration of the `R` session, so repeated calls of the same object are just as
-fast as a request by ID.
