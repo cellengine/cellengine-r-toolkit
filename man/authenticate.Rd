@@ -4,10 +4,11 @@
 \alias{authenticate}
 \title{Authenticate}
 \usage{
-authenticate(username, password = NA, otp = NA)
+authenticate(username = NA, password = NA, otp = NA)
 }
 \arguments{
-\item{username}{Your username.}
+\item{username}{Your username or email address. If omitted and in an
+interactive session, a prompt will be displayed.}
 
 \item{password}{Your password. If omitted and running in RStudio or the
 getPass library is installed, a prompt will be displayed.}
@@ -26,13 +27,11 @@ consider setting an environment variable (see examples).
 }
 \examples{
 \dontrun{
-# Use with caution, don't let prying eyes see your password.
-authenticate("username", "password")
-# Instead, you could store it in an environment variable.
-authenticate("username", Sys.getenv("API_PASSWORD"))
+authenticate() # prompts for username and password (and OTP if configured)
+authenticate("username") # prompts for password (and OTP if configured)
 
-# If the password is omitted and you're running in RStudio or the getPass
-# library is installed, a prompt will be displayed.
-authenticate("username")
+# For non-interactive sessions, use an environment variable or other means to
+# avoid saving your password in plaintext.
+authenticate("username", Sys.getenv("API_PASSWORD"))
 }
 }

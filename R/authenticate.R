@@ -6,7 +6,8 @@
 #' should ensure that your R history does not store your password. Instead,
 #' consider setting an environment variable (see examples).
 #'
-#' @param username Your username.
+#' @param username Your username or email address. If omitted and in an
+#' interactive session, a prompt will be displayed.
 #' @param password Your password. If omitted and running in RStudio or the
 #' getPass library is installed, a prompt will be displayed.
 #' @param otp A one-time passcode, if your account is configured with two-factor
@@ -15,21 +16,31 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' # Use with caution, don't let prying eyes see your password.
-#' authenticate("username", "password")
-#' # Instead, you could store it in an environment variable.
-#' authenticate("username", Sys.getenv("API_PASSWORD"))
+#' authenticate() # prompts for username and password (and OTP if configured)
+#' authenticate("username") # prompts for password (and OTP if configured)
 #'
-#' # If the password is omitted and you're running in RStudio or the getPass
-#' # library is installed, a prompt will be displayed.
-#' authenticate("username")
+#' # For non-interactive sessions, use an environment variable or other means to
+#' # avoid saving your password in plaintext.
+#' authenticate("username", Sys.getenv("API_PASSWORD"))
 #' }
-authenticate <- function(username, password = NA, otp = NA) {
+authenticate <- function(username = NA, password = NA, otp = NA) {
+  if (is.na(username)) {
+    if (rstudioapi::isAvailable()) {
+      username <- rstudioapi::showPrompt("Username", "Please enter your username or email")
+    } else if (interactive()) {
+      username <- readline("Please enter your username or email: ")
+    } else {
+      stop("Username is required, but was not provided and no interactive prompts are available")
+    }
+  }
+
   if (is.na(password)) {
-    if (requireNamespace("getPass")) {
+    if (requireNamespace("getPass", quietly = TRUE)) {
       password <- getPass::getPass(msg = "Please enter your password", noblank = T)
     } else if (rstudioapi::isAvailable()) {
       password <- rstudioapi::askForPassword()
+    } else {
+      stop("Password is required, but was not provided and no interactive prompts are available")
     }
   }
 
@@ -61,12 +72,14 @@ authenticate <- function(username, password = NA, otp = NA) {
   parsed <- jsonlite::fromJSON(content)
 
   if (httr::status_code(r) == 400 && parsed$error == '"otp" is required.') {
-    if (requireNamespace("getPass")) {
+    if (requireNamespace("getPass", quietly = TRUE)) {
       otp <- getPass::getPass(msg = "Please enter your one-time code", noblank = T)
     } else if (rstudioapi::isAvailable()) {
       otp <- rstudioapi::askForPassword("Please enter your one-time code")
     } else if (interactive()) {
-      otp <- readline("Please enter your one-time code")
+      otp <- readline("Please enter your one-time code: ")
+    } else {
+      stop("OTP is required, but was not provided and no interactive prompts are available")
     }
     authenticate(username, password, otp)
   } else {
