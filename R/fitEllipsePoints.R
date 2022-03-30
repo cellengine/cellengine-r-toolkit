@@ -18,6 +18,7 @@
 #'  - "major", the length of the major axis
 #'  - "minor", the length of the minor axis
 #'  - "angle", the angle of rotation
+#' @noRd
 fitEllipsePoints <- function(xy, tolerance = 1e-20, max.iter = 1000) {
   if (ncol(xy) != 2) {
     stop("xy must be a two-column data frame")

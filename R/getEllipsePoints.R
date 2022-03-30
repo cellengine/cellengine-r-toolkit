@@ -7,6 +7,7 @@
 #' @param angle Angle of the ellipse.
 #' @param major Length of the major axis.
 #' @param minor Length of the minor axis.
+#' @noRd
 getEllipsePoints <- function(angle, major, minor, x, y) {
   points <- list()
   phi <- 0

@@ -71,6 +71,7 @@ toFlowCorePolygonGate <- function(gate) {
 #' Convert a CellEngine ScaleSet to a flowCore transformList
 #'
 #' @param scaleSet The CellEngine scaleSet to be converted
+#' @noRd
 scaleSetToTransformList <- function(scaleSet) {
   if (!requireNamespace("flowCore")) {
     stop("This function requires the 'flowCore' package to be installed.")

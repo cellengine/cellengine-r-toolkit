@@ -60,6 +60,7 @@ reference:
       - getGates
       - getPopulation
       - getPopulations
+      - updateGate
       - updateGateFamily
       - updatePopulation
 
