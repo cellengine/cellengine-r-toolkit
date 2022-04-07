@@ -47,13 +47,14 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">authenticate</span><span class="op">(</span><span class="va">username</span>, password <span class="op">=</span> <span class="cn">NA</span>, otp <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">authenticate</span><span class="op">(</span>username <span class="op">=</span> <span class="cn">NA</span>, password <span class="op">=</span> <span class="cn">NA</span>, otp <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>username</dt>
-<dd><p>Your username.</p></dd>
+<dd><p>Your username or email address. If omitted and in an
+interactive session, a prompt will be displayed.</p></dd>
 <dt>password</dt>
 <dd><p>Your password. If omitted and running in RStudio or the
 getPass library is installed, a prompt will be displayed.</p></dd>
@@ -72,14 +73,12 @@ consider setting an environment variable (see examples).</p>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="co"># Use with caution, don't let prying eyes see your password.</span></span>
-<span class="r-in"><span class="fu">authenticate</span><span class="op">(</span><span class="st">"username"</span>, <span class="st">"password"</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># Instead, you could store it in an environment variable.</span></span>
-<span class="r-in"><span class="fu">authenticate</span><span class="op">(</span><span class="st">"username"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"API_PASSWORD"</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu">authenticate</span><span class="op">(</span><span class="op">)</span> <span class="co"># prompts for username and password (and OTP if configured)</span></span>
+<span class="r-in"><span class="fu">authenticate</span><span class="op">(</span><span class="st">"username"</span><span class="op">)</span> <span class="co"># prompts for password (and OTP if configured)</span></span>
 <span class="r-in"></span>
-<span class="r-in"><span class="co"># If the password is omitted and you're running in RStudio or the getPass</span></span>
-<span class="r-in"><span class="co"># library is installed, a prompt will be displayed.</span></span>
-<span class="r-in"><span class="fu">authenticate</span><span class="op">(</span><span class="st">"username"</span><span class="op">)</span></span>
+<span class="r-in"><span class="co"># For non-interactive sessions, use an environment variable or other means to</span></span>
+<span class="r-in"><span class="co"># avoid saving your password in plaintext.</span></span>
+<span class="r-in"><span class="fu">authenticate</span><span class="op">(</span><span class="st">"username"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"API_PASSWORD"</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"><span class="op">}</span></span>
 </code></pre></div>
     </div>
