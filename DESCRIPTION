@@ -13,5 +13,5 @@ LazyData: true
 Depends: R (>= 3.0.0)
 Imports: httr(>= 1.3.0), jsonlite, utils
 RoxygenNote: 7.1.2
-Suggests: httptest(>= 3.2.2), testthat, mockthat, getPass, rstudioapi, mockery
+Suggests: httptest(>= 3.2.2), testthat, httptest, mockthat, getPass, rstudioapi, mockery, lintr, styler
 Enhances: flowCore, flowDensity
