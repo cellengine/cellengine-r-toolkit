@@ -23,11 +23,11 @@
 #' annotateFcsFile(experimentId, fcsFileId, annotations)
 #'
 #' # or, to append annotations
-#' files = getFcsFiles(id)
-#' file = files[1,]
-#' annos = file$annotations[[1]]
-#' annos[nrow(annos)+1,] <- list("abc", "def")
-#' annotateFcsFile(experimentId, file`_id`, annos)
+#' files <- getFcsFiles(id)
+#' file <- files[1, ]
+#' annos <- file$annotations[[1]]
+#' annos[nrow(annos) + 1, ] <- list("abc", "def")
+#' annotateFcsFile(experimentId, file$`_id`, annos)
 #' }
 annotateFcsFile <- function(experimentId, fcsFileId, annotations) {
   checkDefined(experimentId)
