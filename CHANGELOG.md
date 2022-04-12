@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add `fromFlowCore` to convert flowCore objects to CellEngine
 - Add `toFlowCore` to convert CellEngine objects to flowCore
 - Add `updateFcsFile`
+- Add `getPlot` function
 
 ### Changed
 - Fix for [confusing bulk entity retrieval](https://github.com/primitybio/cellengine-r-toolkit/issues/48)
