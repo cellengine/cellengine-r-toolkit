@@ -5,6 +5,9 @@ pkg.env$baseURL <- Sys.getenv("CELLENGINE_API_URL", "https://cellengine.com/api/
 
 handleResponse <- function(response) {
   httr::warn_for_status(response)
+  if (response$headers$`Content-Type` == "image/png") {
+    return(httr::content(response, as = "raw"))
+  }
   content <- httr::content(response, "text", encoding = "UTF-8")
   return(jsonlite::fromJSON(content))
 }
