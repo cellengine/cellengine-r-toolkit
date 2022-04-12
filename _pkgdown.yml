@@ -32,6 +32,7 @@ reference:
       - getFcsFile
       - getFcsFiles
       - setFcsFilePanel
+      - updateFcsFile
       - uploadFcsFile
 
   - title: Scales
