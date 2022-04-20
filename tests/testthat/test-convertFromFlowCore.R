@@ -11,9 +11,9 @@ test_that("fromFlowCore accepts `gid` as a splat keyword arg and passes it to th
 
     # given: flowCore rectangleGate gate
     flowObject <- rectangleGate(
-        filterId = "name",
-        "a" = c(0, 0),
-        "b" = c(0, 0)
+      filterId = "name",
+      "a" = c(0, 0),
+      "b" = c(0, 0)
     )
 
     # when:
