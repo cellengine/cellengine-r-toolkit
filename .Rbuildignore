@@ -8,5 +8,6 @@
 ^_pkgdown\.yml$
 ^\.github$
 CHANGELOG.md
+CONTRIBUTING.md
 vignettes/
 ^\.lintr$
