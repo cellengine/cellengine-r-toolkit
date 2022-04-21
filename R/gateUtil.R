@@ -8,7 +8,7 @@ parsePopulationArgs <- function(parentPopulationId, parentPopulation, experiment
     pops <- getPopulations(experimentId, params = list(
       query = sprintf("eq(name, \"%s\")", parentPopulation)
     ))
-    if (!is.data.frame(pops)) {
+    if (nrow(pops) == 0) {
       stop(sprintf("Population with the name '%s' does not exist in the experiment.", parentPopulation))
     }
     if (nrow(pops) > 1) {
@@ -43,7 +43,7 @@ parseFcsFileArgs <- function(body, tailoredPerFile, fcsFileId, fcsFile, experime
       query = sprintf("eq(filename, \"%s\")", fcsFile),
       fields = "+_id"
     ))
-    if (!is.data.frame(files)) {
+    if (nrow(files) == 0) {
       stop(sprintf("FCS file with the name '%s' does not exist in the experiment.", fcsFile))
     }
     if (nrow(files) > 1) {

@@ -134,7 +134,7 @@ getStatistics <- function(experimentId,
       fields = "+name",
       query = sprintf("in(name, [%s])", quotedQueryPopulations)
     ))
-    if (!is.data.frame(serverPops)) { # zero-length results are not data.frames
+    if (length(serverPops) == 0) {
       pkg.env$lastError <- queryPopulations
       stop(sprintf(
         "%i population(s) were not found. Call getErrorInfo() for a list of missing percentOf populations.",
@@ -205,7 +205,7 @@ lookupFilesByName <- function(experimentId, fcsFileIds, fcsFiles) {
       fields = "+filename",
       query = sprintf("in(filename, [%s])", queryFilenames)
     ))
-    if (!is.data.frame(serverFiles)) { # zero-length results are not data.frames
+    if (length(serverFiles) == 0) {
       pkg.env$lastError <- fcsFiles
       stop(sprintf(
         "%i file(s) were not found. Call getErrorInfo() for a list of missing files.",
@@ -242,7 +242,7 @@ lookupPopulationsByName <- function(experimentId, populationIds, populations) {
       fields = "+name",
       query = sprintf("in(name, [%s])", queryPopulations)
     ))
-    if (!is.data.frame(serverPops)) { # zero-length results are not data.frames
+    if (length(serverPops) == 0) {
       pkg.env$lastError <- populations
       stop(sprintf(
         "%i population(s) were not found. Call getErrorInfo() for a list of missing populations.",
@@ -272,7 +272,7 @@ lookupPopulationsByName <- function(experimentId, populationIds, populations) {
 verifyScaleSets <- function(experimentId, scaleSetId) {
   if (is.null(scaleSetId)) {
     serverScaleSets <- getScaleSets(experimentId, params = list(fields = "+_id"))
-    if (!is.data.frame(serverScaleSets)) { # zero-length results are not data.frames
+    if (length(serverScaleSets) == 0) {
       stop("No scalesets found in experiment.")
     }
     if (nrow(serverScaleSets) > 1) {

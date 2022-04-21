@@ -8,7 +8,7 @@ test_that("Correct HTTP request is made", {
       body <- rawToChar(req$options$postfields)
       expect_equal(body, '{"filename":"new name"}')
 
-      content <- jsonlite::fromJSON('../fcsfile.json')
+      content <- jsonlite::fromJSON("../fcsfile.json")
       content <- modifyList(content, list("filename" = "new name"))
       content <- jsonlite::toJSON(content, null = "null", auto_unbox = TRUE)
 

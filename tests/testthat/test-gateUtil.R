@@ -85,8 +85,7 @@ test_that("throws an error if no populations match", {
       response <- httptest::fake_response(
         req$url,
         req$method,
-        content = "[
-        ]",
+        content = "[]",
         status_code = 200,
         headers = list(`Content-Type` = "application/json")
       )

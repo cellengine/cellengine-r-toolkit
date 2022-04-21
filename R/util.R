@@ -6,7 +6,11 @@ pkg.env$baseURL <- Sys.getenv("CELLENGINE_API_URL", "https://cellengine.com/api/
 handleResponse <- function(response) {
   httr::warn_for_status(response)
   content <- httr::content(response, "text", encoding = "UTF-8")
-  return(jsonlite::fromJSON(content))
+  json <- jsonlite::fromJSON(content)
+  if (length(json) == 0 & class(json) == "list") {
+    return(data.frame())
+  }
+  return(json)
 }
 
 ua <- (function() {
@@ -136,7 +140,7 @@ lookupByName <- function(listpath, name, prop = "name") {
     query = sprintf("eq(%s, \"%s\")", prop, name),
     limit = 2 # need >1 so we can detect ambiguous matches
   ))
-  if (!is.data.frame(vals)) {
+  if (nrow(vals) == 0) {
     stop(sprintf("Resource with the name '%s' does not exist.", name))
   }
   if (nrow(vals) > 1) {
