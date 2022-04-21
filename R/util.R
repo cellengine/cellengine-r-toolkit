@@ -23,27 +23,45 @@ ensureBaseUrl <- function() {
   if (pkg.env$baseURL == "") stop("Please call setServer(host) first.")
 }
 
+coerceParameters <- function(params) {
+  logicalToCharacter <- function(v) {
+    if (isTRUE(v)) {
+      return("true")
+    } else if (isFALSE(v)) {
+      return("false")
+    }
+    return(v)
+  }
+  params <- lapply(params, logicalToCharacter)
+
+  return(params)
+}
+
 baseGet <- function(url, params = list()) {
   ensureBaseUrl()
   fullURL <- paste(pkg.env$baseURL, url, sep = "/")
+  params <- coerceParameters(params)
   handleResponse(httr::GET(fullURL, query = params, httr::user_agent(ua)))
 }
 
 basePatch <- function(url, body, params = list()) {
   ensureBaseUrl()
   fullURL <- paste(pkg.env$baseURL, url, sep = "/")
+  params <- coerceParameters(params)
   handleResponse(httr::PATCH(fullURL, body = body, query = params, httr::content_type_json(), httr::user_agent(ua)))
 }
 
 basePut <- function(url, body, params = list()) {
   ensureBaseUrl()
   fullURL <- paste(pkg.env$baseURL, url, sep = "/")
+  params <- coerceParameters(params)
   handleResponse(httr::PUT(fullURL, body = body, query = params, httr::content_type_json(), httr::user_agent(ua)))
 }
 
 basePost <- function(url, body, params = list()) {
   ensureBaseUrl()
   fullURL <- paste(pkg.env$baseURL, url, sep = "/")
+  params <- coerceParameters(params)
   handleResponse(httr::POST(fullURL, body = body, query = params, httr::content_type_json(), httr::user_agent(ua)))
 }
 
@@ -51,6 +69,7 @@ baseDelete <- function(url, params = list()) {
   ensureBaseUrl()
   fullURL <- paste(pkg.env$baseURL, url, sep = "/")
   response <- httr::DELETE(fullURL, query = params, httr::user_agent(ua))
+  params <- coerceParameters(params)
   httr::warn_for_status(response)
 }
 
