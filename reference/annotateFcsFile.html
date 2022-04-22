@@ -71,7 +71,21 @@ annotations from this list before appending new ones (see examples below).</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
+<span class="r-in"><span class="va">annotations</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"annotations 1"</span>, value <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
+<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"annotation 2"</span>, value <span class="op">=</span> <span class="st">"myValue"</span><span class="op">)</span></span>
+<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span class="fu">annotateFcsFile</span><span class="op">(</span><span class="va">experimentId</span>, <span class="va">fcsFileId</span>, <span class="va">annotations</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># or, to append annotations</span></span>
+<span class="r-in"><span class="va">files</span> <span class="op">&lt;-</span> <span class="fu"><a href="getFcsFiles.html">getFcsFiles</a></span><span class="op">(</span><span class="va">id</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">file</span> <span class="op">&lt;-</span> <span class="va">files</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span></span>
+<span class="r-in"><span class="va">annos</span> <span class="op">&lt;-</span> <span class="va">file</span><span class="op">$</span><span class="va">annotations</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span class="r-in"><span class="va">annos</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">annos</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span>, <span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"abc"</span>, <span class="st">"def"</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu">annotateFcsFile</span><span class="op">(</span><span class="va">experimentId</span>, <span class="va">file</span><span class="op">$</span><span class="va">`_id`</span>, <span class="va">annos</span><span class="op">)</span></span>
+<span class="r-in"><span class="op">}</span></span>
+</code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
