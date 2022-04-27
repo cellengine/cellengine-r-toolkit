@@ -42,7 +42,7 @@ createQuadrantGate <- function(experimentId, xChannel, yChannel, name,
                                gid = generateId(), gids = replicate(4, generateId()),
                                parentPopulationId = NULL, parentPopulation = NULL,
                                tailoredPerFile = FALSE, fcsFileId = NULL, fcsFile = NULL,
-                               locked = FALSE, createPopulations = TRUE) {
+                               locked = FALSE, createPopulations = is.null(fcsFileId)) {
   # future args:
   skewable <- FALSE
   angles <- c(pi / 2, pi, 3 / 2 * pi, 0.000000)

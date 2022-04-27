@@ -20,7 +20,7 @@ createQuadrantGate(
   fcsFileId = NULL,
   fcsFile = NULL,
   locked = FALSE,
-  createPopulations = TRUE
+  createPopulations = is.null(fcsFileId)
 )
 }
 \arguments{

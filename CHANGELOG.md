@@ -40,5 +40,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Deprecate `createPolygonGate` args `xVertices=c()` and
   `yVertices=c()` in favor of `vertices=list(c(), c(), c())`
 - **Breaking** `clamp_q` -> `clampQ` in `getEvents`
+- Change the default for `createPopulation` arg in gate creation functions to `is.null(fcsFileId)`
 
 ### Removed

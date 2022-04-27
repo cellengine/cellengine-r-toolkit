@@ -21,7 +21,7 @@ createRectangleGate(
   fcsFileId = NULL,
   fcsFile = NULL,
   locked = FALSE,
-  createPopulation = TRUE
+  createPopulation = is.null(fcsFileId)
 )
 }
 \arguments{

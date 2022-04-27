@@ -41,8 +41,7 @@ createPolygonGate <- function(experimentId, xChannel, yChannel, name,
                               gid = generateId(),
                               parentPopulationId = NULL, parentPopulation = NULL,
                               tailoredPerFile = FALSE, fcsFileId = NULL, fcsFile = NULL,
-                              locked = FALSE, createPopulation = TRUE) {
-
+                              locked = FALSE, createPopulation = is.null(fcsFileId)) {
   if (length(vertices) > 0) {
     label <- c(mean(sapply(vertices, "[[", 1)), mean(sapply(vertices, "[[", 2)))
     vertices <- do.call(rbind, vertices)

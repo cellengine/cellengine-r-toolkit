@@ -38,7 +38,7 @@ createRangeGate <- function(experimentId, xChannel, name,
                             gid = generateId(),
                             parentPopulationId = NULL, parentPopulation = NULL,
                             tailoredPerFile = FALSE, fcsFileId = NULL, fcsFile = NULL,
-                            locked = FALSE, createPopulation = TRUE) {
+                            locked = FALSE, createPopulation = is.null(fcsFileId)) {
   body <- list(
     model = list(
       locked = jsonlite::unbox(locked),

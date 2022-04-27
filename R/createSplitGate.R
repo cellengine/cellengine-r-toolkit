@@ -41,7 +41,7 @@ createSplitGate <- function(experimentId, xChannel, name, x, y = 0.5,
                             gid = generateId(), gids = replicate(2, generateId()), labels = NULL,
                             parentPopulationId = NULL, parentPopulation = NULL,
                             tailoredPerFile = FALSE, fcsFileId = NULL, fcsFile = NULL,
-                            locked = FALSE, createPopulation = TRUE) {
+                            locked = FALSE, createPopulation = is.null(fcsFileId)) {
 
 
 
