@@ -72,6 +72,6 @@ Creates a polygon gate.
 }
 \examples{
 \dontrun{
-createPolygonGate(experimentId, "FSC-A", "FSC-W", "my gate", c(1, 2, 3), c(4, 5, 6))
+createPolygonGate(experimentId, "FSC-A", "FSC-W", "my gate", list(c(1, 2), c(4, 5), c(7, 8)))
 }
 }
