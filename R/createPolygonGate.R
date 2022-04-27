@@ -32,7 +32,7 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' createPolygonGate(experimentId, "FSC-A", "FSC-W", "my gate", c(1, 2, 3), c(4, 5, 6))
+#' createPolygonGate(experimentId, "FSC-A", "FSC-W", "my gate", list(c(1, 2), c(4, 5), c(7, 8)))
 #' }
 createPolygonGate <- function(experimentId, xChannel, yChannel, name,
                               vertices = list(),
@@ -42,10 +42,12 @@ createPolygonGate <- function(experimentId, xChannel, yChannel, name,
                               parentPopulationId = NULL, parentPopulation = NULL,
                               tailoredPerFile = FALSE, fcsFileId = NULL, fcsFile = NULL,
                               locked = FALSE, createPopulation = TRUE) {
+
   if (length(vertices) > 0) {
     label <- c(mean(sapply(vertices, "[[", 1)), mean(sapply(vertices, "[[", 2)))
     vertices <- do.call(rbind, vertices)
   } else if (length(xVertices) > 0 & length(yVertices) > 0) {
+    warning("Arguments 'xVertices' and 'yVertices' are deprecated. Use 'vertices' instead.")
     label <- c(mean(xVertices), mean(yVertices))
     vertices <- matrix(c(xVertices, yVertices), ncol = 2)
   } else {
