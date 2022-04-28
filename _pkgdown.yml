@@ -95,6 +95,9 @@ articles:
     contents:
       - flowCut
       - flowDensity
+  - title: Analysis Tasks
+    contents:
+      - histogramSubtraction
 
 navbar:
   structure:
