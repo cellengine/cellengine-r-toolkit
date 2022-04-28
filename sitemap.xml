@@ -7,6 +7,9 @@
     <loc>/CHANGELOG.html</loc>
   </url>
   <url>
+    <loc>/CONTRIBUTING.html</loc>
+  </url>
+  <url>
     <loc>/articles/flowCut.html</loc>
   </url>
   <url>
@@ -137,6 +140,9 @@
   </url>
   <url>
     <loc>/reference/getGates.html</loc>
+  </url>
+  <url>
+    <loc>/reference/getPlot.html</loc>
   </url>
   <url>
     <loc>/reference/getPopulation.html</loc>
