@@ -57,7 +57,7 @@ test_that("applies clamped arcsinh scale", {
   # FSC-A: min = -200, max = 5000, cofactor = 5, type = LogScale
   scaleSet <- jsonlite::fromJSON('[{"scales":[{"channelName":"FSC-A","scale":{"type":"ArcSinhScale","minimum":-200,"maximum":5000,"cofactor":5}}],"_id":"5d2f8b4b21fd0676fb3a6a8c","experimentId":"5d2f8b4b21fd0676fb3a6a70","name":"Scale Set 1","__v":1,"updated":"2020-10-27T18:38:55.554Z"}]') # nolint
 
-  result <- applyScaleSet(scaleSet, data, clamp_q = TRUE)
+  result <- applyScaleSet(scaleSet, data, clampQ = TRUE)
   expected <- data.frame(
     "FSC-A" = c(-4.382183, -2.094713, -0.3900353, -0.001999999, 0, 0.03998934, 0.09983408, 0.1986901),
     check.names = F
