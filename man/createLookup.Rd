@@ -11,7 +11,8 @@ createLookup(experimentId)
 }
 \value{
 A function that takes the parameters "resource" and "name":
-resource Type of resource. Available options are "gates", "populations", "fcsfiles", and "compensations".
+resource Type of resource. Available options are "gates", "populations",
+"fcsfiles", and "compensations".
 name Name of resource to search for.
 }
 \description{

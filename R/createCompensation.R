@@ -53,8 +53,6 @@ createCompensation <- function(experimentId, name, spillMatrix, channels = NULL)
     auto_unbox = TRUE
   )
   r <- basePost(paste0("/api/v1/experiments/", experimentId, "/compensations"),
-                body,
-                list(),
-                simplifyDataFrame = FALSE)
+                body)
   formatCompensationResponse(r)
 }

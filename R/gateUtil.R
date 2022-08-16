@@ -8,16 +8,16 @@ parsePopulationArgs <- function(parentPopulationId, parentPopulation, experiment
     pops <- getPopulations(experimentId, params = list(
       query = sprintf("eq(name, \"%s\")", parentPopulation)
     ))
-    if (!is.data.frame(pops)) {
+    if (length(pops) == 0) {
       stop(sprintf("Population with the name '%s' does not exist in the experiment.", parentPopulation))
     }
-    if (nrow(pops) > 1) {
+    if (length(pops) > 1) {
       stop(sprintf(paste0(
         "More than one population with the name '%s' exists in the experiment. ",
         "Cannot find unambiguous parent population."
       ), parentPopulation))
     }
-    parentPopulationId <- pops$`_id`
+    parentPopulationId <- pops[[1]]$`_id`
   }
 
   return(parentPopulationId)
@@ -43,16 +43,16 @@ parseFcsFileArgs <- function(body, tailoredPerFile, fcsFileId, fcsFile, experime
       query = sprintf("eq(filename, \"%s\")", fcsFile),
       fields = "+_id"
     ))
-    if (!is.data.frame(files)) {
+    if (length(files) == 0) {
       stop(sprintf("FCS file with the name '%s' does not exist in the experiment.", fcsFile))
     }
-    if (nrow(files) > 1) {
+    if (length(files) > 1) {
       stop(sprintf(paste0(
         "More than one FCS file with the name '%s' exists in the experiment. ",
         "Cannot find unambiguous file to create tailored gate."
       ), fcsFile))
     }
-    fcsFileId <- files$`_id`
+    fcsFileId <- files[[1]]$`_id`
   }
 
   body <- c(body, list(fcsFileId = jsonlite::unbox(fcsFileId)))

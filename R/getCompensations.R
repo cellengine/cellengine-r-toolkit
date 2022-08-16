@@ -14,7 +14,6 @@ getCompensations <- function(experimentId, params = list()) {
   checkDefined(experimentId)
   experimentId <- lookupByName("/api/v1/experiments", experimentId)
   cs <- baseGet(paste0("/api/v1/experiments/", experimentId, "/compensations"),
-                params,
-                simplifyDataFrame = FALSE)
+                params)
   lapply(cs, formatCompensationResponse)
 }

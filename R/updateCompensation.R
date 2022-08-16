@@ -20,9 +20,7 @@ updateCompensation <- function(experimentId, compensationId, properties = list()
   body <- jsonlite::toJSON(properties, null = "null", auto_unbox = TRUE)
   r = basePatch(
     paste0("/api/v1/experiments/", experimentId, "/compensations/", compensationId),
-    body,
-    list(),
-    simplifyDataFrame = FALSE
+    body
   )
   formatCompensationResponse(r)
 }

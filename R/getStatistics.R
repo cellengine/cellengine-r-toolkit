@@ -106,7 +106,7 @@ getStatistics <- function(experimentId,
   populationIds <- lookupPopulationsByName(experimentId, populationIds, populations)
 
   # statistics argument
-  allowedStatistics <- c("mean", "median", "quantile", "stddev", "cv", "eventcount", "percent", "mad")
+  allowedStatistics <- c("mean", "median", "quantile", "stddev", "cv", "eventcount", "percent", "mad") # TODO geomean
   statsDiff <- setdiff(tolower(statistics), allowedStatistics)
   if (length(statsDiff) > 0) {
     stop(sprintf("Statistics [%s] are not allowed.", paste0(statsDiff, collapse = ", ")))
@@ -121,14 +121,15 @@ getStatistics <- function(experimentId,
       fields = "+name",
       query = sprintf("in(name, [%s])", quotedQueryPopulations)
     ))
-    if (!is.data.frame(serverPops)) { # zero-length results are not data.frames
+    serverPopNames = lapply(serverPops, function(p) p$name)
+    if (length(serverPops) == 0) {
       pkg.env$lastError <- queryPopulations
       stop(sprintf(
         "%i population(s) were not found. Call getErrorInfo() for a list of missing percentOf populations.",
         length(queryPopulations)
       ))
     }
-    diff <- setdiff(queryPopulations, serverPops$name) # populations absent from server
+    diff <- setdiff(queryPopulations, serverPopNames) # populations absent from server
     if (length(diff) != 0) {
       pkg.env$lastError <- diff
       stop(sprintf(
@@ -136,8 +137,8 @@ getStatistics <- function(experimentId,
         length(diff)
       ))
     }
-    if (anyDuplicated(serverPops$name)) { # populations with non-unique names
-      pkg.env$lastError <- serverPops$name[duplicated(serverPops$name)]
+    if (anyDuplicated(serverPopNames)) { # populations with non-unique names
+      pkg.env$lastError <- serverPopNames[duplicated(serverPopNames)]
       stop(paste0(
         "One or more populations have the same names and cannot be selected unambiguously. ",
         "Call getErrorInfo() for a list of duplicate names."
@@ -145,14 +146,14 @@ getStatistics <- function(experimentId,
     }
     # Finally, pull out _ids
     if (all(percentofNonIds)) { # fast path: all names
-      percentOf <- serverPops$`_id`
+      percentOf <- lapply(serverPops, function(p) p$`_id`)
     } else { # slow path: mixed names and IDs
-      percentOf <- sapply(percentOf, function(v) {
-        idx <- match(v, serverPops$name)
+      percentOf <- lapply(percentOf, function(v) {
+        idx <- match(v, serverPopNames)
         if (is.na(idx)) {
           return(v)
         } # with above checks, already an ID
-        serverPops[idx]$`_id`
+        serverPops[[idx]]$`_id`
       })
     }
   }
@@ -168,7 +169,8 @@ getStatistics <- function(experimentId,
   )
 
   if (!is.null(percentOf)) {
-    if (length(percentOf) == 1) percentOf <- jsonlite::unbox(percentOf)
+    percentOf <- lapply(percentOf, jsonlite::unbox)
+    if (length(percentOf) == 1) percentOf <- percentOf[[1]]
     body <- c(body, list(percentOf = percentOf))
   }
 
@@ -178,7 +180,8 @@ getStatistics <- function(experimentId,
 
   path <- paste0("/api/v1/experiments/", experimentId, "/bulkstatistics")
   body <- jsonlite::toJSON(body, null = "null", digits = NA)
-  basePost(path, body, list())
+  r = basePost(path, body)
+  as.data.frame(r)
 }
 
 lookupFilesByName <- function(experimentId, fcsFileIds, fcsFiles) {
@@ -191,14 +194,15 @@ lookupFilesByName <- function(experimentId, fcsFileIds, fcsFiles) {
       fields = "+filename",
       query = sprintf("in(filename, [%s])", queryFilenames)
     ))
-    if (!is.data.frame(serverFiles)) { # zero-length results are not data.frames
+    serverFileFilenames = lapply(serverFiles, function(f) f$filename)
+    if (length(serverFiles) == 0) {
       pkg.env$lastError <- fcsFiles
       stop(sprintf(
         "%i file(s) were not found. Call getErrorInfo() for a list of missing files.",
         length(fcsFiles)
       ))
     }
-    diff <- setdiff(fcsFiles, serverFiles$filename) # files absent from server
+    diff <- setdiff(fcsFiles, serverFileFilenames) # files absent from server
     if (length(diff) != 0) {
       pkg.env$lastError <- diff
       stop(sprintf(
@@ -206,14 +210,14 @@ lookupFilesByName <- function(experimentId, fcsFileIds, fcsFiles) {
         length(diff)
       ))
     }
-    if (anyDuplicated(serverFiles$filename)) { # files with non-unique names
-      pkg.env$lastError <- serverFiles$filename[duplicated(serverFiles$filename)]
+    if (anyDuplicated(serverFileFilenames)) { # files with non-unique names
+      pkg.env$lastError <- serverFileFilenames[duplicated(serverFileFilenames)]
       stop(paste0(
         "One or more files have the same filenames and cannot be selected unambiguously. ",
         "Call getErrorInfo() for a list of duplicate filenames."
       ))
     }
-    fcsFileIds <- serverFiles$`_id`
+    fcsFileIds <- serverFiles[[1]]$`_id`
   }
   return(fcsFileIds)
 }
@@ -228,14 +232,15 @@ lookupPopulationsByName <- function(experimentId, populationIds, populations) {
       fields = "+name",
       query = sprintf("in(name, [%s])", queryPopulations)
     ))
-    if (!is.data.frame(serverPops)) { # zero-length results are not data.frames
+    serverPopNames = lapply(serverPops, function(p) p$name)
+    if (length(serverPops) == 0) {
       pkg.env$lastError <- populations
       stop(sprintf(
         "%i population(s) were not found. Call getErrorInfo() for a list of missing populations.",
         length(populations)
       ))
     }
-    diff <- setdiff(populations, serverPops$name) # populations absent from server
+    diff <- setdiff(populations, serverPopNames) # populations absent from server
     if (length(diff) != 0) {
       pkg.env$lastError <- diff
       stop(sprintf(
@@ -243,14 +248,14 @@ lookupPopulationsByName <- function(experimentId, populationIds, populations) {
         length(diff)
       ))
     }
-    if (anyDuplicated(serverPops$name)) { # populations with non-unique names
-      pkg.env$lastError <- serverPops$name[duplicated(serverPops$name)]
+    if (anyDuplicated(serverPopNames)) { # populations with non-unique names
+      pkg.env$lastError <- serverPopNames[duplicated(serverPopNames)]
       stop(paste0(
         "One or more populations have the same names and cannot be selected unambiguously. ",
         "Call getErrorInfo() for a list of duplicate names."
       ))
     }
-    populationIds <- serverPops$`_id`
+    populationIds <- serverPops[[1]]$`_id`
   }
   return(populationIds)
 }

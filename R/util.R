@@ -4,13 +4,13 @@ pkg.env$baseURL <- Sys.getenv("CELLENGINE_BASE_URL", "https://cellengine.com")
 
 pkg.env$auth <- c()
 
-handleResponse <- function(response, ...) {
+handleResponse <- function(response) {
   httr::warn_for_status(response)
   if (response$headers$`Content-Type` == "image/png") {
     return(httr::content(response, as = "raw"))
   }
   content <- httr::content(response, "text", encoding = "UTF-8")
-  return(jsonlite::fromJSON(content, ...))
+  return(jsonlite::fromJSON(content, simplifyDataFrame = FALSE))
 }
 
 ua <- (function() {
@@ -41,7 +41,7 @@ coerceParameters <- function(params) {
   return(params)
 }
 
-baseGet <- function(url, params = list(), ...) {
+baseGet <- function(url, params = list()) {
   ensureBaseUrl()
   fullURL <- paste0(pkg.env$baseURL, url)
   params <- coerceParameters(params)
@@ -49,10 +49,10 @@ baseGet <- function(url, params = list(), ...) {
                  query = params,
                  httr::user_agent(ua),
                  httr::add_headers(.headers = pkg.env$auth))
-  handleResponse(r, ...)
+  handleResponse(r)
 }
 
-basePatch <- function(url, body, params = list(), ...) {
+basePatch <- function(url, body, params = list()) {
   ensureBaseUrl()
   fullURL <- paste0(pkg.env$baseURL, url)
   params <- coerceParameters(params)
@@ -62,7 +62,7 @@ basePatch <- function(url, body, params = list(), ...) {
                    httr::content_type_json(),
                    httr::user_agent(ua),
                    httr::add_headers(.headers = pkg.env$auth))
-  handleResponse(r, ...)
+  handleResponse(r)
 }
 
 basePut <- function(url, body, params = list()) {
@@ -78,7 +78,7 @@ basePut <- function(url, body, params = list()) {
   handleResponse(r)
 }
 
-basePost <- function(url, body, params = list(), ...) {
+basePost <- function(url, body, params = list()) {
   ensureBaseUrl()
   fullURL <- paste0(pkg.env$baseURL, url)
   params <- coerceParameters(params)
@@ -88,7 +88,7 @@ basePost <- function(url, body, params = list(), ...) {
                   httr::content_type_json(),
                   httr::user_agent(ua),
                   httr::add_headers(.headers = pkg.env$auth))
-  handleResponse(r, ...)
+  handleResponse(r)
 }
 
 baseDelete <- function(url, params = list()) {
@@ -184,14 +184,14 @@ lookupByName <- function(listpath, name, prop = "name") {
     query = sprintf("eq(%s, \"%s\")", prop, name),
     limit = 2 # need >1 so we can detect ambiguous matches
   ))
-  if (!is.data.frame(vals)) {
+  if (length(vals) == 0) {
     stop(sprintf("Resource with the name '%s' does not exist.", name))
   }
-  if (nrow(vals) > 1) {
+  if (length(vals) > 1) {
     stop(sprintf("More than one resource with the name '%s' exists.", name))
   }
 
-  val <- vals$`_id`
+  val <- vals[[1]]$`_id`
   assign(key, val, envir = byNameHash)
   val
 }
@@ -205,7 +205,8 @@ lookupByName <- function(listpath, name, prop = "name") {
 #'
 #' @param experimentId Experiment to create lookup for.
 #' @return A function that takes the parameters "resource" and "name":
-#'   resource Type of resource. Available options are "gates", "populations", "fcsfiles", and "compensations".
+#'   resource Type of resource. Available options are "gates", "populations",
+#'   "fcsfiles", and "compensations".
 #'   name Name of resource to search for.
 #' @examples
 #' \dontrun{

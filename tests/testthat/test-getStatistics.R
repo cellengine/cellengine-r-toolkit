@@ -416,7 +416,7 @@ test_that("works, percentOf specified as single value", {
       )
       expect_true(is.data.frame(res))
       expect_equal(res[1, "filename"], "abc.fcs")
-      expect_equal(res[1, "annotations"]$row, "A")
+      expect_equal(res[1, "annotations.row"], "A")
     }
   )
 })
