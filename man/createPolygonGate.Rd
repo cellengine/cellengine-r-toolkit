@@ -9,9 +9,7 @@ createPolygonGate(
   xChannel,
   yChannel,
   name,
-  vertices = list(),
-  xVertices = c(),
-  yVertices = c(),
+  vertices,
   label = NULL,
   gid = generateId(),
   parentPopulationId = NULL,
@@ -20,7 +18,7 @@ createPolygonGate(
   fcsFileId = NULL,
   fcsFile = NULL,
   locked = FALSE,
-  createPopulation = TRUE
+  createPopulation = is.null(fcsFileId)
 )
 }
 \arguments{
@@ -32,13 +30,8 @@ createPolygonGate(
 
 \item{name}{The name of the gate.}
 
-\item{vertices}{List of vectors of coordinates, like list(c(x,y), c(x,y), ...)}
-
-\item{xVertices}{\strong{Deprecated} Use \code{vertices} instead. List of x
-coordinates for the polygon's vertices.}
-
-\item{yVertices}{\strong{Deprecated} Use \code{vertices} instead. List of y
-coordinates for the polygon's vertices.}
+\item{vertices}{List of vectors of coordinates, like
+\code{list(c(x,y), c(x,y), ...)}.}
 
 \item{label}{Position of the label. Defaults to the midpoint of the gate.}
 

@@ -6,11 +6,8 @@
 #' @param xChannel The name of the x channel to which the gate applies.
 #' @param yChannel The name of the y channel to which the gate applies.
 #' @param name The name of the gate.
-#' @param vertices List of vectors of coordinates, like list(c(x,y), c(x,y), ...)
-#' @param xVertices **Deprecated** Use `vertices` instead. List of x
-#'   coordinates for the polygon's vertices.
-#' @param yVertices **Deprecated** Use `vertices` instead. List of y
-#'   coordinates for the polygon's vertices.
+#' @param vertices List of vectors of coordinates, like
+#' \code{list(c(x,y), c(x,y), ...)}.
 #' @param label Position of the label. Defaults to the midpoint of the gate.
 #' @param gid Group ID of the gate, used for tailoring. If this is not specified,
 #'   then a new Group ID will be created.
@@ -35,22 +32,15 @@
 #' createPolygonGate(experimentId, "FSC-A", "FSC-W", "my gate", list(c(1, 2), c(4, 5), c(7, 8)))
 #' }
 createPolygonGate <- function(experimentId, xChannel, yChannel, name,
-                              vertices = list(),
-                              xVertices = c(), yVertices = c(),
+                              vertices,
                               label = NULL,
                               gid = generateId(),
                               parentPopulationId = NULL, parentPopulation = NULL,
                               tailoredPerFile = FALSE, fcsFileId = NULL, fcsFile = NULL,
-                              locked = FALSE, createPopulation = TRUE) {
-  if (length(vertices) > 0) {
+                              locked = FALSE, createPopulation = is.null(fcsFileId)) {
+  if (is.null(label)) {
     label <- c(mean(sapply(vertices, "[[", 1)), mean(sapply(vertices, "[[", 2)))
     vertices <- do.call(rbind, vertices)
-  } else if (length(xVertices) > 0 && length(yVertices) > 0) {
-    warning("Arguments 'xVertices' and 'yVertices' are deprecated. Use 'vertices' instead.")
-    label <- c(mean(xVertices), mean(yVertices))
-    vertices <- matrix(c(xVertices, yVertices), ncol = 2)
-  } else {
-    stop("Either vertices or both xVertices and yVertices must be specified")
   }
 
   body <- list(
