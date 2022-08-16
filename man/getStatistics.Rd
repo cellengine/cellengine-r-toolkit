@@ -47,7 +47,7 @@ name, an error will be thrown. If specified, do not specify
 \item{q}{Quantile to calculate for "quantile" statistic, in the range 0 to 1.}
 
 \item{percentOf}{Single population ID or name, or list of population IDs or
-names the same length as \code{populationIds} parameter.
+names.
 
 \itemize{
 \item If omitted or the string "PARENT", then the percent of parent will

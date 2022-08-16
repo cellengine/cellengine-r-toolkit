@@ -31,7 +31,7 @@
 #'   \code{populationIds}.
 #' @param q Quantile to calculate for "quantile" statistic, in the range 0 to 1.
 #' @param percentOf Single population ID or name, or list of population IDs or
-#'   names the same length as \code{populationIds} parameter.
+#'   names.
 #'
 #'   \itemize{
 #'     \item If omitted or the string "PARENT", then the percent of parent will
@@ -113,12 +113,6 @@ getStatistics <- function(experimentId,
   }
 
   # percentOf argument
-  if (length(percentOf) > 1 && length(percentOf) != length(populationIds)) {
-    stop(paste0(
-      "If an array is specified for 'percentOf', it must have the ",
-      "same length as 'populations' or 'populationIds'."
-    ))
-  }
   percentofNonIds <- !grepl("^[A-Fa-f0-9]{24}$|^$", percentOf) # not ID or UNGATED
   if (any(percentofNonIds)) { # one or more values are not IDs; lookup by name
     queryPopulations <- percentOf[percentofNonIds]

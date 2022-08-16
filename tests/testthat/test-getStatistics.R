@@ -379,15 +379,6 @@ test_that("whitelists statistics", {{ expect_error(
   "Statistics \\[fake1, fake2\\] are not allowed"
 ) }})
 
-test_that("validates percentOf array is same length as populationIds", {{ setServer("https://my.server.com")
-  expect_error(
-    getStatistics("591a3b441d725115208a6fda",
-      statistics = c("percent"), compensationId = 0,
-      fcsFileIds = c("fid1"), populationIds = c("pname1"), percentOf = c("a", "b")
-    ),
-    "same length"
-  ) }})
-
 test_that("works, percentOf specified as single value", {
   with_mock(
     `httr::request_perform` = function(req, handle, refresh) {
