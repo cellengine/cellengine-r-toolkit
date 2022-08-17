@@ -145,3 +145,50 @@ test_that("toFlowCore converts a ScaleSet", {
   # ArcSinhScale (ensure cofactor captured correctly):
   expect_equal(tl@transforms$`PE-A`@f(10), asinh(10 / 150)) # nolint
 })
+
+test_that("toFlowCore converts a Compensation", {
+  skip_if_not_installed("flowCore")
+  library("flowCore")
+
+  ce = list(
+    `_id` = "62fc374ebe488d038956aa86",
+    channels = c("PE-A", "QDot605-A", "PE-Cy55-A", "APC-A", "Pacific Blue-A", "AmCyan-A"),
+    spillMatrix = matrix(
+      c(1, 0, 0, 0, 0, 0,
+        0.1, 1, 0, 0, 0, 0,
+        0, 0, 1, 0, 0, 0,
+        0.2, 0, 0, 1, 0, 0,
+        0, 0, 0, 0, 1, 0,
+        0, 0, 0, 0, 0, 1
+      ),
+      nrow = 6,
+      ncol = 6,
+      byrow = TRUE,
+      dimnames = list(
+        c("PE-A", "QDot605-A", "PE-Cy55-A", "APC-A", "Pacific Blue-A", "AmCyan-A"),
+        c("PE-A", "QDot605-A", "PE-Cy55-A", "APC-A", "Pacific Blue-A", "AmCyan-A")
+      )
+    ),
+    experimentId = "6297cdd1eff31f50bbdc76c1",
+    name = "Test comp"
+  )
+  fc <- toFlowCore(ce)
+  expect_equal(fc@compensationId, "Test comp")
+  expect_equal(fc@spillover, matrix(
+    c(1, 0, 0, 0, 0, 0,
+      0.1, 1, 0, 0, 0, 0,
+      0, 0, 1, 0, 0, 0,
+      0.2, 0, 0, 1, 0, 0,
+      0, 0, 0, 0, 1, 0,
+      0, 0, 0, 0, 0, 1
+    ),
+    nrow = 6,
+    ncol = 6,
+    byrow = TRUE,
+    dimnames = list(
+      c("PE-A", "QDot605-A", "PE-Cy55-A", "APC-A", "Pacific Blue-A", "AmCyan-A"),
+      c("PE-A", "QDot605-A", "PE-Cy55-A", "APC-A", "Pacific Blue-A", "AmCyan-A")
+    )
+  ))
+})
+

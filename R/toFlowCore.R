@@ -1,20 +1,29 @@
 library("stats")
 
-#' Convert a gate to flowCore
+#' Convert a CellEngine object to flowCore
 #'
 #' Converts a CellEngine object to its flowCore analogue.
 #'
 #' @param cellengineObject The CellEngine object to be converted.
+#' @examples
+#' \dontrun{
+#' # Converting a compensation:
+#' ceComp <- getCompensation(experimentId, byName("My comp"))
+#' fcComp <- toFlowCore(ceComp)
+#' }
 #' @export
 toFlowCore <- function(cellengineObject) {
-  if (!requireNamespace("flowCore")) {
+  if (!requireNamespace("flowCore"))
     stop("This function requires the 'flowCore' package.")
-  }
 
   if ("scales" %in% names(cellengineObject)) {
     class_ <- "ScaleSet"
   } else if ("type" %in% names(cellengineObject)) {
     class_ <- cellengineObject$type
+  } else if ("spillMatrix" %in% names(cellengineObject)) {
+    class_ <- "Compensation"
+  } else {
+    stop("Unknown/unsupported CellEngine object")
   }
 
   switch(class_,
@@ -24,7 +33,8 @@ toFlowCore <- function(cellengineObject) {
     "QuadrantGate" = stop("This gate representation is not yet implemented"),
     "SplitGate" = stop("This gate representation is not yet implemented"),
     "RangeGate" = stop("This gate representation is not yet implemented"),
-    "ScaleSet" = scaleSetToTransformList(cellengineObject)
+    "ScaleSet" = scaleSetToTransformList(cellengineObject),
+    "Compensation" = toFlowCoreCompensation(cellengineObject)
   )
 }
 
@@ -73,9 +83,6 @@ toFlowCorePolygonGate <- function(gate) {
 #' @param scaleSet The CellEngine scaleSet to be converted
 #' @noRd
 scaleSetToTransformList <- function(scaleSet) {
-  if (!requireNamespace("flowCore")) {
-    stop("This function requires the 'flowCore' package to be installed.")
-  }
   scales <- scaleSet$scales[[1]]
 
   funs <- sapply(seq_len(nrow(scales)), function(i) {
@@ -91,5 +98,12 @@ scaleSetToTransformList <- function(scaleSet) {
     from = scales$channelName,
     tfun = funs,
     transformationId = scaleSet$name
+  )
+}
+
+toFlowCoreCompensation <- function(comp) {
+  flowCore::compensation(
+    comp$spillMatrix,
+    compensationId = comp$name
   )
 }

@@ -168,3 +168,55 @@ test_that("ellipsoidGate is correctly converted to CE EllipseGate", {
   expect_equal(197.5205, mock_arg(mock, "major"), tolerance = 0.001)
   expect_equal(96.75568, mock_arg(mock, "minor"), tolerance = 0.001)
 })
+
+test_that("compensation is correctly converted to CE Compensation", {
+  skip_if_not_installed("flowCore")
+  library("flowCore")
+
+  with_mock(
+    `httr::request_perform` = function(req, handle, refresh) {
+      expect_equal(req$method, "POST")
+      expect_equal(req$url, "https://cellengine.com/api/v1/experiments/591a3b441d725115208a6fda/compensations")
+      body <- rawToChar(req$options$postfields)
+      expect_equal(body, '{"name":"defaultCompensation","channels":["Ax488-A","PE-A"],"spillMatrix":[1,0.1,0,1]}')
+      response <- httptest::fake_response(
+        req$url,
+        req$method,
+        content = '{"_id": "62a41fb7b72926ab549680db", "channels": ["Ax488-A","PE-A"],"spillMatrix": [1,0.1, 0,1], "experimentId": "591a3b441d725115208a6fdb", "name": "defaultCompensation"}',
+        status_code = 201,
+        headers = list(`Content-Type` = "application/json")
+      )
+      return(response)
+    },
+    {
+      setServer("https://cellengine.com")
+      experimentId <- "591a3b441d725115208a6fda"
+      fc <- flowCore::compensation(
+          matrix(
+          c(1,0.1, 0,1),
+          nrow=2,
+          ncol=2,
+          byrow=TRUE,
+          dimnames=list(
+            c("Ax488-A", "PE-A"),
+            c("Ax488-A", "PE-A")
+          )
+        )
+      )
+      ce <- fromFlowCore(fc, experimentId)
+      expect_equal(ce$experimentId, "591a3b441d725115208a6fdb")
+      expect_equal(ce$name, "defaultCompensation")
+      expect_equal(ce$`_id`, "62a41fb7b72926ab549680db")
+      expect_equal(ce$spillMatrix, matrix(
+        c(1,0.1, 0,1),
+        nrow=2,
+        ncol=2,
+        byrow=TRUE,
+        dimnames=list(
+          c("Ax488-A", "PE-A"),
+          c("Ax488-A", "PE-A")
+        )
+      ))
+    }
+  )
+})
