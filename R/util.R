@@ -189,7 +189,7 @@ byName <- function(name) {
 byNameHash <- new.env(hash = TRUE, parent = emptyenv())
 
 lookupByName <- function(listpath, name, prop = "name") {
-  if (class(name) != "_boxed_by_name") {
+  if (!isa(name, "_boxed_by_name")) {
     return(name)
   }
   name <- unclass(name)
