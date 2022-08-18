@@ -18,6 +18,7 @@ breaking changes compared to the pre-release version.
   parameter.
 
 ### Changed
+- **Breaking** Failed API requests will now stop instead of warn.
 - **Breaking** `getEvents()` now uses `check.names=FALSE`, so data.frame column
   names will be identical to the parameter names found in the FCS file. For
   example, "CD4 (Ax647-A)" will no longer be converted to "CD4..Ax647.A.".

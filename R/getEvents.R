@@ -107,7 +107,7 @@ getEvents <- function(experimentId,
 
   if (is.null(destination)) {
     response <- httr::GET(fullURL, query = params, httr::user_agent(ua))
-    httr::warn_for_status(response)
+    httr::stop_for_status(response)
     if (format == "TSV") {
       content <- httr::content(response, "text")
       content <- utils::read.table(text = content, header = headerQ, sep = "\t", check.names = F)
@@ -117,6 +117,6 @@ getEvents <- function(experimentId,
     return(content)
   } else {
     response <- httr::GET(fullURL, query = params, httr::user_agent(ua), httr::write_disk(destination, overwrite))
-    httr::warn_for_status(response)
+    httr::stop_for_status(response)
   }
 }

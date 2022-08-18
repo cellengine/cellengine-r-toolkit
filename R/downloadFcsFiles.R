@@ -81,5 +81,5 @@ downloadFcsFiles <- function(experimentId,
     httr::user_agent(ua),
     httr::write_disk(destination, overwrite)
   )
-  httr::warn_for_status(response)
+  httr::stop_for_status(response)
 }

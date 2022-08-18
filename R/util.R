@@ -5,12 +5,30 @@ pkg.env$baseURL <- Sys.getenv("CELLENGINE_BASE_URL", "https://cellengine.com")
 pkg.env$auth <- c()
 
 handleResponse <- function(response) {
-  httr::warn_for_status(response)
-  if (response$headers$`Content-Type` == "image/png") {
+  if (httr::http_type(response) == "image/png") {
     return(httr::content(response, as = "raw"))
   }
+
   content <- httr::content(response, "text", encoding = "UTF-8")
-  return(jsonlite::fromJSON(content, simplifyDataFrame = FALSE))
+
+  parsed <- if (startsWith(httr::http_type(response), "application/json")) {
+    jsonlite::fromJSON(content, simplifyDataFrame = FALSE)
+  } else {
+    content
+  }
+
+  if (response$status_code >= 400) {
+    stop(
+      sprintf(
+        "CellEngine API request failed [%s]\n%s", 
+        httr::status_code(response),
+        ifelse(is.list(parsed) && "error" %in% names(parsed), parsed$error, content)
+      ),
+      call. = FALSE
+    )
+  }
+
+  parsed
 }
 
 ua <- (function() {
@@ -100,7 +118,7 @@ baseDelete <- function(url, params = list()) {
                     query = params,
                     httr::user_agent(ua),
                     httr::add_headers(.headers = pkg.env$auth))
-  httr::warn_for_status(r)
+  httr::stop_for_status(r)
 }
 
 checkDefined <- function(param) {
