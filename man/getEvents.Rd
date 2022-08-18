@@ -19,11 +19,12 @@ getEvents(
 )
 }
 \arguments{
-\item{experimentId}{ID of experiment.}
+\item{experimentId}{ID of experiment or a \code{byName} expression.}
 
-\item{fcsFileId}{ID of FCS file.}
+\item{fcsFileId}{ID of FCS file or a \code{byName} expression.}
 
-\item{populationId}{Optional ID of population, for gated events.}
+\item{populationId}{Optional ID of population or a \code{byName} expression,
+for gated events.}
 
 \item{compensation}{ID of compensation or special compensation type
 (\code{UNCOMPENSATED} or \code{FILE_INTERNAL}) to use for gating. This
@@ -40,10 +41,49 @@ spill string (file-internal compensation).}
 
 \item{format}{One of "TSV" or "FCS".}
 
-\item{destination}{Optional, if specified, write the file to the specified
-path instead of returning it as a binary blob (FCS) or data.frame (TSV).}
+\item{destination}{Optional destination for the file.
 
-\item{overwrite}{Optional, if a destination is specified, allows destination
+If omitted, the result will be returned as a binary blob (if \code{format}
+is "FCS") or a data.frame (if \code{format} is "TSV").
+
+If a string, the result will be written to disk.
+
+If a \code{list} with a \code{host} value, transfer the file to
+S3-compatible storage. S3 transfers occur "in the cloud," directly from
+CellEngine to the S3 provider, without transferring the file to your local
+computer. S3 transfer specifications accept the following:
+
+\itemize{
+\item \code{host} Required. The full S3 host, including the bucket and
+region as applicable. For example, for AWS, this would look like
+\code{"mybucket.s3.us-east-2.amazonaws.com"}.\preformatted{\\item \code{path} The path prefix for the object. This is concatenated
+  directly with the file name. Use a trailing "/" to specify a
+  "directory" in S3. For example, if the path is \code{"/Study001/"} and
+  the file is called \code{"Specimen01.fcs"}, the object key will be
+  \code{"/Study001/Specimen01.fcs"}. Use no trailing slash to specify a
+  file prefix. For example, if the path is \code{"/transfer1_"}, the
+  object key will be \code{"/transfer1_Specimen01.fcs"}. Note that S3
+  object keys must start with "/"; a path of "" will result in an
+  \code{Invalid URI} response. Defaults to "/".
+
+\\item \code{accessKey} Required for private buckets. The S3 access key.
+  Must be associated with an account with appropriate S3 permissions
+  (e.g. \code{PutObject}).
+
+\\item \code{secretKey} Required for private buckets. The S3 secret key.
+
+\\item \code{headers} Custom headers to include in the S3 request. Common
+  examples are \code{x-amz-storage-class}/\code{x-goog-storage-class} and
+  \code{x-amz-server-side-encryption}. Some headers, such as
+  \code{Content-Length}, \code{Content-MD5} and \code{Content-Type},
+  cannot be modified. Refer to https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutObject.html
+  for AWS header documentation and https://cloud.google.com/storage/docs/migrating#custommeta
+  regarding compatibility with Google Cloud Platform.
+}
+
+}}
+
+\item{overwrite}{Optional, if a destination is a string, allows destination
 file to be overwritten.}
 
 \item{subsampling}{Optional, subsampling parameters in the form
@@ -60,7 +100,7 @@ corresponds to the index of the event in the original file.}
 }
 \description{
 Retrieves events from an FCS file or gated population as either an FCS or
-TSV file.
+TSV file. Optionally transfers directly to S3-compatible storage.
 }
 \details{
 Tip: FCS files are more compact than TSV files. Use that format for faster

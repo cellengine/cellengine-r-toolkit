@@ -1,14 +1,15 @@
 #' Get FCS File Events
 #'
 #' Retrieves events from an FCS file or gated population as either an FCS or
-#' TSV file.
+#' TSV file. Optionally transfers directly to S3-compatible storage.
 #'
 #' Tip: FCS files are more compact than TSV files. Use that format for faster
 #' downloads. Use a library such as flowCore to parse FCS files.
 #'
-#' @param experimentId ID of experiment.
-#' @param fcsFileId ID of FCS file.
-#' @param populationId Optional ID of population, for gated events.
+#' @param experimentId ID of experiment or a \code{byName} expression.
+#' @param fcsFileId ID of FCS file or a \code{byName} expression.
+#' @param populationId Optional ID of population or a \code{byName} expression,
+#'   for gated events.
 #' @param compensation ID of compensation or special compensation type
 #'   (\code{UNCOMPENSATED} or \code{FILE_INTERNAL}) to use for gating. This
 #'   should generally match what you used to create your gates. Not required if
@@ -20,9 +21,49 @@
 #'   spill string (file-internal compensation).
 #' @param headerQ for TSV format only: if true, file will contain a header row.
 #' @param format One of "TSV" or "FCS".
-#' @param destination Optional, if specified, write the file to the specified
-#'   path instead of returning it as a binary blob (FCS) or data.frame (TSV).
-#' @param overwrite Optional, if a destination is specified, allows destination
+#' @param destination Optional destination for the file.
+#'
+#'   If omitted, the result will be returned as a binary blob (if \code{format}
+#'   is "FCS") or a data.frame (if \code{format} is "TSV").
+#'
+#'   If a string, the result will be written to disk.
+#'
+#'   If a \code{list} with a \code{host} value, transfer the file to
+#'   S3-compatible storage. S3 transfers occur "in the cloud," directly from
+#'   CellEngine to the S3 provider, without transferring the file to your local
+#'   computer. S3 transfer specifications accept the following:
+#'
+#'   \itemize{
+#'     \item \code{host} Required. The full S3 host, including the bucket and
+#'       region as applicable. For example, for AWS, this would look like
+#'       \code{"mybucket.s3.us-east-2.amazonaws.com"}.
+#'
+#'     \item \code{path} The path prefix for the object. This is concatenated
+#'       directly with the file name. Use a trailing "/" to specify a
+#'       "directory" in S3. For example, if the path is \code{"/Study001/"} and
+#'       the file is called \code{"Specimen01.fcs"}, the object key will be
+#'       \code{"/Study001/Specimen01.fcs"}. Use no trailing slash to specify a
+#'       file prefix. For example, if the path is \code{"/transfer1_"}, the
+#'       object key will be \code{"/transfer1_Specimen01.fcs"}. Note that S3
+#'       object keys must start with "/"; a path of "" will result in an
+#'       \code{Invalid URI} response. Defaults to "/".
+#'
+#'     \item \code{accessKey} Required for private buckets. The S3 access key.
+#'       Must be associated with an account with appropriate S3 permissions
+#'       (e.g. \code{PutObject}).
+#'
+#'     \item \code{secretKey} Required for private buckets. The S3 secret key.
+#'
+#'     \item \code{headers} Custom headers to include in the S3 request. Common
+#'       examples are \code{x-amz-storage-class}/\code{x-goog-storage-class} and
+#'       \code{x-amz-server-side-encryption}. Some headers, such as
+#'       \code{Content-Length}, \code{Content-MD5} and \code{Content-Type},
+#'       cannot be modified. Refer to https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutObject.html
+#'       for AWS header documentation and https://cloud.google.com/storage/docs/migrating#custommeta
+#'       regarding compatibility with Google Cloud Platform.
+#'   }
+#'
+#' @param overwrite Optional, if a destination is a string, allows destination
 #'   file to be overwritten.
 #' @param subsampling Optional, subsampling parameters in the form
 #'   \code{list(preSubsampleN = number, preSubsampleP = number,
@@ -59,6 +100,7 @@ getEvents <- function(experimentId,
                       compensation = NULL,
                       compensatedQ = FALSE,
                       headerQ = TRUE,
+                      # originalQ = FALSE, TODO
                       format = "FCS",
                       destination = NULL,
                       overwrite = FALSE,
@@ -73,6 +115,9 @@ getEvents <- function(experimentId,
     stop("'compensation' parameter is required for gated populations.")
   } else if (is.null(compensation) && isTRUE(compensatedQ)) {
     stop("'compensation' parameter is required when returning compensated data.")
+  } else if (is.null(compensation)) {
+    # compensation=null in URL query currently causes API error
+    compensation = UNCOMPENSATED
   }
 
   if (!is.null(subsampling$preSubsampleN) && !is.null(subsampling$preSubsampleP)) {
@@ -89,7 +134,8 @@ getEvents <- function(experimentId,
 
   ensureBaseUrl()
 
-  fullURL <- paste0(pkg.env$baseURL, "/api/v1/experiments/", experimentId, "/fcsfiles/", fcsFileId, ".", format)
+  urlPath <- paste0("/api/v1/experiments/", experimentId, "/fcsfiles/", fcsFileId, ".", format)
+  fullURL <- paste0(pkg.env$baseURL, urlPath)
 
   params <- list(
     populationId = populationId,
@@ -98,6 +144,8 @@ getEvents <- function(experimentId,
     headers = headerQ,
     addEventNumber = addEventNumber
   )
+
+  params <- coerceParameters(params)
 
   subsamplingParams <- Filter(Negate(is.null), subsampling[
     c("preSubsampleN", "preSubsampleP", "postSubsampleN", "postSubsampleP", "seed")
@@ -115,8 +163,22 @@ getEvents <- function(experimentId,
       content <- httr::content(response, "raw")
     }
     return(content)
-  } else {
+  } else if (is.list(destination) && "host" %in% names(destination)) {
+    body <- list(host = jsonlite::unbox(destination$host))
+    if ("path" %in% names(destination))
+      body <- c(body, list(path = jsonlite::unbox(destination$path)))
+    if ("accessKey" %in% names(destination))
+      body <- c(body, list(accessKey = jsonlite::unbox(destination$accessKey)))
+    if ("secretKey" %in% names(destination))
+      body <- c(body, list(secretKey = jsonlite::unbox(destination$secretKey)))
+    if ("headers" %in% names(destination))
+      body <- c(body, list(headers = destination$headers))
+    body <- jsonlite::toJSON(list(dest = body), null = "null", auto_unbox=TRUE)
+    basePost(urlPath, body, params)
+  } else if (is.character(destination)) {
     response <- httr::GET(fullURL, query = params, httr::user_agent(ua), httr::write_disk(destination, overwrite))
     httr::stop_for_status(response)
+  } else {
+    stop("'destination' must be NULL, an S3 transfer specification list, or a file path.")
   }
 }

@@ -16,6 +16,7 @@ breaking changes compared to the pre-release version.
 - `deleteCompensation()` function
 - All functions now consistently accept `byName()` expressions for any ID
   parameter.
+- Support for transfers to S3 to `getEvents()`
 
 ### Changed
 - **Breaking** Failed API requests will now stop instead of warn.
