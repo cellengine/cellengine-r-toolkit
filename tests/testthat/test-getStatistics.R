@@ -1,12 +1,14 @@
 context("getStatistics")
 
-test_that("throws an error if both fcsFileIds and fcsFiles is specified", {{ expect_error(
-  getStatistics("eid",
-    statistics = c(), compensationId = 0,
-    fcsFileIds = c("a"), fcsFiles = c("b")
-  ),
-  "only one of 'fcsFiles"
-) }})
+test_that("throws an error if both fcsFileIds and fcsFiles is specified", {
+  expect_error(
+    getStatistics("eid",
+      statistics = c(), compensationId = 0,
+      fcsFileIds = c("a"), fcsFiles = c("b")
+    ),
+    "only one of 'fcsFiles"
+  )
+})
 
 test_that("looks up fcsFiles by name; unambiguous match", {
   with_mock(
@@ -185,13 +187,15 @@ test_that("looks up fcsFiles by name; errors with too few and ambiguous results"
   )
 })
 
-test_that("throws an error if both populationIds and populations is specified", {{ expect_error(
-  getStatistics("eid",
-    statistics = c(), compensationId = 0, fcsFileIds = c("a"),
-    populationIds = c("a"), populations = c("b")
-  ),
-  "only one"
-) }})
+test_that("throws an error if both populationIds and populations is specified", {
+  expect_error(
+    getStatistics("eid",
+      statistics = c(), compensationId = 0, fcsFileIds = c("a"),
+      populationIds = c("a"), populations = c("b")
+    ),
+    "only one"
+  )
+})
 
 test_that("looks up population by name; unambiguous match", {
   with_mock(
@@ -369,15 +373,17 @@ test_that("looks up populations by name; errors with too few and ambiguous resul
   )
 })
 
-test_that("whitelists statistics", {{ expect_error(
-  getStatistics("eid",
-    statistics = c("MEAN", "median", "quantile", "stdDev", "CV", "MAD", "eventcount", "percent", "fake1", "fake2"),
-    compensationId = 0,
-    fcsFileIds = c("fid1", "fid2"),
-    populationIds = c("p1", "p2")
-  ),
-  "Statistics \\[fake1, fake2\\] are not allowed"
-) }})
+test_that("allow-lists statistics", {
+  expect_error(
+    getStatistics("eid",
+      statistics = c("MEAN", "median", "quantile", "stdDev", "CV", "MAD", "eventcount", "percent", "fake1", "fake2"),
+      compensationId = 0,
+      fcsFileIds = c("fid1", "fid2"),
+      populationIds = c("p1", "p2")
+    ),
+    "Statistics \\[fake1, fake2\\] are not allowed"
+  )
+})
 
 test_that("works, percentOf specified as single value", {
   with_mock(
@@ -603,7 +609,7 @@ test_that("works, percentOf specified as a mixed array of names, IDs and UNGATED
         "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/bulkstatistics" = {
           expect_equal(req$method, "POST")
           body <- rawToChar(req$options$postfields)
-          expect_equal(body, '{\"fcsFileIds\":[\"591a3b441d725115208a6fdb\"],\"statistics\":[\"percent\"],\"populationIds\":["591a3b441d725115208a6fdc","591a3b441d725115208a6fd1","591a3b441d725115208a6fe1"],\"compensationId\":0,\"q\":0.5,\"format\":\"json\",\"annotations\":true,\"percentOf\":["591a3b5f1d725115208a7088","591a3b5f1d725115208a7090",""]}') # nolint
+          expect_equal(body, '{\"fcsFileIds\":[\"591a3b441d725115208a6fdb\"],\"statistics\":[\"percent\"],\"populationIds\":["591a3b441d725115208a6fdc","591a3b441d725115208a6fd1","591a3b441d725115208a6fe1"],\"compensationId\":0,\"q\":0.5,\"format\":\"json\",\"annotations\":true,\"percentOf\":["591a3b5f1d725115208a7088","591a3b5f1d725115208a7090",null]}') # nolint
           response <- httptest::fake_response(
             req$url,
             req$method,
@@ -637,7 +643,7 @@ test_that("works, percentOf specified as null (ungated)", {
         "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/bulkstatistics" = {
           expect_equal(req$method, "POST")
           body <- rawToChar(req$options$postfields)
-          expect_equal(body, '{\"fcsFileIds\":[\"591a3b441d725115208a6fdb\"],\"statistics\":[\"percent\"],\"populationIds\":[\"591a3b441d725115208a6fdc\",\"591a3b441d725115208a6fd1\"],\"compensationId\":0,\"q\":0.5,\"format\":\"json\",\"annotations\":true,\"percentOf\":""}') # nolint
+          expect_equal(body, '{\"fcsFileIds\":[\"591a3b441d725115208a6fdb\"],\"statistics\":[\"percent\"],\"populationIds\":[\"591a3b441d725115208a6fdc\",\"591a3b441d725115208a6fd1\"],\"compensationId\":0,\"q\":0.5,\"format\":\"json\",\"annotations\":true,\"percentOf\":null}') # nolint
           response <- httptest::fake_response(
             req$url,
             req$method,
@@ -671,7 +677,7 @@ test_that("works, gets statistics for all FCS files and populations", {
         "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/bulkstatistics" = {
           expect_equal(req$method, "POST")
           body <- rawToChar(req$options$postfields)
-          expect_equal(body, '{\"fcsFileIds\":null,\"statistics\":[\"percent\"],\"populationIds\":null,\"compensationId\":0,\"q\":0.5,\"format\":\"json\",\"annotations\":true,\"percentOf\":""}') # nolint
+          expect_equal(body, '{\"fcsFileIds\":null,\"statistics\":[\"percent\"],\"populationIds\":null,\"compensationId\":0,\"q\":0.5,\"format\":\"json\",\"annotations\":true,\"percentOf\":null}') # nolint
           response <- httptest::fake_response(
             req$url,
             req$method,

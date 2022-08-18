@@ -1,126 +1,67 @@
-# Returns _id of population,using either of the parentPopulationId or parentPopulation params.
-parsePopulationArgs <- function(parentPopulationId, parentPopulation, experimentId) {
-  if (!is.null(parentPopulationId) && !is.null(parentPopulation)) {
-    stop("Please specify only one of 'parentPopulation' or 'parentPopulationId'.")
-  }
-
-  if (!is.null(parentPopulation)) { # attempt to lookup by name
-    pops <- getPopulations(experimentId, params = list(
-      query = sprintf("eq(name, \"%s\")", parentPopulation)
+parseFcsFileArgs <- function(body, tailoredPerFile, fcsFileId, experimentId) {
+  if (is.null(fcsFileId)) {
+    # not tailored, or global tailored gate
+    body <- c(body, list(
+      tailoredPerFile = jsonlite::unbox(isTRUE(tailoredPerFile)),
+      fcsFileId = jsonlite::unbox(NULL)
     ))
-    if (length(pops) == 0) {
-      stop(sprintf("Population with the name '%s' does not exist in the experiment.", parentPopulation))
-    }
-    if (length(pops) > 1) {
-      stop(sprintf(paste0(
-        "More than one population with the name '%s' exists in the experiment. ",
-        "Cannot find unambiguous parent population."
-      ), parentPopulation))
-    }
-    parentPopulationId <- pops[[1]]$`_id`
-  }
-
-  return(parentPopulationId)
-}
-
-# Assigns fcsFileId to body, using either of the fcsFileId or fcsFile params.
-parseFcsFileArgs <- function(body, tailoredPerFile, fcsFileId, fcsFile, experimentId) {
-  body <- c(body, list(tailoredPerFile = jsonlite::unbox(tailoredPerFile)))
-
-  if (!tailoredPerFile) {
     return(body)
-  } # not tailored
-  if (is.null(fcsFileId) && is.null(fcsFile)) {
-    return(body)
-  } # global tailored gate
-
-  if (!is.null(fcsFileId) && !is.null(fcsFile)) {
-    stop("Please specify only one of 'fcsFile' or 'fcsFileId'.")
   }
 
-  if (!is.null(fcsFile)) { # attempt to lookup by name
-    files <- getFcsFiles(experimentId, params = list(
-      query = sprintf("eq(filename, \"%s\")", fcsFile),
-      fields = "+_id"
-    ))
-    if (length(files) == 0) {
-      stop(sprintf("FCS file with the name '%s' does not exist in the experiment.", fcsFile))
-    }
-    if (length(files) > 1) {
-      stop(sprintf(paste0(
-        "More than one FCS file with the name '%s' exists in the experiment. ",
-        "Cannot find unambiguous file to create tailored gate."
-      ), fcsFile))
-    }
-    fcsFileId <- files[[1]]$`_id`
-  }
-
-  body <- c(body, list(fcsFileId = jsonlite::unbox(fcsFileId)))
-
+  # tailored per file
+  fcsFileId <- lookupByName(
+    paste0("/api/v1/experiments/", experimentId, "/fcsfiles"),
+    fcsFileId,
+    "filename"
+  )
+  body <- c(body, list(
+    tailoredPerFile = jsonlite::unbox(TRUE),
+    fcsFileId = jsonlite::unbox(fcsFileId)
+  ))
   return(body)
 }
 
 # Assigns common properties to the body, then makes the request.
-commonGateCreate <- function(body, name, gid,
+commonGateCreate <- function(body, gid,
                              experimentId,
-                             parentPopulationId, parentPopulation,
-                             tailoredPerFile, fcsFileId, fcsFile,
-                             createPopulation) {
+                             parentPopulationId,
+                             tailoredPerFile, fcsFileId,
+                             createPopulation,
+                             name = NULL, names = NULL) {
   checkDefined(experimentId)
+  experimentId <- lookupByName("experiments", experimentId)
 
-  parentPopulationId <- parsePopulationArgs(
-    parentPopulationId, parentPopulation,
-    experimentId
-  )
+  # name or names
+  if (is.null(name))
+    body <- c(body, list(names = names))
+  else
+    body <- c(body, list(name = jsonlite::unbox(name)))
 
-  body <- c(body, list(
-    parentPopulationId = jsonlite::unbox(parentPopulationId),
-    name = jsonlite::unbox(name),
-    gid = jsonlite::unbox(gid)
-  ))
+  body <- c(body, list(gid = jsonlite::unbox(gid)))
 
-  body <- parseFcsFileArgs(body, tailoredPerFile, fcsFileId, fcsFile, experimentId)
+  body <- parseFcsFileArgs(body, tailoredPerFile, fcsFileId, experimentId)
 
   body <- jsonlite::toJSON(body, null = "null", digits = NA)
   path <- paste0("/api/v1/experiments/", experimentId, "/gates")
 
   if (createPopulation) {
-    gateResp <- basePost(path, body, params = list("createPopulation" = TRUE))
+    parentPopulationId <- lookupByName(
+      paste0("/api/v1/experiments/", experimentId, "/populations"),
+      parentPopulationId
+    )
+    if (parentPopulationId == UNGATED)
+      parentPopulationId = NULL
+    gateResp <- basePost(
+      path,
+      body,
+      params = list(
+        createPopulation = TRUE,
+        parentPopulationId = jsonlite::unbox(parentPopulationId)
+      )
+    )
     return(gateResp)
   } else {
-    gateResp <- basePost(path, body, list())
-    return(list(gate = gateResp))
-  }
-}
-
-# Assigns common properties to body of compound gate, then makes the request.
-compoundGateCreate <- function(body, names, gid, gids,
-                               experimentId,
-                               parentPopulationId, parentPopulation,
-                               tailoredPerFile, fcsFileId, fcsFile,
-                               createPopulation) {
-  checkDefined(experimentId)
-
-  parentPopulationId <- parsePopulationArgs(
-    parentPopulationId, parentPopulation,
-    experimentId
-  )
-
-  body <- c(body, list(
-    parentPopulationId = jsonlite::unbox(parentPopulationId),
-    gid = jsonlite::unbox(gid)
-  ))
-
-  body <- parseFcsFileArgs(body, tailoredPerFile, fcsFileId, fcsFile, experimentId)
-
-  body <- jsonlite::toJSON(body, null = "null", digits = NA)
-  path <- paste0("/api/v1/experiments/", experimentId, "/gates")
-
-  if (createPopulation) {
-    gateResp <- basePost(path, body, params = list("createPopulation" = TRUE))
-    return(gateResp)
-  } else {
-    gateResp <- basePost(path, body, list())
+    gateResp <- basePost(path, body)
     return(list(gate = gateResp))
   }
 }

@@ -28,15 +28,16 @@ ensureBaseUrl <- function() {
 }
 
 coerceParameters <- function(params) {
-  logicalToCharacter <- function(v) {
+  params <- lapply(params, function(v) {
     if (isTRUE(v)) {
       return("true")
     } else if (isFALSE(v)) {
       return("false")
+    } else if (is.null(v)) {
+      return("null")
     }
     return(v)
-  }
-  params <- lapply(params, logicalToCharacter)
+  })
 
   return(params)
 }

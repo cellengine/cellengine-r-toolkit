@@ -14,16 +14,15 @@ createSplitGate(
   gids = replicate(2, generateId()),
   labels = NULL,
   parentPopulationId = NULL,
-  parentPopulation = NULL,
   tailoredPerFile = FALSE,
   fcsFileId = NULL,
-  fcsFile = NULL,
   locked = FALSE,
-  createPopulation = TRUE
+  createPopulations = is.null(fcsFileId)
 )
 }
 \arguments{
-\item{experimentId}{The ID of the experiment to which to add the gate.}
+\item{experimentId}{The ID of the experiment to which to add the gate, or a
+\code{byName} expression.}
 
 \item{xChannel}{The name of the x channel to which the gate applies.}
 
@@ -45,31 +44,26 @@ populations must refer.}
 \item{labels}{Positions of the quadrant labels. A list of two length-2 vectors in
 the order: L, R. These are set automatically to the top corners.}
 
-\item{parentPopulationId}{ID of the parent population. Use \code{NULL} for
-the "ungated" population. If specified, do not specify \code{parentPopulation}.}
+\item{parentPopulationId}{ID of the parent population or a \code{byName}
+expression. Use \code{UNGATED} for the "ungated" population. Only used if
+\code{createPopulation} is \code{TRUE}.}
 
-\item{parentPopulation}{Name of the parent population. An attempt will be made
-to find the population by name. If zero or more than one population exists
-with the name, an error will be thrown. If specified, do not specify
-\code{parentPopulationId}.}
+\item{tailoredPerFile}{Whether or not this gate is tailored per FCS file.}
 
-\item{tailoredPerFile}{Whether this gate is tailored per FCS file.}
-
-\item{fcsFileId}{ID of FCS file, if tailored per file. Use \code{NULL} for
-the global gate in a tailored gate group. If specified, do not specify
-\code{fcsFile}.}
-
-\item{fcsFile}{Name of FCS file, if tailored per file. An attempt will be made
-to find the file by name. If zero or more than one file exists with the name,
-an error will be thrown. If specified, do not specify \code{fcsFileId}.}
+\item{fcsFileId}{ID of FCS file or a \code{byName} expression, if tailored
+per file. Use \code{NULL} for the global gate in a tailored gate group.}
 
 \item{locked}{Prevents modification of the gate via the web interface.}
 
-\item{createPopulation}{Automatically create corresponding population.}
+\item{createPopulations}{Automatically create corresponding populations.
+Specify \code{parentPopulationId} if set to \code{TRUE}. Because R performs
+partial matching of argument names, this can also be specified as
+\code{createPopulation} for consistency with the other \code{create__Gate}
+functions.}
 }
 \description{
 Creates a split gate. split gates have two sectors (right and left),
-each with a unique gid and name.
+each with a name and unique gid.
 }
 \examples{
 \dontrun{

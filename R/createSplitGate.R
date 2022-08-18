@@ -1,9 +1,10 @@
 #' Create split gate
 #'
 #' Creates a split gate. split gates have two sectors (right and left),
-#' each with a unique gid and name.
+#' each with a name and unique gid.
 #'
-#' @param experimentId The ID of the experiment to which to add the gate.
+#' @param experimentId The ID of the experiment to which to add the gate, or a
+#'   \code{byName} expression.
 #' @param xChannel The name of the x channel to which the gate applies.
 #' @param name The name of the gate. Each sector is named with this parameter
 #' and a split flag (L, R).
@@ -17,21 +18,18 @@
 #'   top-level GID. Each sector has a unique model gid and name to which
 #'   populations must refer.
 #' @param gids Group IDs of each sector, assigned to model.gids.
-#' @param parentPopulationId ID of the parent population. Use \code{NULL} for
-#'   the "ungated" population. If specified, do not specify \code{parentPopulation}.
-#' @param parentPopulation Name of the parent population. An attempt will be made
-#'   to find the population by name. If zero or more than one population exists
-#'   with the name, an error will be thrown. If specified, do not specify
-#'   \code{parentPopulationId}.
-#' @param tailoredPerFile Whether this gate is tailored per FCS file.
-#' @param fcsFileId ID of FCS file, if tailored per file. Use \code{NULL} for
-#'   the global gate in a tailored gate group. If specified, do not specify
-#'   \code{fcsFile}.
-#' @param fcsFile Name of FCS file, if tailored per file. An attempt will be made
-#'   to find the file by name. If zero or more than one file exists with the name,
-#'   an error will be thrown. If specified, do not specify \code{fcsFileId}.
+#' @param parentPopulationId ID of the parent population or a \code{byName}
+#'   expression. Use \code{UNGATED} for the "ungated" population. Only used if
+#'   \code{createPopulation} is \code{TRUE}.
+#' @param tailoredPerFile Whether or not this gate is tailored per FCS file.
+#' @param fcsFileId ID of FCS file or a \code{byName} expression, if tailored
+#'   per file. Use \code{NULL} for the global gate in a tailored gate group.
 #' @param locked Prevents modification of the gate via the web interface.
-#' @param createPopulation Automatically create corresponding population.
+#' @param createPopulations Automatically create corresponding populations.
+#'   Specify \code{parentPopulationId} if set to \code{TRUE}. Because R performs
+#'   partial matching of argument names, this can also be specified as
+#'   \code{createPopulation} for consistency with the other \code{create__Gate}
+#'   functions.
 #' @export
 #' @examples
 #' \dontrun{
@@ -39,9 +37,10 @@
 #' }
 createSplitGate <- function(experimentId, xChannel, name, x, y = 0.5,
                             gid = generateId(), gids = replicate(2, generateId()), labels = NULL,
-                            parentPopulationId = NULL, parentPopulation = NULL,
-                            tailoredPerFile = FALSE, fcsFileId = NULL, fcsFile = NULL,
-                            locked = FALSE, createPopulation = TRUE) {
+                            parentPopulationId = NULL,
+                            tailoredPerFile = FALSE, fcsFileId = NULL,
+                            locked = FALSE, createPopulations = is.null(fcsFileId)) {
+
   # set labels based on axis scale
   if (length(labels) == 0) {
     scales <- data.frame(getScaleSets(experimentId)$scales)
@@ -57,7 +56,7 @@ createSplitGate <- function(experimentId, xChannel, name, x, y = 0.5,
     stop("Labels must be a list of 2 length-2 vectors.")
   }
 
-  names <- paste(name, (c("(L)", "(R)")))
+  names <- paste(name, c("(L)", "(R)"))
 
   body <- list(
     model = list(
@@ -70,12 +69,12 @@ createSplitGate <- function(experimentId, xChannel, name, x, y = 0.5,
       labels = labels
     ),
     xChannel = jsonlite::unbox(xChannel),
-    names = names,
     type = jsonlite::unbox("SplitGate")
   )
 
-  compoundGateCreate(
-    body, names, gid, gids, experimentId, parentPopulationId, parentPopulation,
-    tailoredPerFile, fcsFileId, fcsFile, createPopulation
+  commonGateCreate(
+    body, gid, experimentId, parentPopulationId,
+    tailoredPerFile, fcsFileId, createPopulations,
+    names = names
   )
 }

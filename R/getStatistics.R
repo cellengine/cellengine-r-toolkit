@@ -169,8 +169,15 @@ getStatistics <- function(experimentId,
   )
 
   if (!is.null(percentOf)) {
-    percentOf <- lapply(percentOf, jsonlite::unbox)
-    if (length(percentOf) == 1) percentOf <- percentOf[[1]]
+    percentOf <- lapply(percentOf, function(x) {
+      # ifelse can't return NULL
+      if (x == UNGATED)
+        jsonlite::unbox(NULL)
+      else
+        jsonlite::unbox(x)
+    })
+    if (length(percentOf) == 1)
+      percentOf <- percentOf[[1]]
     body <- c(body, list(percentOf = percentOf))
   }
 
