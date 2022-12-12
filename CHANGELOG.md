@@ -44,7 +44,7 @@ breaking changes compared to the pre-release version.
   e.g. `createRectangleGate(..., fcsFileId=byName("Sample1.fcs"), parentPopulationId=byName("CD3+"), ...)`.
 - `createQuadrantGate()` and `createSplitGate()` accept either
   `createPopulation`, singular, for consistency with other `create__Gate`
-  functions; or `createPopulations`, plural, to accurate reflect the behavior.
+  functions; or `createPopulations`, plural, to accurately reflect the behavior.
 
 ### Removed
 
