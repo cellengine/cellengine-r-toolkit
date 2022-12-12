@@ -141,6 +141,14 @@ UNCOMPENSATED <- 0 # nolint
 #' @export
 FILE_INTERNAL <- -1 # nolint
 
+#' Per-file compensation.
+#'
+#' A constant representing per-file compensation (a possible value for an
+#' experiment's \code{activeCompensation}).
+#'
+#' @export
+PER_FILE <- -2 # nolint
+
 #' Ungated.
 #'
 #' A constant representing the ungated population.

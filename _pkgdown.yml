@@ -86,6 +86,7 @@ reference:
       - FILE_INTERNAL
       - generateId
       - getErrorInfo
+      - PER_FILE
       - UNCOMPENSATED
       - UNGATED
 
