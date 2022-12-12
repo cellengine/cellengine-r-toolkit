@@ -704,3 +704,49 @@ test_that("works, gets statistics for all FCS files", {
     }
   )
 })
+
+test_that("handles null populationId, parentPopulationId, reagent in response", {
+  with_mock(
+    `httr::request_perform` = function(req, handle, refresh) {
+      switch(req$url,
+        "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/bulkstatistics" = {
+          expect_equal(req$method, "POST")
+          response <- httptest::fake_response(
+            req$url,
+            req$method,
+            content = '[
+              {
+                "parentPopulationId": null,
+                "populationId": null,
+                "parentPopulation": "Ungated",
+                "population": "Ungated",
+                "percent": 1.2,
+                "channel": "Ce140",
+                "reagent": null,
+                "filename": "test.fcs",
+                "fcsFileId": "619555fa3f6700533c6f9006"
+              }
+            ]',
+            status_code = 200,
+            headers = list(`Content-Type` = "application/json")
+          )
+          return(response)
+        },
+        {
+          stop(sprintf("Unexpected request URL: %s", req$url))
+        }
+      )
+    },
+    {
+      setServer("https://my.server.com")
+      res <- getStatistics("591a3b441d725115208a6fda",
+        statistics = c("percent"), compensationId = 0,
+        fcsFileIds = NULL, populationIds = NULL,
+        percentOf = UNGATED
+      )
+      expect_equal(res$populationId[1], UNGATED)
+      expect_equal(res$parentPopulationId[1], UNGATED)
+      expect_equal(res$reagent[1], NA)
+    }
+  )
+})

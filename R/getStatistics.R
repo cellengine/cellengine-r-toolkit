@@ -185,8 +185,18 @@ getStatistics <- function(experimentId,
 
   path <- paste0("/api/v1/experiments/", experimentId, "/bulkstatistics")
   body <- jsonlite::toJSON(body, null = "null", digits = NA)
-  r = basePost(path, body)
-  as.data.frame(r)
+  resp <- basePost(path, body)
+  # Convert NULLs to values that are easier to work with in R
+  prepared <- lapply(resp, function (row) {
+    if (is.null(row$populationId))
+      row$populationId = UNGATED
+    if (is.null(row$parentPopulationId))
+      row$parentPopulationId = UNGATED
+    if (is.null(row$reagent))
+      row$reagent = NA
+    return(row)
+  })
+  as.data.frame(prepared)
 }
 
 lookupFilesByName <- function(experimentId, fcsFileIds, fcsFiles) {

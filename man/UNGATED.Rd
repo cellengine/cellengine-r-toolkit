@@ -13,4 +13,9 @@ UNGATED
 \description{
 A constant representing the ungated population.
 }
+\details{
+CellEngine uses the JSON value \code{null} to represent this in API requests
+and responses. However, working with \code{NULL} is cumbersome in R. Thus,
+the empty string is used instead.
+}
 \keyword{datasets}
