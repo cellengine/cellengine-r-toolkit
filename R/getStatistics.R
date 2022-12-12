@@ -9,8 +9,9 @@
 #' and \code{percentOf} parameters. IDs are also guaranteed to reference unique
 #' files and populations, while names may be non-unique, in which case an error
 #' will be raised.
-#' Specify neither \code{fcsFileIds} nor {fcsFiles} to calculate statistics for
-#' all non-control FCS files.
+#'
+#' Specify neither \code{fcsFileIds} nor \code{fcsFiles} to calculate statistics
+#' for all non-control FCS files.
 #'
 #' @param experimentId ID of experiment.
 #' @param fcsFileIds IDs of FCS files. If specified, do not specify \code{fcsFiles}.
@@ -103,6 +104,10 @@ getStatistics <- function(experimentId,
   experimentId <- lookupByName("/api/v1/experiments", experimentId)
 
   fcsFileIds <- lookupFilesByName(experimentId, fcsFileIds, fcsFiles)
+  # All files if unspecified ([] in the API req)
+  if (is.null(fcsFileIds))
+    fcsFileIds <- list()
+
   populationIds <- lookupPopulationsByName(experimentId, populationIds, populations)
 
   # percentOf argument

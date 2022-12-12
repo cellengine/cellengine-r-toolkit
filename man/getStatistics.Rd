@@ -85,8 +85,9 @@ provide IDs instead of names in the \code{fcsFileIds}, \code{populationIds}
 and \code{percentOf} parameters. IDs are also guaranteed to reference unique
 files and populations, while names may be non-unique, in which case an error
 will be raised.
-Specify neither \code{fcsFileIds} nor {fcsFiles} to calculate statistics for
-all non-control FCS files.
+
+Specify neither \code{fcsFileIds} nor \code{fcsFiles} to calculate statistics
+for all non-control FCS files.
 }
 \examples{
 \dontrun{

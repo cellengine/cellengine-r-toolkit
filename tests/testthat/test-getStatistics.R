@@ -672,14 +672,14 @@ test_that("works, percentOf specified as UNGATED", {
   )
 })
 
-test_that("works, gets statistics for all FCS files and populations", {
+test_that("works, gets statistics for all FCS files", {
   with_mock(
     `httr::request_perform` = function(req, handle, refresh) {
       switch(req$url,
         "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/bulkstatistics" = {
           expect_equal(req$method, "POST")
           body <- rawToChar(req$options$postfields)
-          expect_equal(body, '{\"fcsFileIds\":null,\"statistics\":[\"percent\"],\"populationIds\":null,\"compensationId\":0,\"q\":0.5,\"format\":\"json\",\"annotations\":true,\"percentOf\":null}') # nolint
+          expect_equal(body, '{\"fcsFileIds\":[],\"statistics\":[\"percent\"],\"populationIds\":null,\"compensationId\":0,\"q\":0.5,\"format\":\"json\",\"annotations\":true,\"percentOf\":null}') # nolint
           response <- httptest::fake_response(
             req$url,
             req$method,

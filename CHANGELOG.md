@@ -46,6 +46,8 @@ breaking changes compared to the pre-release version.
 - `createQuadrantGate()` and `createSplitGate()` accept either
   `createPopulation`, singular, for consistency with other `create__Gate`
   functions; or `createPopulations`, plural, to accurately reflect the behavior.
+- `getStatistics(fcsFileIds=NULL, ...)` should return statistics for all
+  non-control FCS files.
 
 ### Removed
 
