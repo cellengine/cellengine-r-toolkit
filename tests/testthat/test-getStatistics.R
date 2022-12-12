@@ -638,7 +638,7 @@ test_that("works, percentOf specified as a mixed array of names, IDs and UNGATED
   )
 })
 
-test_that("works, percentOf specified as null (ungated)", {
+test_that("works, percentOf specified as UNGATED", {
   with_mock(
     `httr::request_perform` = function(req, handle, refresh) {
       switch(req$url,
