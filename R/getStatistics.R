@@ -20,7 +20,7 @@
 #' @param channels Names of channels (for statistic types "mean", "median",
 #'   "quantile", "stddev", "cv" and "mad"). Use channel short names, not reagents.
 #' @param statistics Statistics to export. Valid options: "mean", "median",
-#'   "quantile", "stddev", "cv", "eventcount", "percent", "mad".
+#'   "quantile", "stddev", "cv", "eventcount", "percent", "mad", "geometricmean".
 #' @param compensationId Compensation to apply. May be an ID,
 #'   \code{cellengine::UNCOMPENSATED} or \code{cellengine::FILE_INTERNAL}.
 #' @param populationIds IDs of populations. If specified, do not specify
@@ -104,13 +104,6 @@ getStatistics <- function(experimentId,
 
   fcsFileIds <- lookupFilesByName(experimentId, fcsFileIds, fcsFiles)
   populationIds <- lookupPopulationsByName(experimentId, populationIds, populations)
-
-  # statistics argument
-  allowedStatistics <- c("mean", "median", "quantile", "stddev", "cv", "eventcount", "percent", "mad") # TODO geomean
-  statsDiff <- setdiff(tolower(statistics), allowedStatistics)
-  if (length(statsDiff) > 0) {
-    stop(sprintf("Statistics [%s] are not allowed.", paste0(statsDiff, collapse = ", ")))
-  }
 
   # percentOf argument
   percentofNonIds <- !grepl("^[A-Fa-f0-9]{24}$|^$", percentOf) # not ID or UNGATED

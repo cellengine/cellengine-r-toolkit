@@ -31,7 +31,7 @@ error will be thrown. If specified, do not specify \code{fcsFileIds}.}
 "quantile", "stddev", "cv" and "mad"). Use channel short names, not reagents.}
 
 \item{statistics}{Statistics to export. Valid options: "mean", "median",
-"quantile", "stddev", "cv", "eventcount", "percent", "mad".}
+"quantile", "stddev", "cv", "eventcount", "percent", "mad", "geometricmean".}
 
 \item{compensationId}{Compensation to apply. May be an ID,
 \code{cellengine::UNCOMPENSATED} or \code{cellengine::FILE_INTERNAL}.}

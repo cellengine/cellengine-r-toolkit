@@ -214,6 +214,23 @@ test_that("looks up population by name; unambiguous match", {
           )
           return(response)
         },
+        "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/bulkstatistics" = {
+          expect_equal(req$method, "POST")
+          response <- httptest::fake_response(
+            req$url,
+            req$method,
+            content = '[
+              {
+                "fcsFileId":"591a3b441d725115208a6fdb","filename":"abc.fcs","populationId":"591a3b5f1d725115208a7088",
+                "population":"pname1","annotations":{"row":"A","column":"1"},"parentPopulation":"singlets",
+                "parentPopulationId":"591a3b441d725115208a6fde","percent":21.89535144846171
+              }
+            ]',
+            status_code = 200,
+            headers = list(`Content-Type` = "application/json")
+          )
+          return(response)
+        },
         {
           stop(sprintf("Unexpected request URL: %s", req$url))
         }
@@ -221,14 +238,11 @@ test_that("looks up population by name; unambiguous match", {
     },
     {
       setServer("https://my.server.com")
-      # Specify fake stat so the call dies after the lookup
-      expect_error(
-        getStatistics("591a3b441d725115208a6fda",
-          statistics = c("fake"), compensationId = 0,
-          fcsFileIds = c("fid1"), populations = c("pname1")
-        ),
-        "not allowed"
+      res = getStatistics("591a3b441d725115208a6fda",
+        statistics = c("percent"), compensationId = 0,
+        fcsFileIds = c("591a3b441d725115208a6fdb"), populations = c("pname1")
       )
+      expect_true(is.data.frame(res))
     }
   )
 })
@@ -370,18 +384,6 @@ test_that("looks up populations by name; errors with too few and ambiguous resul
         "1 population\\(s\\) were not found"
       )
     }
-  )
-})
-
-test_that("allow-lists statistics", {
-  expect_error(
-    getStatistics("eid",
-      statistics = c("MEAN", "median", "quantile", "stdDev", "CV", "MAD", "eventcount", "percent", "fake1", "fake2"),
-      compensationId = 0,
-      fcsFileIds = c("fid1", "fid2"),
-      populationIds = c("p1", "p2")
-    ),
-    "Statistics \\[fake1, fake2\\] are not allowed"
   )
 })
 
