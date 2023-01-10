@@ -14,7 +14,8 @@ getEvents(
   format = "FCS",
   destination = NULL,
   overwrite = FALSE,
-  subsampling = list()
+  subsampling = list(),
+  addEventNumber = FALSE
 )
 }
 \arguments{
@@ -52,6 +53,10 @@ Subsample-N options specify absolute subsampling values, and subsample-P options
 specify a fractional subsampling value (0 to 1); specify only one pre-
 and/or one post-subsample option. Specify a \code{seed} for reproducible
 downsampling.}
+
+\item{addEventNumber}{Optional. Add an event number column to the exported
+file. When a `populationId` is specified (when gating), this number
+corresponds to the index of the event in the original file.}
 }
 \description{
 Retrieves events from an FCS file or gated population as either an FCS or

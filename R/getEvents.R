@@ -31,6 +31,9 @@
 #'   specify a fractional subsampling value (0 to 1); specify only one pre-
 #'   and/or one post-subsample option. Specify a \code{seed} for reproducible
 #'   downsampling.
+#' @param addEventNumber Optional. Add an event number column to the exported
+#'   file. When a `populationId` is specified (when gating), this number
+#'   corresponds to the index of the event in the original file.
 #' @export
 #' @examples
 #' \dontrun{
@@ -59,7 +62,8 @@ getEvents <- function(experimentId,
                       format = "FCS",
                       destination = NULL,
                       overwrite = FALSE,
-                      subsampling = list()) {
+                      subsampling = list(),
+                      addEventNumber = FALSE) {
   checkDefined(experimentId)
   experimentId <- lookupByName("experiments", experimentId)
   checkDefined(fcsFileId)
@@ -95,7 +99,8 @@ getEvents <- function(experimentId,
     populationId = populationId,
     compensationId = compensation,
     compensatedQ = compensatedQ,
-    headers = headerQ
+    headers = headerQ,
+    addEventNumber = addEventNumber
   )
 
   subsamplingParams <- Filter(Negate(is.null), subsampling[
