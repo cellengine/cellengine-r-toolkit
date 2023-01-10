@@ -74,30 +74,30 @@
 </h3>
 <p><a href="https://bioconductor.org/packages/release/bioc/html/flowDensity.html" class="external-link">flowDensity</a> gates can be converted to CellEngine gates. The class of a flowDensity gate is <code>"CellPopulation"</code>. The <code>flowDensity@filter</code> is always a polygon, so <code><a href="../reference/createPolygonGate.html">cellengine::createPolygonGate</a></code> can be used for this purpose:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">file</span> <span class="op">=</span> <span class="st">"sample1.fcs"</span>
-<span class="va">flowDensityGate</span> <span class="op">&lt;-</span> <span class="fu">flowDensity</span><span class="fu">::</span><span class="fu">flowDensity</span><span class="op">(</span><span class="va">file</span>, <span class="va">params</span><span class="op">)</span><span class="op">@</span><span class="va">filter</span>
-<span class="va">experimentId</span> <span class="op">&lt;-</span> <span class="st">"5d2f8b4b21fd0676fb3a6a8c"</span>
-
-<span class="va">polyGate</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/createPolygonGate.html">createPolygonGate</a></span><span class="op">(</span>
-    <span class="va">experimentId</span>,
-    <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">flowDensityGate</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,
-    <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">flowDensityGate</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>,
-    <span class="va">name</span>,
-    vertices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">flowDensityGate</span><span class="op">)</span>,
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">file</span> <span class="op">=</span> <span class="st">"sample1.fcs"</span></span>
+<span><span class="va">flowDensityGate</span> <span class="op">&lt;-</span> <span class="fu">flowDensity</span><span class="fu">::</span><span class="fu">flowDensity</span><span class="op">(</span><span class="va">file</span>, <span class="va">params</span><span class="op">)</span><span class="op">@</span><span class="va">filter</span></span>
+<span><span class="va">experimentId</span> <span class="op">&lt;-</span> <span class="st">"5d2f8b4b21fd0676fb3a6a8c"</span></span>
+<span></span>
+<span><span class="va">polyGate</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/createPolygonGate.html">createPolygonGate</a></span><span class="op">(</span></span>
+<span>    <span class="va">experimentId</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">flowDensityGate</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">flowDensityGate</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>,</span>
+<span>    <span class="va">name</span>,</span>
+<span>    vertices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">flowDensityGate</span><span class="op">)</span>,</span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>As a function:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">convertFlowDensity</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">flowDensityOutput</span>, <span class="va">experimentId</span>, <span class="va">name</span> <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">flowDensityGate</span> <span class="op">&lt;-</span> <span class="va">flowDensityOutput</span><span class="op">@</span><span class="va">filter</span>
-  <span class="fu"><a href="../reference/createPolygonGate.html">createPolygonGate</a></span><span class="op">(</span>
-    <span class="va">experimentId</span>,
-    <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">flowDensityGate</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,
-    <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">flowDensityGate</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>,
-    <span class="va">name</span>,
-    vertices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">flowDensityGate</span><span class="op">)</span>,
-    <span class="va">...</span>
-  <span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">convertFlowDensity</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">flowDensityOutput</span>, <span class="va">experimentId</span>, <span class="va">name</span> <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">flowDensityGate</span> <span class="op">&lt;-</span> <span class="va">flowDensityOutput</span><span class="op">@</span><span class="va">filter</span></span>
+<span>  <span class="fu"><a href="../reference/createPolygonGate.html">createPolygonGate</a></span><span class="op">(</span></span>
+<span>    <span class="va">experimentId</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">flowDensityGate</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">flowDensityGate</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>,</span>
+<span>    <span class="va">name</span>,</span>
+<span>    vertices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">flowDensityGate</span><span class="op">)</span>,</span>
+<span>    <span class="va">...</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 </div>
   </div>
 
@@ -116,7 +116,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

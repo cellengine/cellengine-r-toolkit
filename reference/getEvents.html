@@ -49,49 +49,68 @@ TSV file.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">getEvents</span><span class="op">(</span>
-  <span class="va">experimentId</span>,
-  <span class="va">fcsFileId</span>,
-  populationId <span class="op">=</span> <span class="cn">NULL</span>,
-  compensation <span class="op">=</span> <span class="cn">NULL</span>,
-  compensatedQ <span class="op">=</span> <span class="cn">FALSE</span>,
-  headerQ <span class="op">=</span> <span class="cn">FALSE</span>,
-  format <span class="op">=</span> <span class="st">"FCS"</span>,
-  destination <span class="op">=</span> <span class="cn">NULL</span>,
-  overwrite <span class="op">=</span> <span class="cn">FALSE</span>,
-  subsampling <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">getEvents</span><span class="op">(</span></span>
+<span>  <span class="va">experimentId</span>,</span>
+<span>  <span class="va">fcsFileId</span>,</span>
+<span>  populationId <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  compensation <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  compensatedQ <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  headerQ <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  format <span class="op">=</span> <span class="st">"FCS"</span>,</span>
+<span>  destination <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  overwrite <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  subsampling <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  addEventNumber <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>experimentId</dt>
 <dd><p>ID of experiment.</p></dd>
+
+
 <dt>fcsFileId</dt>
 <dd><p>ID of FCS file.</p></dd>
+
+
 <dt>populationId</dt>
 <dd><p>Optional ID of population, for gated events.</p></dd>
+
+
 <dt>compensation</dt>
 <dd><p>ID of compensation or special compensation type
 (<code>UNCOMPENSATED</code> or <code>FILE_INTERNAL</code>) to use for gating. This
 should generally match what you used to create your gates. Not required if
 <code>compensatedQ</code> is <code>FALSE</code> and exporting ungated files.</p></dd>
+
+
 <dt>compensatedQ</dt>
 <dd><p>If <code>TRUE</code>, applies the compensation specified in
 compensation to the exported events. For TSV format, the numerical values
 will be the compensated values. For FCS format, the numerical values will
 be unchanged, but the file header will contain the compensation as the
 spill string (file-internal compensation).</p></dd>
+
+
 <dt>headerQ</dt>
 <dd><p>for TSV format only: if true, file will contain a header row.</p></dd>
+
+
 <dt>format</dt>
 <dd><p>One of "TSV" or "FCS".</p></dd>
+
+
 <dt>destination</dt>
 <dd><p>Optional, if specified, write the file to the specified
 path instead of returning it as a binary blob (FCS) or data.frame (TSV).</p></dd>
+
+
 <dt>overwrite</dt>
 <dd><p>Optional, if a destination is specified, allows destination
 file to be overwritten.</p></dd>
+
+
 <dt>subsampling</dt>
 <dd><p>Optional, subsampling parameters in the form
 <code>list(preSubsampleN = number, preSubsampleP = number,
@@ -100,6 +119,13 @@ Subsample-N options specify absolute subsampling values, and subsample-P options
 specify a fractional subsampling value (0 to 1); specify only one pre-
 and/or one post-subsample option. Specify a <code>seed</code> for reproducible
 downsampling.</p></dd>
+
+
+<dt>addEventNumber</dt>
+<dd><p>Optional. Add an event number column to the exported
+file. When a `populationId` is specified (when gating), this number
+corresponds to the index of the event in the original file.</p></dd>
+
 </dl></div>
     <div id="details">
     <h2>Details</h2>
@@ -109,23 +135,23 @@ downloads. Use a library such as flowCore to parse FCS files.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="co"># Returns the FCS file as a binary blob (requires parsing before use):</span></span>
-<span class="r-in"><span class="fu">getEvents</span><span class="op">(</span><span class="va">experimentId</span>, <span class="va">fcsFileId</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Returns a data.frame:</span></span>
-<span class="r-in"><span class="fu">getEvents</span><span class="op">(</span><span class="va">experimentId</span>, <span class="va">fcsFileId</span>, <span class="va">populationId</span>, format <span class="op">=</span> <span class="st">"TSV"</span>, headerQ <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Saves as an FCS file to disk:</span></span>
-<span class="r-in"><span class="fu">getEvents</span><span class="op">(</span><span class="va">experimentId</span>, <span class="va">fcsFileId</span>, destination <span class="op">=</span> <span class="st">"/path/to/output.fcs"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Saves as a TSV file to disk:</span></span>
-<span class="r-in"><span class="fu">getEvents</span><span class="op">(</span><span class="va">experimentId</span>, <span class="va">fcsFileId</span>, destination <span class="op">=</span> <span class="st">"/path/to/output.tsv"</span>, format <span class="op">=</span> <span class="st">"TSV"</span>, headerQ <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Subsamples and gates to only contain events in the specified population:</span></span>
-<span class="r-in"><span class="va">subsampling</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>preSubsampleN <span class="op">=</span> <span class="fl">5000</span>, seed <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">getEvents</span><span class="op">(</span><span class="va">experimentId</span>, <span class="va">fcsFileId</span>, <span class="va">populationId</span>, subsampling <span class="op">=</span> <span class="va">subsampling</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># Returns the FCS file as a binary blob (requires parsing before use):</span></span></span>
+<span class="r-in"><span><span class="fu">getEvents</span><span class="op">(</span><span class="va">experimentId</span>, <span class="va">fcsFileId</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Returns a data.frame:</span></span></span>
+<span class="r-in"><span><span class="fu">getEvents</span><span class="op">(</span><span class="va">experimentId</span>, <span class="va">fcsFileId</span>, <span class="va">populationId</span>, format <span class="op">=</span> <span class="st">"TSV"</span>, headerQ <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Saves as an FCS file to disk:</span></span></span>
+<span class="r-in"><span><span class="fu">getEvents</span><span class="op">(</span><span class="va">experimentId</span>, <span class="va">fcsFileId</span>, destination <span class="op">=</span> <span class="st">"/path/to/output.fcs"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Saves as a TSV file to disk:</span></span></span>
+<span class="r-in"><span><span class="fu">getEvents</span><span class="op">(</span><span class="va">experimentId</span>, <span class="va">fcsFileId</span>, destination <span class="op">=</span> <span class="st">"/path/to/output.tsv"</span>, format <span class="op">=</span> <span class="st">"TSV"</span>, headerQ <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Subsamples and gates to only contain events in the specified population:</span></span></span>
+<span class="r-in"><span><span class="va">subsampling</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>preSubsampleN <span class="op">=</span> <span class="fl">5000</span>, seed <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">getEvents</span><span class="op">(</span><span class="va">experimentId</span>, <span class="va">fcsFileId</span>, <span class="va">populationId</span>, subsampling <span class="op">=</span> <span class="va">subsampling</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -140,7 +166,7 @@ downloads. Use a library such as flowCore to parse FCS files.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

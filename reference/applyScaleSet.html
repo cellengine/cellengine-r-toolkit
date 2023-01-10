@@ -47,29 +47,34 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">applyScaleSet</span><span class="op">(</span><span class="va">scaleset</span>, <span class="va">data</span>, clamp_q <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">applyScaleSet</span><span class="op">(</span><span class="va">scaleset</span>, <span class="va">data</span>, clamp_q <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>scaleset</dt>
 <dd><p>ScaleSet. Accepts a ScaleSet or <code>scaleSet$scales</code>.</p></dd>
+
+
 <dt>data</dt>
 <dd><p>Events data from an FcsFile, i.e. <code>events@expr</code></p></dd>
+
+
 <dt>clamp_q</dt>
 <dd><p>If true, values will be clamped to fall within the scale's
 minimum and maximum. Applies clamping to all scales in a ScaleSet</p></dd>
+
 </dl></div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="fu"><a href="getEvents.html">getEvents</a></span><span class="op">(</span><span class="va">experimentId</span>, <span class="va">fcsFileId</span>, destination <span class="op">=</span> <span class="st">"myFile.fcs"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">events</span> <span class="op">&lt;-</span> <span class="fu">flowCore</span><span class="fu">::</span><span class="fu">read.FCS</span><span class="op">(</span><span class="st">"myFile.fcs"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">events</span><span class="op">@</span><span class="va">exprs</span></span>
-<span class="r-in"><span class="va">scaleSet</span> <span class="op">&lt;-</span> <span class="fu"><a href="getScaleSets.html">getScaleSets</a></span><span class="op">(</span><span class="va">experimentId</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span></span>
-<span class="r-in"><span class="fu">applyScaleSet</span><span class="op">(</span><span class="va">scaleSet</span>, <span class="va">data</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="getEvents.html">getEvents</a></span><span class="op">(</span><span class="va">experimentId</span>, <span class="va">fcsFileId</span>, destination <span class="op">=</span> <span class="st">"myFile.fcs"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">events</span> <span class="op">&lt;-</span> <span class="fu">flowCore</span><span class="fu">::</span><span class="fu">read.FCS</span><span class="op">(</span><span class="st">"myFile.fcs"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">events</span><span class="op">@</span><span class="va">exprs</span></span></span>
+<span class="r-in"><span><span class="va">scaleSet</span> <span class="op">&lt;-</span> <span class="fu"><a href="getScaleSets.html">getScaleSets</a></span><span class="op">(</span><span class="va">experimentId</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span></span></span>
+<span class="r-in"><span><span class="fu">applyScaleSet</span><span class="op">(</span><span class="va">scaleSet</span>, <span class="va">data</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -84,7 +89,7 @@ minimum and maximum. Applies clamping to all scales in a ScaleSet</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

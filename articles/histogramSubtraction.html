@@ -105,150 +105,150 @@
 </table>
 </div>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#' Performs subtraction of two histograms to calculate percent positive.</span>
-<span class="co">#'</span>
-<span class="co">#' @param experimentId ID of experiment or a [`byName`] expression.</span>
-<span class="co">#' @param channel The channel name, like "PE-A" (not the reagent name like</span>
-<span class="co">#'   "CD3").</span>
-<span class="co">#' @param population The population ID or a [`byName`] expression.</span>
-<span class="co">#' @param file1 ID or `byName` expression of the file to subtract from (the test</span>
-<span class="co">#'   or sample file).</span>
-<span class="co">#' @param file2 ID of `byName` expression of the file to subtract (the control</span>
-<span class="co">#'   file).</span>
-<span class="co">#' @param method One of `"channel-by-channel"`, `"Overton"`, `"ENS"` or `"KS"`.</span>
-<span class="co">#' @param bins The number of histogram bins/channels. (Not applicable to `"KS"`</span>
-<span class="co">#'   method.)</span>
-<span class="co">#' @param showPlot If `TRUE`, displays a barplot of the subtracted histograms.</span>
-<span class="co">#'   (Not applicable to `"KS"` or `"ENS"` methods.)</span>
-<span class="co">#' @md</span>
-<span class="co">#' @examples</span>
-<span class="co">#' \dontrun{</span>
-<span class="co">#' library("cellengine")</span>
-<span class="co">#' authenticate() # prompts for username and password</span>
-<span class="co">#' subtractHistograms("5af60df8e1694f07a276a307", # experimentId</span>
-<span class="co">#'                    channel = "Nd150Di",</span>
-<span class="co">#'                    population = byName("CD33+"),</span>
-<span class="co">#'                    file1 = byName("LRS047_IL2GMCSF.fcs"),</span>
-<span class="co">#'                    file2 = byName("LRS047_unstim.fcs"),</span>
-<span class="co">#'                    method = "ENS")</span>
-<span class="co">#' # returns a scalar estimating the percent positive.</span>
-<span class="co">#' }</span>
-<span class="va">subtractHistograms</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">experimentId</span>,
-                               <span class="va">channel</span>,
-                               <span class="va">population</span>,
-                               <span class="va">file1</span>,
-                               <span class="va">file2</span>,
-                               <span class="va">method</span><span class="op">=</span><span class="st">"ENS"</span>,
-                               <span class="va">bins</span><span class="op">=</span><span class="fl">256</span>,
-                               <span class="va">showPlot</span><span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> <span class="op">{</span>
-
-  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="op">(</span><span class="va">method</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"channel-by-channel"</span>, <span class="st">"Overton"</span>, <span class="st">"ENS"</span>, <span class="st">"KS"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-    <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="st">"method must be one of 'channel-by-channel', 'Overton', 'ENS' or 'KS'."</span><span class="op">)</span>
-
-  <span class="va">experiment</span> <span class="op">=</span> <span class="fu"><a href="../reference/getExperiment.html">getExperiment</a></span><span class="op">(</span><span class="va">experimentId</span><span class="op">)</span>
-  <span class="va">scaleSet</span> <span class="op">=</span> <span class="fu"><a href="../reference/getScaleSets.html">getScaleSets</a></span><span class="op">(</span><span class="va">experimentId</span><span class="op">)</span><span class="op">$</span><span class="va">scales</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>
-  <span class="va">scale</span> <span class="op">=</span> <span class="va">scaleSet</span><span class="op">[</span><span class="va">scaleSet</span><span class="op">$</span><span class="va">channelName</span> <span class="op">==</span> <span class="va">channel</span>, <span class="st">"scale"</span><span class="op">]</span>
-  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">scale</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span>
-    <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Channel "</span>, <span class="va">channel</span>, <span class="st">" not found in experiment. Please check the spelling."</span><span class="op">)</span><span class="op">)</span>
-
-  <span class="va">file1data</span> <span class="op">=</span> <span class="fu"><a href="../reference/getEvents.html">getEvents</a></span><span class="op">(</span><span class="va">experimentId</span>,
-                        <span class="va">file1</span>,
-                        <span class="va">population</span>,
-                        compensatedQ <span class="op">=</span> <span class="cn">TRUE</span>,
-                        compensation <span class="op">=</span> <span class="va">experiment</span><span class="op">$</span><span class="va">activeCompensation</span>,
-                        headerQ <span class="op">=</span> <span class="cn">TRUE</span>,
-                        format<span class="op">=</span><span class="st">"TSV"</span><span class="op">)</span>
-  <span class="va">file2data</span> <span class="op">=</span> <span class="fu"><a href="../reference/getEvents.html">getEvents</a></span><span class="op">(</span><span class="va">experimentId</span>,
-                        <span class="va">file2</span>,
-                        <span class="va">population</span>,
-                        compensatedQ <span class="op">=</span> <span class="cn">TRUE</span>,
-                        compensation <span class="op">=</span> <span class="va">experiment</span><span class="op">$</span><span class="va">activeCompensation</span>,
-                        headerQ <span class="op">=</span> <span class="cn">TRUE</span>,
-                        format<span class="op">=</span><span class="st">"TSV"</span><span class="op">)</span>
-
-  <span class="co"># TODO: in v1 of the CellEngine toolkit, remove make.names here.</span>
-  <span class="co"># sub() is used to remove the leading X from make.names("488") -&gt; "X488"</span>
-  <span class="va">file1col</span> <span class="op">=</span> <span class="va">file1data</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">sub</a></span><span class="op">(</span><span class="st">"^X"</span>, <span class="st">""</span>, <span class="fu"><a href="https://rdrr.io/r/base/make.names.html" class="external-link">make.names</a></span><span class="op">(</span><span class="va">channel</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">file1data</span><span class="op">)</span><span class="op">)</span><span class="op">]</span>
-  <span class="va">file2col</span> <span class="op">=</span> <span class="va">file2data</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">sub</a></span><span class="op">(</span><span class="st">"^X"</span>, <span class="st">""</span>, <span class="fu"><a href="https://rdrr.io/r/base/make.names.html" class="external-link">make.names</a></span><span class="op">(</span><span class="va">channel</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">file2data</span><span class="op">)</span><span class="op">)</span><span class="op">]</span>
-
-  <span class="co"># Warning: if clamp_q = FALSE, then ultra-negative values can impact histograms.</span>
-  <span class="va">file1col</span> <span class="op">=</span> <span class="fu"><a href="../reference/applyScale.html">applyScale</a></span><span class="op">(</span><span class="va">scale</span>, <span class="va">file1col</span>, clamp_q <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-  <span class="va">file2col</span> <span class="op">=</span> <span class="fu"><a href="../reference/applyScale.html">applyScale</a></span><span class="op">(</span><span class="va">scale</span>, <span class="va">file2col</span>, clamp_q <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-  <span class="kw">if</span> <span class="op">(</span><span class="va">method</span> <span class="op">==</span> <span class="st">"KS"</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">ks</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/ks.test.html" class="external-link">ks.test</a></span><span class="op">(</span><span class="va">file2col</span>, <span class="va">file1col</span>, alternative<span class="op">=</span><span class="st">"greater"</span><span class="op">)</span>
-    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fl">100</span> <span class="op">*</span> <span class="va">ks</span><span class="op">$</span><span class="va">statistic</span><span class="op">)</span>
-  <span class="op">}</span>
-
-  <span class="co"># Precompute bins</span>
-  <span class="va">minVal</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">file1col</span>, <span class="va">file2col</span><span class="op">)</span>
-  <span class="va">maxVal</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">file1col</span>, <span class="va">file2col</span><span class="op">)</span>
-  <span class="va">breaks</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="va">minVal</span>, <span class="va">maxVal</span>, length.out <span class="op">=</span> <span class="va">bins</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span>
-
-  <span class="co"># Bin data into histogram</span>
-  <span class="va">file1counts</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tabulate.html" class="external-link">tabulate</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cut.html" class="external-link">cut</a></span><span class="op">(</span><span class="va">file1col</span>, <span class="va">breaks</span>, labels<span class="op">=</span><span class="cn">F</span>, include.lowest<span class="op">=</span><span class="cn">T</span><span class="op">)</span>, nbins<span class="op">=</span><span class="va">bins</span><span class="op">)</span>
-  <span class="va">file2counts</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tabulate.html" class="external-link">tabulate</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cut.html" class="external-link">cut</a></span><span class="op">(</span><span class="va">file2col</span>, <span class="va">breaks</span>, labels<span class="op">=</span><span class="cn">F</span>, include.lowest<span class="op">=</span><span class="cn">T</span><span class="op">)</span>, nbins<span class="op">=</span><span class="va">bins</span><span class="op">)</span>
-
-  <span class="co"># Rescale the counts as if the same number of events are in both histograms.</span>
-  <span class="va">normFactor</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">file1col</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">file2col</span><span class="op">)</span>
-  <span class="va">file2counts</span> <span class="op">=</span> <span class="va">file2counts</span> <span class="op">*</span> <span class="va">normFactor</span>
-
-  <span class="kw">if</span> <span class="op">(</span><span class="va">method</span> <span class="op">==</span> <span class="st">"channel-by-channel"</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">difference</span> <span class="op">=</span> <span class="va">file1counts</span> <span class="op">-</span> <span class="va">file2counts</span>
-    <span class="va">difference</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">pmax</a></span><span class="op">(</span><span class="va">difference</span>, <span class="fl">0</span><span class="op">)</span>
-    <span class="kw">if</span> <span class="op">(</span><span class="va">showPlot</span><span class="op">)</span>
-      <span class="fu"><a href="https://rdrr.io/r/graphics/barplot.html" class="external-link">barplot</a></span><span class="op">(</span><span class="va">difference</span><span class="op">)</span>
-    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fl">100</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">difference</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">file1col</span><span class="op">)</span><span class="op">)</span>
-
-  <span class="op">}</span> <span class="kw">else</span> <span class="kw">if</span> <span class="op">(</span><span class="va">method</span> <span class="op">==</span> <span class="st">"ENS"</span><span class="op">)</span> <span class="op">{</span> <span class="co"># Super enhanced D-max</span>
-    <span class="co"># Cumulative sum, normalized to 1</span>
-    <span class="va">cum1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cumsum.html" class="external-link">cumsum</a></span><span class="op">(</span><span class="va">file1counts</span><span class="op">)</span>
-    <span class="va">cum1</span> <span class="op">=</span> <span class="va">cum1</span> <span class="op">/</span> <span class="va">cum1</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">cum1</span><span class="op">)</span><span class="op">]</span>
-    <span class="va">cum2</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cumsum.html" class="external-link">cumsum</a></span><span class="op">(</span><span class="va">file2counts</span><span class="op">)</span>
-    <span class="va">cum2</span> <span class="op">=</span> <span class="va">cum2</span> <span class="op">/</span> <span class="va">cum2</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">cum2</span><span class="op">)</span><span class="op">]</span>
-
-    <span class="co"># Max positive difference</span>
-    <span class="va">xd</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/which.min.html" class="external-link">which.max</a></span><span class="op">(</span><span class="va">cum2</span> <span class="op">-</span> <span class="va">cum1</span><span class="op">)</span>
-    <span class="va">Cx</span> <span class="op">=</span> <span class="va">cum2</span><span class="op">[</span><span class="va">xd</span><span class="op">]</span>
-    <span class="va">Tx</span> <span class="op">=</span> <span class="va">cum1</span><span class="op">[</span><span class="va">xd</span><span class="op">]</span>
-    <span class="va">Dx</span> <span class="op">=</span> <span class="va">Cx</span> <span class="op">-</span> <span class="va">Tx</span>
-
-    <span class="co"># In theory, Dx is equal to Overton's subtraction.</span>
-    <span class="co"># Dx / Cx is the "enhanced Dmax" (pos_ed, scenic view 4)</span>
-
-    <span class="co"># Keep the histogram portion from 1 to xd and renormalize so the sum is 1</span>
-    <span class="va">cum1d</span> <span class="op">=</span> <span class="va">cum1</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">xd</span><span class="op">]</span>
-    <span class="va">cum1d</span> <span class="op">=</span> <span class="va">cum1d</span> <span class="op">/</span> <span class="va">cum1d</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">cum1d</span><span class="op">)</span><span class="op">]</span>
-    <span class="va">cum2d</span> <span class="op">=</span> <span class="va">cum2</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">xd</span><span class="op">]</span>
-    <span class="va">cum2d</span> <span class="op">=</span> <span class="va">cum2d</span> <span class="op">/</span> <span class="va">cum2d</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">cum2d</span><span class="op">)</span><span class="op">]</span>
-
-    <span class="va">xd2</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/which.min.html" class="external-link">which.max</a></span><span class="op">(</span><span class="va">cum2d</span> <span class="op">-</span> <span class="va">cum1d</span><span class="op">)</span>
-
-    <span class="va">pos_ens</span> <span class="op">=</span> <span class="op">(</span><span class="va">Cx</span> <span class="op">-</span> <span class="va">Tx</span><span class="op">)</span> <span class="op">/</span> <span class="va">Cx</span> <span class="op">+</span> <span class="op">(</span><span class="va">cum2</span><span class="op">[</span><span class="va">xd2</span><span class="op">]</span> <span class="op">*</span> <span class="va">Tx</span> <span class="op">-</span> <span class="va">Cx</span> <span class="op">*</span> <span class="va">cum1</span><span class="op">[</span><span class="va">xd2</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="va">Cx</span> <span class="op">*</span> <span class="va">Cx</span><span class="op">)</span>
-
-    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fl">100</span> <span class="op">*</span> <span class="va">pos_ens</span><span class="op">)</span>
-
-  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span> <span class="co"># Overton with corrections.</span>
-    <span class="co"># See Appendix A of Overton 1988 and Overton 1989</span>
-    <span class="va">low</span> <span class="op">=</span> <span class="fl">1</span>
-    <span class="kw">for</span> <span class="op">(</span><span class="va">chan</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">bins</span><span class="op">)</span> <span class="op">{</span>
-      <span class="va">diff</span> <span class="op">=</span> <span class="va">file1counts</span><span class="op">[</span><span class="va">chan</span><span class="op">]</span> <span class="op">-</span> <span class="va">file2counts</span><span class="op">[</span><span class="va">chan</span><span class="op">]</span>
-      <span class="va">file1counts</span><span class="op">[</span><span class="va">chan</span><span class="op">]</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">diff</span><span class="op">)</span>
-      <span class="kw">while</span> <span class="op">(</span><span class="va">diff</span> <span class="op">&lt;</span> <span class="fl">0</span> <span class="op">&amp;&amp;</span> <span class="va">low</span> <span class="op">&lt;</span> <span class="va">chan</span><span class="op">)</span> <span class="op">{</span> <span class="co"># On negative differences, cumulative subtract.</span>
-        <span class="kw">while</span> <span class="op">(</span><span class="va">file1counts</span><span class="op">[</span><span class="va">low</span><span class="op">]</span> <span class="op">&lt;=</span> <span class="fl">0</span> <span class="op">&amp;&amp;</span> <span class="va">low</span> <span class="op">&lt;</span> <span class="va">chan</span><span class="op">)</span> <span class="op">{</span>
-          <span class="va">low</span> <span class="op">=</span> <span class="va">low</span> <span class="op">+</span> <span class="fl">1</span>
-        <span class="op">}</span>
-        <span class="kw">if</span> <span class="op">(</span><span class="va">low</span> <span class="op">&lt;</span> <span class="va">chan</span><span class="op">)</span> <span class="op">{</span> <span class="co"># Cancel out positive differences in lower channels.</span>
-          <span class="va">diff</span> <span class="op">=</span> <span class="va">diff</span> <span class="op">+</span> <span class="va">file1counts</span><span class="op">[</span><span class="va">low</span><span class="op">]</span>
-          <span class="va">file1counts</span><span class="op">[</span><span class="va">low</span><span class="op">]</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">diff</span>, <span class="fl">0</span><span class="op">)</span>
-        <span class="op">}</span>
-      <span class="op">}</span>
-    <span class="op">}</span>
-    <span class="kw">if</span> <span class="op">(</span><span class="va">showPlot</span><span class="op">)</span>
-      <span class="fu"><a href="https://rdrr.io/r/graphics/barplot.html" class="external-link">barplot</a></span><span class="op">(</span><span class="va">file1counts</span><span class="op">)</span>
-    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fl">100</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">file1counts</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">file1col</span><span class="op">)</span><span class="op">)</span>
-  <span class="op">}</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">#' Performs subtraction of two histograms to calculate percent positive.</span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' @param experimentId ID of experiment or a [`byName`] expression.</span></span>
+<span><span class="co">#' @param channel The channel name, like "PE-A" (not the reagent name like</span></span>
+<span><span class="co">#'   "CD3").</span></span>
+<span><span class="co">#' @param population The population ID or a [`byName`] expression.</span></span>
+<span><span class="co">#' @param file1 ID or `byName` expression of the file to subtract from (the test</span></span>
+<span><span class="co">#'   or sample file).</span></span>
+<span><span class="co">#' @param file2 ID of `byName` expression of the file to subtract (the control</span></span>
+<span><span class="co">#'   file).</span></span>
+<span><span class="co">#' @param method One of `"channel-by-channel"`, `"Overton"`, `"ENS"` or `"KS"`.</span></span>
+<span><span class="co">#' @param bins The number of histogram bins/channels. (Not applicable to `"KS"`</span></span>
+<span><span class="co">#'   method.)</span></span>
+<span><span class="co">#' @param showPlot If `TRUE`, displays a barplot of the subtracted histograms.</span></span>
+<span><span class="co">#'   (Not applicable to `"KS"` or `"ENS"` methods.)</span></span>
+<span><span class="co">#' @md</span></span>
+<span><span class="co">#' @examples</span></span>
+<span><span class="co">#' \dontrun{</span></span>
+<span><span class="co">#' library("cellengine")</span></span>
+<span><span class="co">#' authenticate() # prompts for username and password</span></span>
+<span><span class="co">#' subtractHistograms("5af60df8e1694f07a276a307", # experimentId</span></span>
+<span><span class="co">#'                    channel = "Nd150Di",</span></span>
+<span><span class="co">#'                    population = byName("CD33+"),</span></span>
+<span><span class="co">#'                    file1 = byName("LRS047_IL2GMCSF.fcs"),</span></span>
+<span><span class="co">#'                    file2 = byName("LRS047_unstim.fcs"),</span></span>
+<span><span class="co">#'                    method = "ENS")</span></span>
+<span><span class="co">#' # returns a scalar estimating the percent positive.</span></span>
+<span><span class="co">#' }</span></span>
+<span><span class="va">subtractHistograms</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">experimentId</span>,</span>
+<span>                               <span class="va">channel</span>,</span>
+<span>                               <span class="va">population</span>,</span>
+<span>                               <span class="va">file1</span>,</span>
+<span>                               <span class="va">file2</span>,</span>
+<span>                               <span class="va">method</span><span class="op">=</span><span class="st">"ENS"</span>,</span>
+<span>                               <span class="va">bins</span><span class="op">=</span><span class="fl">256</span>,</span>
+<span>                               <span class="va">showPlot</span><span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> <span class="op">{</span></span>
+<span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="op">(</span><span class="va">method</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"channel-by-channel"</span>, <span class="st">"Overton"</span>, <span class="st">"ENS"</span>, <span class="st">"KS"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="st">"method must be one of 'channel-by-channel', 'Overton', 'ENS' or 'KS'."</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="va">experiment</span> <span class="op">=</span> <span class="fu"><a href="../reference/getExperiment.html">getExperiment</a></span><span class="op">(</span><span class="va">experimentId</span><span class="op">)</span></span>
+<span>  <span class="va">scaleSet</span> <span class="op">=</span> <span class="fu"><a href="../reference/getScaleSets.html">getScaleSets</a></span><span class="op">(</span><span class="va">experimentId</span><span class="op">)</span><span class="op">$</span><span class="va">scales</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span>  <span class="va">scale</span> <span class="op">=</span> <span class="va">scaleSet</span><span class="op">[</span><span class="va">scaleSet</span><span class="op">$</span><span class="va">channelName</span> <span class="op">==</span> <span class="va">channel</span>, <span class="st">"scale"</span><span class="op">]</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">scale</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Channel "</span>, <span class="va">channel</span>, <span class="st">" not found in experiment. Please check the spelling."</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="va">file1data</span> <span class="op">=</span> <span class="fu"><a href="../reference/getEvents.html">getEvents</a></span><span class="op">(</span><span class="va">experimentId</span>,</span>
+<span>                        <span class="va">file1</span>,</span>
+<span>                        <span class="va">population</span>,</span>
+<span>                        compensatedQ <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                        compensation <span class="op">=</span> <span class="va">experiment</span><span class="op">$</span><span class="va">activeCompensation</span>,</span>
+<span>                        headerQ <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                        format<span class="op">=</span><span class="st">"TSV"</span><span class="op">)</span></span>
+<span>  <span class="va">file2data</span> <span class="op">=</span> <span class="fu"><a href="../reference/getEvents.html">getEvents</a></span><span class="op">(</span><span class="va">experimentId</span>,</span>
+<span>                        <span class="va">file2</span>,</span>
+<span>                        <span class="va">population</span>,</span>
+<span>                        compensatedQ <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                        compensation <span class="op">=</span> <span class="va">experiment</span><span class="op">$</span><span class="va">activeCompensation</span>,</span>
+<span>                        headerQ <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>                        format<span class="op">=</span><span class="st">"TSV"</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co"># TODO: in v1 of the CellEngine toolkit, remove make.names here.</span></span>
+<span>  <span class="co"># sub() is used to remove the leading X from make.names("488") -&gt; "X488"</span></span>
+<span>  <span class="va">file1col</span> <span class="op">=</span> <span class="va">file1data</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">sub</a></span><span class="op">(</span><span class="st">"^X"</span>, <span class="st">""</span>, <span class="fu"><a href="https://rdrr.io/r/base/make.names.html" class="external-link">make.names</a></span><span class="op">(</span><span class="va">channel</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">file1data</span><span class="op">)</span><span class="op">)</span><span class="op">]</span></span>
+<span>  <span class="va">file2col</span> <span class="op">=</span> <span class="va">file2data</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">sub</a></span><span class="op">(</span><span class="st">"^X"</span>, <span class="st">""</span>, <span class="fu"><a href="https://rdrr.io/r/base/make.names.html" class="external-link">make.names</a></span><span class="op">(</span><span class="va">channel</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">file2data</span><span class="op">)</span><span class="op">)</span><span class="op">]</span></span>
+<span></span>
+<span>  <span class="co"># Warning: if clamp_q = FALSE, then ultra-negative values can impact histograms.</span></span>
+<span>  <span class="va">file1col</span> <span class="op">=</span> <span class="fu"><a href="../reference/applyScale.html">applyScale</a></span><span class="op">(</span><span class="va">scale</span>, <span class="va">file1col</span>, clamp_q <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>  <span class="va">file2col</span> <span class="op">=</span> <span class="fu"><a href="../reference/applyScale.html">applyScale</a></span><span class="op">(</span><span class="va">scale</span>, <span class="va">file2col</span>, clamp_q <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="va">method</span> <span class="op">==</span> <span class="st">"KS"</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">ks</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/ks.test.html" class="external-link">ks.test</a></span><span class="op">(</span><span class="va">file2col</span>, <span class="va">file1col</span>, alternative<span class="op">=</span><span class="st">"greater"</span><span class="op">)</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fl">100</span> <span class="op">*</span> <span class="va">ks</span><span class="op">$</span><span class="va">statistic</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span></span>
+<span>  <span class="co"># Precompute bins</span></span>
+<span>  <span class="va">minVal</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">file1col</span>, <span class="va">file2col</span><span class="op">)</span></span>
+<span>  <span class="va">maxVal</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">file1col</span>, <span class="va">file2col</span><span class="op">)</span></span>
+<span>  <span class="va">breaks</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="va">minVal</span>, <span class="va">maxVal</span>, length.out <span class="op">=</span> <span class="va">bins</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co"># Bin data into histogram</span></span>
+<span>  <span class="va">file1counts</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tabulate.html" class="external-link">tabulate</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cut.html" class="external-link">cut</a></span><span class="op">(</span><span class="va">file1col</span>, <span class="va">breaks</span>, labels<span class="op">=</span><span class="cn">F</span>, include.lowest<span class="op">=</span><span class="cn">T</span><span class="op">)</span>, nbins<span class="op">=</span><span class="va">bins</span><span class="op">)</span></span>
+<span>  <span class="va">file2counts</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tabulate.html" class="external-link">tabulate</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cut.html" class="external-link">cut</a></span><span class="op">(</span><span class="va">file2col</span>, <span class="va">breaks</span>, labels<span class="op">=</span><span class="cn">F</span>, include.lowest<span class="op">=</span><span class="cn">T</span><span class="op">)</span>, nbins<span class="op">=</span><span class="va">bins</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co"># Rescale the counts as if the same number of events are in both histograms.</span></span>
+<span>  <span class="va">normFactor</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">file1col</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">file2col</span><span class="op">)</span></span>
+<span>  <span class="va">file2counts</span> <span class="op">=</span> <span class="va">file2counts</span> <span class="op">*</span> <span class="va">normFactor</span></span>
+<span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="va">method</span> <span class="op">==</span> <span class="st">"channel-by-channel"</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">difference</span> <span class="op">=</span> <span class="va">file1counts</span> <span class="op">-</span> <span class="va">file2counts</span></span>
+<span>    <span class="va">difference</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">pmax</a></span><span class="op">(</span><span class="va">difference</span>, <span class="fl">0</span><span class="op">)</span></span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="va">showPlot</span><span class="op">)</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/graphics/barplot.html" class="external-link">barplot</a></span><span class="op">(</span><span class="va">difference</span><span class="op">)</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fl">100</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">difference</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">file1col</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="op">}</span> <span class="kw">else</span> <span class="kw">if</span> <span class="op">(</span><span class="va">method</span> <span class="op">==</span> <span class="st">"ENS"</span><span class="op">)</span> <span class="op">{</span> <span class="co"># Super enhanced D-max</span></span>
+<span>    <span class="co"># Cumulative sum, normalized to 1</span></span>
+<span>    <span class="va">cum1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cumsum.html" class="external-link">cumsum</a></span><span class="op">(</span><span class="va">file1counts</span><span class="op">)</span></span>
+<span>    <span class="va">cum1</span> <span class="op">=</span> <span class="va">cum1</span> <span class="op">/</span> <span class="va">cum1</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">cum1</span><span class="op">)</span><span class="op">]</span></span>
+<span>    <span class="va">cum2</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cumsum.html" class="external-link">cumsum</a></span><span class="op">(</span><span class="va">file2counts</span><span class="op">)</span></span>
+<span>    <span class="va">cum2</span> <span class="op">=</span> <span class="va">cum2</span> <span class="op">/</span> <span class="va">cum2</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">cum2</span><span class="op">)</span><span class="op">]</span></span>
+<span></span>
+<span>    <span class="co"># Max positive difference</span></span>
+<span>    <span class="va">xd</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/which.min.html" class="external-link">which.max</a></span><span class="op">(</span><span class="va">cum2</span> <span class="op">-</span> <span class="va">cum1</span><span class="op">)</span></span>
+<span>    <span class="va">Cx</span> <span class="op">=</span> <span class="va">cum2</span><span class="op">[</span><span class="va">xd</span><span class="op">]</span></span>
+<span>    <span class="va">Tx</span> <span class="op">=</span> <span class="va">cum1</span><span class="op">[</span><span class="va">xd</span><span class="op">]</span></span>
+<span>    <span class="va">Dx</span> <span class="op">=</span> <span class="va">Cx</span> <span class="op">-</span> <span class="va">Tx</span></span>
+<span></span>
+<span>    <span class="co"># In theory, Dx is equal to Overton's subtraction.</span></span>
+<span>    <span class="co"># Dx / Cx is the "enhanced Dmax" (pos_ed, scenic view 4)</span></span>
+<span></span>
+<span>    <span class="co"># Keep the histogram portion from 1 to xd and renormalize so the sum is 1</span></span>
+<span>    <span class="va">cum1d</span> <span class="op">=</span> <span class="va">cum1</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">xd</span><span class="op">]</span></span>
+<span>    <span class="va">cum1d</span> <span class="op">=</span> <span class="va">cum1d</span> <span class="op">/</span> <span class="va">cum1d</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">cum1d</span><span class="op">)</span><span class="op">]</span></span>
+<span>    <span class="va">cum2d</span> <span class="op">=</span> <span class="va">cum2</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">xd</span><span class="op">]</span></span>
+<span>    <span class="va">cum2d</span> <span class="op">=</span> <span class="va">cum2d</span> <span class="op">/</span> <span class="va">cum2d</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">cum2d</span><span class="op">)</span><span class="op">]</span></span>
+<span></span>
+<span>    <span class="va">xd2</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/which.min.html" class="external-link">which.max</a></span><span class="op">(</span><span class="va">cum2d</span> <span class="op">-</span> <span class="va">cum1d</span><span class="op">)</span></span>
+<span></span>
+<span>    <span class="va">pos_ens</span> <span class="op">=</span> <span class="op">(</span><span class="va">Cx</span> <span class="op">-</span> <span class="va">Tx</span><span class="op">)</span> <span class="op">/</span> <span class="va">Cx</span> <span class="op">+</span> <span class="op">(</span><span class="va">cum2</span><span class="op">[</span><span class="va">xd2</span><span class="op">]</span> <span class="op">*</span> <span class="va">Tx</span> <span class="op">-</span> <span class="va">Cx</span> <span class="op">*</span> <span class="va">cum1</span><span class="op">[</span><span class="va">xd2</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="va">Cx</span> <span class="op">*</span> <span class="va">Cx</span><span class="op">)</span></span>
+<span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fl">100</span> <span class="op">*</span> <span class="va">pos_ens</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span> <span class="co"># Overton with corrections.</span></span>
+<span>    <span class="co"># See Appendix A of Overton 1988 and Overton 1989</span></span>
+<span>    <span class="va">low</span> <span class="op">=</span> <span class="fl">1</span></span>
+<span>    <span class="kw">for</span> <span class="op">(</span><span class="va">chan</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">bins</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="va">diff</span> <span class="op">=</span> <span class="va">file1counts</span><span class="op">[</span><span class="va">chan</span><span class="op">]</span> <span class="op">-</span> <span class="va">file2counts</span><span class="op">[</span><span class="va">chan</span><span class="op">]</span></span>
+<span>      <span class="va">file1counts</span><span class="op">[</span><span class="va">chan</span><span class="op">]</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">diff</span><span class="op">)</span></span>
+<span>      <span class="kw">while</span> <span class="op">(</span><span class="va">diff</span> <span class="op">&lt;</span> <span class="fl">0</span> <span class="op">&amp;&amp;</span> <span class="va">low</span> <span class="op">&lt;</span> <span class="va">chan</span><span class="op">)</span> <span class="op">{</span> <span class="co"># On negative differences, cumulative subtract.</span></span>
+<span>        <span class="kw">while</span> <span class="op">(</span><span class="va">file1counts</span><span class="op">[</span><span class="va">low</span><span class="op">]</span> <span class="op">&lt;=</span> <span class="fl">0</span> <span class="op">&amp;&amp;</span> <span class="va">low</span> <span class="op">&lt;</span> <span class="va">chan</span><span class="op">)</span> <span class="op">{</span></span>
+<span>          <span class="va">low</span> <span class="op">=</span> <span class="va">low</span> <span class="op">+</span> <span class="fl">1</span></span>
+<span>        <span class="op">}</span></span>
+<span>        <span class="kw">if</span> <span class="op">(</span><span class="va">low</span> <span class="op">&lt;</span> <span class="va">chan</span><span class="op">)</span> <span class="op">{</span> <span class="co"># Cancel out positive differences in lower channels.</span></span>
+<span>          <span class="va">diff</span> <span class="op">=</span> <span class="va">diff</span> <span class="op">+</span> <span class="va">file1counts</span><span class="op">[</span><span class="va">low</span><span class="op">]</span></span>
+<span>          <span class="va">file1counts</span><span class="op">[</span><span class="va">low</span><span class="op">]</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">diff</span>, <span class="fl">0</span><span class="op">)</span></span>
+<span>        <span class="op">}</span></span>
+<span>      <span class="op">}</span></span>
+<span>    <span class="op">}</span></span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="va">showPlot</span><span class="op">)</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/graphics/barplot.html" class="external-link">barplot</a></span><span class="op">(</span><span class="va">file1counts</span><span class="op">)</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fl">100</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">file1counts</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">file1col</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="op">}</span></span></code></pre></div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -266,7 +266,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

@@ -53,34 +53,46 @@ if <code>display</code> is <code>TRUE</code>).</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">getPlot</span><span class="op">(</span>
-  <span class="va">experimentId</span>,
-  <span class="va">fcsFileId</span>,
-  <span class="va">plotType</span>,
-  <span class="va">xChannel</span>,
-  yChannel <span class="op">=</span> <span class="st">""</span>,
-  zChannel <span class="op">=</span> <span class="st">""</span>,
-  params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,
-  destination <span class="op">=</span> <span class="cn">NULL</span>,
-  overwrite <span class="op">=</span> <span class="cn">FALSE</span>,
-  display <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">getPlot</span><span class="op">(</span></span>
+<span>  <span class="va">experimentId</span>,</span>
+<span>  <span class="va">fcsFileId</span>,</span>
+<span>  <span class="va">plotType</span>,</span>
+<span>  <span class="va">xChannel</span>,</span>
+<span>  yChannel <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  zChannel <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  destination <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  overwrite <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  display <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>experimentId</dt>
 <dd><p>character ID of experiment.</p></dd>
+
+
 <dt>fcsFileId</dt>
 <dd><p>character ID of FcsFile</p></dd>
+
+
 <dt>plotType</dt>
 <dd><p>character Plot type, one of: "contour", "dot", "density", or "histogram"</p></dd>
+
+
 <dt>xChannel</dt>
 <dd><p>character X channel name</p></dd>
+
+
 <dt>yChannel</dt>
 <dd><p>character Y channel name</p></dd>
+
+
 <dt>zChannel</dt>
 <dd><p>character Z channel name</p></dd>
+
+
 <dt>params</dt>
 <dd><p>list Optional query parameters:</p><ul><li><p>axesQ logical Display axes lines. Defaults to <code>TRUE</code>.</p></li>
 <li><p>axisLabelsQ logical Display axis labels. Defaults to <code>TRUE</code>.</p></li>
@@ -123,35 +135,42 @@ lines. Defaults to 1.</p></li>
 <li><p>yTickLabelsQ logical Display y tick labels. Overrides tickLabelsQ.</p></li>
 <li><p>yTicksQ logical Display y ticks. Overrides ticksQ.</p></li>
 </ul></dd>
+
+
 <dt>destination</dt>
 <dd><p>character If specified, write the image to file.</p></dd>
+
+
 <dt>overwrite</dt>
 <dd><p>logical If a destination is specified, allows destination
 file to be overwritten.</p></dd>
+
+
 <dt>display</dt>
 <dd><p>logical Display the image. Defaults to <code>TRUE</code>.</p></dd>
+
 </dl></div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="va">parameters</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">  <span class="st">"width"</span> <span class="op">=</span> <span class="fl">400</span>,</span>
-<span class="r-in">  <span class="st">"height"</span> <span class="op">=</span> <span class="fl">400</span>,</span>
-<span class="r-in">  <span class="st">"axesQ"</span> <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span class="r-in">  <span class="st">"ticksQ"</span> <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span class="r-in">  <span class="st">"color"</span> <span class="op">=</span> <span class="st">"#ff0000"</span>,</span>
-<span class="r-in">  <span class="st">"renderGates"</span> <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span class="r-in">  <span class="st">"smoothing"</span> <span class="op">=</span> <span class="fl">0.75</span>,</span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="fu">getPlot</span><span class="op">(</span><span class="va">experimentId</span>,</span>
-<span class="r-in">  <span class="va">fcsFileId</span>,</span>
-<span class="r-in">  plotType <span class="op">=</span> <span class="st">"dot"</span>,</span>
-<span class="r-in">  xChannel <span class="op">=</span> <span class="st">"FSC-A"</span>,</span>
-<span class="r-in">  yChannel <span class="op">=</span> <span class="st">"FSC-W"</span>,</span>
-<span class="r-in">  params <span class="op">=</span> <span class="va">parameters</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="va">parameters</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="st">"width"</span> <span class="op">=</span> <span class="fl">400</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"height"</span> <span class="op">=</span> <span class="fl">400</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"axesQ"</span> <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"ticksQ"</span> <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"color"</span> <span class="op">=</span> <span class="st">"#ff0000"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"renderGates"</span> <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"smoothing"</span> <span class="op">=</span> <span class="fl">0.75</span>,</span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">getPlot</span><span class="op">(</span><span class="va">experimentId</span>,</span></span>
+<span class="r-in"><span>  <span class="va">fcsFileId</span>,</span></span>
+<span class="r-in"><span>  plotType <span class="op">=</span> <span class="st">"dot"</span>,</span></span>
+<span class="r-in"><span>  xChannel <span class="op">=</span> <span class="st">"FSC-A"</span>,</span></span>
+<span class="r-in"><span>  yChannel <span class="op">=</span> <span class="st">"FSC-W"</span>,</span></span>
+<span class="r-in"><span>  params <span class="op">=</span> <span class="va">parameters</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -166,7 +185,7 @@ file to be overwritten.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

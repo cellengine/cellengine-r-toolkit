@@ -72,66 +72,66 @@
 <p><a href="https://rdrr.io/github/jmeskas/flowCut/man/flowCut.html" class="external-link"><code>flowCut</code></a> is an R package that automatically removes outlier events in cytometry data.</p>
 <p>This example shows how to run flowCut on all FCS files in a CellEngine experiment. The new files can either be uploaded to the same experiment or to a new experiment. See code comments for options regarding this behavior.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"cellengine"</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"flowCut"</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"flowCore"</span><span class="op">)</span>
-
-<span class="fu">cellengine</span><span class="fu">::</span><span class="fu"><a href="../reference/authenticate.html">authenticate</a></span><span class="op">(</span><span class="st">"username"</span><span class="op">)</span> <span class="co"># prompts for password</span>
-<span class="va">experimentId</span> <span class="op">&lt;-</span> <span class="st">"6243c57bf83b21038c59a4dd"</span> <span class="co"># replace with your experiment ID</span>
-
-<span class="va">workingDir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"flowCut"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">workingDir</span>, recursive<span class="op">=</span><span class="cn">T</span>, showWarnings<span class="op">=</span><span class="cn">F</span><span class="op">)</span>
-
-<span class="va">fcsFiles</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getFcsFiles.html">getFcsFiles</a></span><span class="op">(</span><span class="va">experimentId</span>, params<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"query"</span><span class="op">=</span><span class="st">"eq(deleted,null)"</span><span class="op">)</span><span class="op">)</span>
-<span class="va">scaleSet</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getScaleSets.html">getScaleSets</a></span><span class="op">(</span><span class="va">experimentId</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span>
-
-<span class="kw">for</span> <span class="op">(</span><span class="va">fileI</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">fcsFiles</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">fcsFile</span> <span class="op">&lt;-</span> <span class="va">fcsFiles</span><span class="op">[</span><span class="va">fileI</span>,<span class="op">]</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Processing "</span>, <span class="va">fcsFile</span><span class="op">$</span><span class="va">filename</span>, <span class="st">"..."</span><span class="op">)</span><span class="op">)</span>
-
-  <span class="co"># Download the FCS file from CellEngine.</span>
-  <span class="va">tempFileName</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">workingDir</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">fcsFile</span><span class="op">$</span><span class="va">filename</span> , <span class="st">".fcs"</span><span class="op">)</span><span class="op">)</span>
-  <span class="fu"><a href="../reference/getEvents.html">getEvents</a></span><span class="op">(</span><span class="va">experimentId</span>,
-            <span class="va">fcsFile</span><span class="op">$</span><span class="va">`_id`</span>,
-            destination<span class="op">=</span><span class="va">tempFileName</span>,
-            overwrite<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
-
-  <span class="co"># Read it as a flowFrame.</span>
-  <span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">read.FCS</span><span class="op">(</span><span class="va">tempFileName</span><span class="op">)</span>
-
-  <span class="co"># Store the raw values for later.</span>
-  <span class="va">rawData</span> <span class="op">&lt;-</span> <span class="fu">exprs</span><span class="op">(</span><span class="va">data</span><span class="op">)</span>
-
-  <span class="co"># flowCut needs transformed (scaled) data. Apply the CellEngine scaleset.</span>
-  <span class="fu">exprs</span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.matrix.html" class="external-link">data.matrix</a></span><span class="op">(</span><span class="fu"><a href="../reference/applyScaleSet.html">applyScaleSet</a></span><span class="op">(</span><span class="va">scaleSet</span>, <span class="va">rawData</span><span class="op">)</span><span class="op">)</span>
-
-  <span class="co"># Run flowCut. Note that this step is slow. See flowCut documentation for</span>
-  <span class="co"># additional options.</span>
-  <span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">flowCut</span><span class="op">(</span><span class="va">data</span>, Directory<span class="op">=</span><span class="va">workingDir</span>, FileID<span class="op">=</span><span class="va">fcsFile</span><span class="op">$</span><span class="va">filename</span><span class="op">)</span>
-
-  <span class="co"># Remove the outliers from the raw data matrix.</span>
-  <span class="fu">exprs</span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">rawData</span><span class="op">[</span><span class="op">-</span><span class="va">result</span><span class="op">$</span><span class="va">ind</span>,<span class="op">]</span>
-
-  <span class="co"># Save the result as a new FCS file.</span>
-  <span class="va">destFileName</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">sub</a></span><span class="op">(</span><span class="st">"(.*)\\.(.*)$"</span>, <span class="st">"\\1_flowcut.\\2"</span>, <span class="va">tempFileName</span><span class="op">)</span>
-  <span class="fu">write.FCS</span><span class="op">(</span><span class="va">data</span>,
-            <span class="va">destFileName</span>,
-            endian<span class="op">=</span><span class="st">"little"</span><span class="op">)</span> <span class="co"># (small performance optimization)</span>
-
-  <span class="co"># Upload it back to the same CellEngine experiment.</span>
-  <span class="fu"><a href="../reference/uploadFcsFile.html">uploadFcsFile</a></span><span class="op">(</span><span class="va">experimentId</span>, <span class="va">destFileName</span><span class="op">)</span>
-
-  <span class="co"># At this point, the original file could be marked as a Control to exclude it</span>
-  <span class="co"># from CellEngine analyses or deleted.</span>
-  <span class="co"># TODO marking it as a control requires https://github.com/primitybio/cellengine-r-toolkit/issues/78</span>
-
-  <span class="co"># The images generated by flowCut (stored in workingDir) could also be</span>
-  <span class="co"># uploaded as attachments using uploadAttachment().</span>
-<span class="op">}</span>
-
-<span class="co"># R will delete the working directory on exit, but you can also delete it</span>
-<span class="co"># manually:</span>
-<span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">workingDir</span>, recursive<span class="op">=</span><span class="cn">T</span>, force<span class="op">=</span><span class="cn">T</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"cellengine"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"flowCut"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"flowCore"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">cellengine</span><span class="fu">::</span><span class="fu"><a href="../reference/authenticate.html">authenticate</a></span><span class="op">(</span><span class="st">"username"</span><span class="op">)</span> <span class="co"># prompts for password</span></span>
+<span><span class="va">experimentId</span> <span class="op">&lt;-</span> <span class="st">"6243c57bf83b21038c59a4dd"</span> <span class="co"># replace with your experiment ID</span></span>
+<span></span>
+<span><span class="va">workingDir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"flowCut"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">workingDir</span>, recursive<span class="op">=</span><span class="cn">T</span>, showWarnings<span class="op">=</span><span class="cn">F</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">fcsFiles</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getFcsFiles.html">getFcsFiles</a></span><span class="op">(</span><span class="va">experimentId</span>, params<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"query"</span><span class="op">=</span><span class="st">"eq(deleted,null)"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">scaleSet</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/getScaleSets.html">getScaleSets</a></span><span class="op">(</span><span class="va">experimentId</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span></span>
+<span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">fileI</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">fcsFiles</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">fcsFile</span> <span class="op">&lt;-</span> <span class="va">fcsFiles</span><span class="op">[</span><span class="va">fileI</span>,<span class="op">]</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Processing "</span>, <span class="va">fcsFile</span><span class="op">$</span><span class="va">filename</span>, <span class="st">"..."</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co"># Download the FCS file from CellEngine.</span></span>
+<span>  <span class="va">tempFileName</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">workingDir</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">fcsFile</span><span class="op">$</span><span class="va">filename</span> , <span class="st">".fcs"</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/getEvents.html">getEvents</a></span><span class="op">(</span><span class="va">experimentId</span>,</span>
+<span>            <span class="va">fcsFile</span><span class="op">$</span><span class="va">`_id`</span>,</span>
+<span>            destination<span class="op">=</span><span class="va">tempFileName</span>,</span>
+<span>            overwrite<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co"># Read it as a flowFrame.</span></span>
+<span>  <span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">read.FCS</span><span class="op">(</span><span class="va">tempFileName</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co"># Store the raw values for later.</span></span>
+<span>  <span class="va">rawData</span> <span class="op">&lt;-</span> <span class="fu">exprs</span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co"># flowCut needs transformed (scaled) data. Apply the CellEngine scaleset.</span></span>
+<span>  <span class="fu">exprs</span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.matrix.html" class="external-link">data.matrix</a></span><span class="op">(</span><span class="fu"><a href="../reference/applyScaleSet.html">applyScaleSet</a></span><span class="op">(</span><span class="va">scaleSet</span>, <span class="va">rawData</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co"># Run flowCut. Note that this step is slow. See flowCut documentation for</span></span>
+<span>  <span class="co"># additional options.</span></span>
+<span>  <span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">flowCut</span><span class="op">(</span><span class="va">data</span>, Directory<span class="op">=</span><span class="va">workingDir</span>, FileID<span class="op">=</span><span class="va">fcsFile</span><span class="op">$</span><span class="va">filename</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co"># Remove the outliers from the raw data matrix.</span></span>
+<span>  <span class="fu">exprs</span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">rawData</span><span class="op">[</span><span class="op">-</span><span class="va">result</span><span class="op">$</span><span class="va">ind</span>,<span class="op">]</span></span>
+<span></span>
+<span>  <span class="co"># Save the result as a new FCS file.</span></span>
+<span>  <span class="va">destFileName</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">sub</a></span><span class="op">(</span><span class="st">"(.*)\\.(.*)$"</span>, <span class="st">"\\1_flowcut.\\2"</span>, <span class="va">tempFileName</span><span class="op">)</span></span>
+<span>  <span class="fu">write.FCS</span><span class="op">(</span><span class="va">data</span>,</span>
+<span>            <span class="va">destFileName</span>,</span>
+<span>            endian<span class="op">=</span><span class="st">"little"</span><span class="op">)</span> <span class="co"># (small performance optimization)</span></span>
+<span></span>
+<span>  <span class="co"># Upload it back to the same CellEngine experiment.</span></span>
+<span>  <span class="fu"><a href="../reference/uploadFcsFile.html">uploadFcsFile</a></span><span class="op">(</span><span class="va">experimentId</span>, <span class="va">destFileName</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="co"># At this point, the original file could be marked as a Control to exclude it</span></span>
+<span>  <span class="co"># from CellEngine analyses or deleted.</span></span>
+<span>  <span class="co"># TODO marking it as a control requires https://github.com/primitybio/cellengine-r-toolkit/issues/78</span></span>
+<span></span>
+<span>  <span class="co"># The images generated by flowCut (stored in workingDir) could also be</span></span>
+<span>  <span class="co"># uploaded as attachments using uploadAttachment().</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># R will delete the working directory on exit, but you can also delete it</span></span>
+<span><span class="co"># manually:</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">workingDir</span>, recursive<span class="op">=</span><span class="cn">T</span>, force<span class="op">=</span><span class="cn">T</span><span class="op">)</span></span></code></pre></div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -149,7 +149,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

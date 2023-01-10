@@ -47,54 +47,74 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">getStatistics</span><span class="op">(</span>
-  <span class="va">experimentId</span>,
-  fcsFileIds <span class="op">=</span> <span class="cn">NULL</span>,
-  fcsFiles <span class="op">=</span> <span class="cn">NULL</span>,
-  channels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span>,
-  <span class="va">statistics</span>,
-  <span class="va">compensationId</span>,
-  populationIds <span class="op">=</span> <span class="cn">NULL</span>,
-  populations <span class="op">=</span> <span class="cn">NULL</span>,
-  scaleSetId <span class="op">=</span> <span class="cn">NULL</span>,
-  q <span class="op">=</span> <span class="fl">0.5</span>,
-  percentOf <span class="op">=</span> <span class="cn">NULL</span>,
-  includeAnnotations <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">getStatistics</span><span class="op">(</span></span>
+<span>  <span class="va">experimentId</span>,</span>
+<span>  fcsFileIds <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  fcsFiles <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  channels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="va">statistics</span>,</span>
+<span>  <span class="va">compensationId</span>,</span>
+<span>  populationIds <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  populations <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  scaleSetId <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  q <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  percentOf <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  includeAnnotations <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>experimentId</dt>
 <dd><p>ID of experiment.</p></dd>
+
+
 <dt>fcsFileIds</dt>
 <dd><p>IDs of FCS files. If specified, do not specify <code>fcsFiles</code>.</p></dd>
+
+
 <dt>fcsFiles</dt>
 <dd><p>Names of FCS files. An attempt will be made to find the files
 by name. If zero or more than one file exists with a given filename, an
 error will be thrown. If specified, do not specify <code>fcsFileIds</code>.</p></dd>
+
+
 <dt>channels</dt>
 <dd><p>Names of channels (for statistic types "mean", "median",
 "quantile", "stddev", "cv" and "mad"). Use channel short names, not reagents.</p></dd>
+
+
 <dt>statistics</dt>
 <dd><p>Statistics to export. Valid options: "mean", "median",
 "quantile", "stddev", "cv", "eventcount", "percent", "mad".</p></dd>
+
+
 <dt>compensationId</dt>
 <dd><p>Compensation to apply. May be an ID,
 <code><a href="UNCOMPENSATED.html">cellengine::UNCOMPENSATED</a></code> or <code><a href="FILE_INTERNAL.html">cellengine::FILE_INTERNAL</a></code>.</p></dd>
+
+
 <dt>populationIds</dt>
 <dd><p>IDs of populations. If specified, do not specify
 <code>populations</code>.</p></dd>
+
+
 <dt>populations</dt>
 <dd><p>Names of populations. An attempt will be made to find the
 population by name. If zero or more than one population exists with the
 name, an error will be thrown. If specified, do not specify
 <code>populationIds</code>.</p></dd>
+
+
 <dt>scaleSetId</dt>
 <dd><p>Optional ID of scale set. If omitted and if a single
 scale set exists in the experiment, that scale set will be used.</p></dd>
+
+
 <dt>q</dt>
 <dd><p>Quantile to calculate for "quantile" statistic, in the range 0 to 1.</p></dd>
+
+
 <dt>percentOf</dt>
 <dd><p>Single population ID or name, or list of population IDs or
   names the same length as <code>populationIds</code> parameter.</p>
@@ -110,13 +130,18 @@ scale set exists in the experiment, that scale set will be used.</p></dd>
   provided, an attempt will be made to find those populations by name. IDs
   are detected as matching a 24-character string comprised of the characters
   <code>A-Fa-f0-9</code>.</p></dd>
+
+
 <dt>includeAnnotations</dt>
 <dd><p>Includes FCS file annotations in the returned data
 frame.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Statistics as a data frame, including file annotations and
+    
+
+<p>Statistics as a data frame, including file annotations and
   information about the statistics such as the channel name and population.</p>
     </div>
     <div id="details">
@@ -134,39 +159,39 @@ all non-control FCS files.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="co"># Quick syntax, using population names and file names instead of IDs:</span></span>
-<span class="r-in"><span class="va">fcsFiles</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"file1.fcs"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">channels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SSC-A"</span>, <span class="st">"YG780/60-A"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">statistics</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"median"</span>, <span class="st">"mean"</span>, <span class="st">"quantile"</span>, <span class="st">"percent"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">populations</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Leukocytes"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">stats</span> <span class="op">&lt;-</span> <span class="fu">getStatistics</span><span class="op">(</span><span class="va">experimentId</span>,</span>
-<span class="r-in">  fcsFiles <span class="op">=</span> <span class="va">fcsFiles</span>, channels <span class="op">=</span> <span class="va">channels</span>,</span>
-<span class="r-in">  statistics <span class="op">=</span> <span class="va">statistics</span>, populations <span class="op">=</span> <span class="va">populations</span>, q <span class="op">=</span> <span class="fl">0.95</span>,</span>
-<span class="r-in">  compensationId <span class="op">=</span> <span class="fu">cellengine</span><span class="fu">::</span><span class="va"><a href="FILE_INTERNAL.html">FILE_INTERNAL</a></span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="co"># Returns a data.frame of statistics, including the file annotations.</span></span>
-<span class="r-in"><span class="co"># Because percentOf is not specified, "percent" will be percent of parent.</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Explicit syntax, using IDs instead of population and file names, and</span></span>
-<span class="r-in"><span class="co"># specifying a scaleSetId:</span></span>
-<span class="r-in"><span class="va">fcsFileIds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"9ab5c6d7a8cf24a5c4f9a6c2"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">statistics</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"percent"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">populationIds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"9ab5c6d7a8cf24a5c4f9face"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">scaleSetId</span> <span class="op">&lt;-</span> <span class="st">"9ab5c6d7a8cf24a5c4f9fdde"</span></span>
-<span class="r-in"><span class="va">stats</span> <span class="op">&lt;-</span> <span class="fu">getStatistics</span><span class="op">(</span><span class="va">experimentId</span>,</span>
-<span class="r-in">  fcsFileIds <span class="op">=</span> <span class="va">fcsFileIds</span>,</span>
-<span class="r-in">  statistics <span class="op">=</span> <span class="va">statistics</span>, populationIds <span class="op">=</span> <span class="va">populationIds</span>,</span>
-<span class="r-in">  compensationId <span class="op">=</span> <span class="fu">cellengine</span><span class="fu">::</span><span class="va"><a href="UNCOMPENSATED.html">UNCOMPENSATED</a></span>, scaleSetId <span class="op">=</span> <span class="va">scaleSetId</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Percent of ungated:</span></span>
-<span class="r-in"><span class="fu">getStatistics</span><span class="op">(</span><span class="va">experimentId</span>,</span>
-<span class="r-in">  fcsFileIds <span class="op">=</span> <span class="va">fcsFileIds</span>, statistics <span class="op">=</span> <span class="va">statistics</span>,</span>
-<span class="r-in">  populationIds <span class="op">=</span> <span class="va">populationIds</span>, compensationId <span class="op">=</span> <span class="fu">cellengine</span><span class="fu">::</span><span class="va"><a href="UNCOMPENSATED.html">UNCOMPENSATED</a></span>,</span>
-<span class="r-in">  percentOf <span class="op">=</span> <span class="fu">cellengine</span><span class="fu">::</span><span class="va"><a href="UNGATED.html">UNGATED</a></span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># Quick syntax, using population names and file names instead of IDs:</span></span></span>
+<span class="r-in"><span><span class="va">fcsFiles</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"file1.fcs"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">channels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SSC-A"</span>, <span class="st">"YG780/60-A"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">statistics</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"median"</span>, <span class="st">"mean"</span>, <span class="st">"quantile"</span>, <span class="st">"percent"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">populations</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Leukocytes"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">stats</span> <span class="op">&lt;-</span> <span class="fu">getStatistics</span><span class="op">(</span><span class="va">experimentId</span>,</span></span>
+<span class="r-in"><span>  fcsFiles <span class="op">=</span> <span class="va">fcsFiles</span>, channels <span class="op">=</span> <span class="va">channels</span>,</span></span>
+<span class="r-in"><span>  statistics <span class="op">=</span> <span class="va">statistics</span>, populations <span class="op">=</span> <span class="va">populations</span>, q <span class="op">=</span> <span class="fl">0.95</span>,</span></span>
+<span class="r-in"><span>  compensationId <span class="op">=</span> <span class="fu">cellengine</span><span class="fu">::</span><span class="va"><a href="FILE_INTERNAL.html">FILE_INTERNAL</a></span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Returns a data.frame of statistics, including the file annotations.</span></span></span>
+<span class="r-in"><span><span class="co"># Because percentOf is not specified, "percent" will be percent of parent.</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Explicit syntax, using IDs instead of population and file names, and</span></span></span>
+<span class="r-in"><span><span class="co"># specifying a scaleSetId:</span></span></span>
+<span class="r-in"><span><span class="va">fcsFileIds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"9ab5c6d7a8cf24a5c4f9a6c2"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">statistics</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"percent"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">populationIds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"9ab5c6d7a8cf24a5c4f9face"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">scaleSetId</span> <span class="op">&lt;-</span> <span class="st">"9ab5c6d7a8cf24a5c4f9fdde"</span></span></span>
+<span class="r-in"><span><span class="va">stats</span> <span class="op">&lt;-</span> <span class="fu">getStatistics</span><span class="op">(</span><span class="va">experimentId</span>,</span></span>
+<span class="r-in"><span>  fcsFileIds <span class="op">=</span> <span class="va">fcsFileIds</span>,</span></span>
+<span class="r-in"><span>  statistics <span class="op">=</span> <span class="va">statistics</span>, populationIds <span class="op">=</span> <span class="va">populationIds</span>,</span></span>
+<span class="r-in"><span>  compensationId <span class="op">=</span> <span class="fu">cellengine</span><span class="fu">::</span><span class="va"><a href="UNCOMPENSATED.html">UNCOMPENSATED</a></span>, scaleSetId <span class="op">=</span> <span class="va">scaleSetId</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Percent of ungated:</span></span></span>
+<span class="r-in"><span><span class="fu">getStatistics</span><span class="op">(</span><span class="va">experimentId</span>,</span></span>
+<span class="r-in"><span>  fcsFileIds <span class="op">=</span> <span class="va">fcsFileIds</span>, statistics <span class="op">=</span> <span class="va">statistics</span>,</span></span>
+<span class="r-in"><span>  populationIds <span class="op">=</span> <span class="va">populationIds</span>, compensationId <span class="op">=</span> <span class="fu">cellengine</span><span class="fu">::</span><span class="va"><a href="UNCOMPENSATED.html">UNCOMPENSATED</a></span>,</span></span>
+<span class="r-in"><span>  percentOf <span class="op">=</span> <span class="fu">cellengine</span><span class="fu">::</span><span class="va"><a href="UNGATED.html">UNGATED</a></span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -181,7 +206,7 @@ all non-control FCS files.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

@@ -45,7 +45,7 @@
 <div class="section level3">
 <h3 id="requirements">Requirements<a class="anchor" aria-label="anchor" href="#requirements"></a></h3>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'httptest'</span>, <span class="st">'testthat'</span>, <span class="st">'mockthat'</span>, <span class="st">'getPass'</span>, <span class="st">'rstudioapi'</span>, <span class="st">'mockery'</span>, <span class="st">'lintr'</span>, <span class="st">'styler'</span>, <span class="st">'devtools'</span>, <span class="st">'roxygen2'</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'httptest'</span>, <span class="st">'testthat'</span>, <span class="st">'mockthat'</span>, <span class="st">'getPass'</span>, <span class="st">'rstudioapi'</span>, <span class="st">'mockery'</span>, <span class="st">'lintr'</span>, <span class="st">'styler'</span>, <span class="st">'devtools'</span>, <span class="st">'roxygen2'</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="development">Development<a class="anchor" aria-label="anchor" href="#development"></a></h3>
@@ -53,20 +53,20 @@
 <p>External functions need an <code>@export</code> tag in the Roxygen2 docstring. They must also be added to <code>_pkgdown.yml</code>.</p>
 <p>After adding a new function, you must:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://roxygen2.r-lib.org/" class="external-link">'roxygen2'</a></span><span class="op">)</span>
-<span class="fu">roxygenise</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://roxygen2.r-lib.org/" class="external-link">'roxygen2'</a></span><span class="op">)</span></span>
+<span><span class="fu">roxygenise</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="section level4">
 <h4 id="markdown">Markdown<a class="anchor" aria-label="anchor" href="#markdown"></a></h4>
 <p>Roxygen has <a href="https://roxygen2.r-lib.org/articles/markdown.html" class="external-link">markdown support</a>. To enable it, include the <code>@md</code> tag in the docstring, i.e.:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#' @param properties list Properties </span>
-<span class="co">#'</span>
-<span class="co">#' Accepted properties:</span>
-<span class="co">#' - item type Description of item</span>
-<span class="co">#' - itemList list List with properties:</span>
-<span class="co">#'   - property character</span>
-<span class="co">#'   - property character</span>
-<span class="co">#' @md</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">#' @param properties list Properties </span></span>
+<span><span class="co">#'</span></span>
+<span><span class="co">#' Accepted properties:</span></span>
+<span><span class="co">#' - item type Description of item</span></span>
+<span><span class="co">#' - itemList list List with properties:</span></span>
+<span><span class="co">#'   - property character</span></span>
+<span><span class="co">#'   - property character</span></span>
+<span><span class="co">#' @md</span></span></code></pre></div>
 </div>
 </div>
 </div>
@@ -86,7 +86,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

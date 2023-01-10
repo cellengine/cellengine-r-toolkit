@@ -47,32 +47,39 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">fromFlowCore</span><span class="op">(</span><span class="va">flowObject</span>, <span class="va">experimentId</span>, name <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fromFlowCore</span><span class="op">(</span><span class="va">flowObject</span>, <span class="va">experimentId</span>, name <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>flowObject</dt>
 <dd><p>A flowCore object.</p></dd>
+
+
 <dt>experimentId</dt>
 <dd><p>The ID of the experiment in which to create the object.</p></dd>
+
+
 <dt>name</dt>
 <dd><p>The name to use for the CellEngine object. If not set, it will
 default to the identifier of the flowCore object.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Other parameters passed to <code>createRectangleGate</code>, <code>createPolygonGate</code>, etc.</p></dd>
+
 </dl></div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="va">rectGate</span> <span class="op">&lt;-</span> <span class="fu">rectangleGate</span><span class="op">(</span></span>
-<span class="r-in">  filterId <span class="op">=</span> <span class="st">"Gate 1"</span>,</span>
-<span class="r-in">  <span class="st">"FL1-H"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">12</span><span class="op">)</span>, <span class="st">"FL2-H"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">12</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="va">experimentId</span> <span class="op">&lt;-</span> <span class="st">"5d2f8b4b21fd0676fb3a6a8c"</span></span>
-<span class="r-in"><span class="fu">fromFlowCore</span><span class="op">(</span><span class="va">rectGate</span>, <span class="va">experimentId</span>, name <span class="op">=</span> <span class="st">"my gate"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="va">rectGate</span> <span class="op">&lt;-</span> <span class="fu">rectangleGate</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  filterId <span class="op">=</span> <span class="st">"Gate 1"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"FL1-H"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">12</span><span class="op">)</span>, <span class="st">"FL2-H"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">12</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">experimentId</span> <span class="op">&lt;-</span> <span class="st">"5d2f8b4b21fd0676fb3a6a8c"</span></span></span>
+<span class="r-in"><span><span class="fu">fromFlowCore</span><span class="op">(</span><span class="va">rectGate</span>, <span class="va">experimentId</span>, name <span class="op">=</span> <span class="st">"my gate"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -87,7 +94,7 @@ default to the identifier of the flowCore object.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

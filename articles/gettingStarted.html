@@ -73,8 +73,8 @@
 <h3 id="installing">Installing:<a class="anchor" aria-label="anchor" href="#installing"></a>
 </h3>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://devtools.r-lib.org/" class="external-link">"devtools"</a></span><span class="op">)</span>
-<span class="fu">install_github</span><span class="op">(</span><span class="st">"primitybio/cellengine-r-toolkit"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://devtools.r-lib.org/" class="external-link">"devtools"</a></span><span class="op">)</span></span>
+<span><span class="fu">install_github</span><span class="op">(</span><span class="st">"primitybio/cellengine-r-toolkit"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="first-steps">First steps<a class="anchor" aria-label="anchor" href="#first-steps"></a>
@@ -84,24 +84,24 @@
 </h4>
 <p>For interactive sessions, calling <code><a href="../reference/authenticate.html">authenticate()</a></code> will prompt you for your login info:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"cellengine"</span><span class="op">)</span>
-<span class="fu"><a href="../reference/authenticate.html">authenticate</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># prompts for username and password (and OTP if configured)</span>
-<span class="fu"><a href="../reference/authenticate.html">authenticate</a></span><span class="op">(</span><span class="st">"username"</span><span class="op">)</span> <span class="co"># prompts for password (and OTP if configured)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"cellengine"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/authenticate.html">authenticate</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># prompts for username and password (and OTP if configured)</span></span>
+<span><span class="fu"><a href="../reference/authenticate.html">authenticate</a></span><span class="op">(</span><span class="st">"username"</span><span class="op">)</span> <span class="co"># prompts for password (and OTP if configured)</span></span></code></pre></div>
 <p>For non-interactive sessions, we recommend avoiding saving your password in plaintext because it’s not secure. Consider instead using an environment variable or <code>.Renviron</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"cellengine"</span><span class="op">)</span>
-<span class="fu"><a href="../reference/authenticate.html">authenticate</a></span><span class="op">(</span><span class="st">"username"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"CELLENGINE_PASSWORD"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"cellengine"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/authenticate.html">authenticate</a></span><span class="op">(</span><span class="st">"username"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"CELLENGINE_PASSWORD"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="get-experiments">Get experiments<a class="anchor" aria-label="anchor" href="#get-experiments"></a>
 </h4>
 <p>You can list all experiments that you have access to:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">experiments</span> <span class="op">=</span> <span class="fu"><a href="../reference/getExperiments.html">getExperiments</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">experiments</span> <span class="op">=</span> <span class="fu"><a href="../reference/getExperiments.html">getExperiments</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Or fetch individual experiments by ID or name:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">exp2</span> <span class="op">=</span> <span class="fu"><a href="../reference/getExperiment.html">getExperiment</a></span><span class="op">(</span><span class="st">"57c4d7d4e69a1e890c4d8d2f"</span><span class="op">)</span>
-<span class="va">exp3</span> <span class="op">=</span> <span class="fu"><a href="../reference/getExperiment.html">getExperiment</a></span><span class="op">(</span><span class="fu"><a href="../reference/byName.html">byName</a></span><span class="op">(</span><span class="st">"experiment_name"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">exp2</span> <span class="op">=</span> <span class="fu"><a href="../reference/getExperiment.html">getExperiment</a></span><span class="op">(</span><span class="st">"57c4d7d4e69a1e890c4d8d2f"</span><span class="op">)</span></span>
+<span><span class="va">exp3</span> <span class="op">=</span> <span class="fu"><a href="../reference/getExperiment.html">getExperiment</a></span><span class="op">(</span><span class="fu"><a href="../reference/byName.html">byName</a></span><span class="op">(</span><span class="st">"experiment_name"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
@@ -109,15 +109,15 @@
 </h3>
 <p>Gates, Populations, FcsFiles, and Compensations can all be requested by name. If you are looking up a resource from a specific experiment, this must be done with the <code>byName</code> function:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">experimentId</span> <span class="op">=</span> <span class="st">"57c4d7d4e69a1e890c4d8d2f"</span>
-<span class="va">gate</span> <span class="op">=</span> <span class="fu"><a href="../reference/getGate.html">getGate</a></span><span class="op">(</span><span class="va">expermentId</span>, <span class="fu"><a href="../reference/byName.html">byName</a></span><span class="op">(</span><span class="st">"gate_name"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">experimentId</span> <span class="op">=</span> <span class="st">"57c4d7d4e69a1e890c4d8d2f"</span></span>
+<span><span class="va">gate</span> <span class="op">=</span> <span class="fu"><a href="../reference/getGate.html">getGate</a></span><span class="op">(</span><span class="va">expermentId</span>, <span class="fu"><a href="../reference/byName.html">byName</a></span><span class="op">(</span><span class="st">"gate_name"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Looking up a resource by name requires one extra API call and thus is slightly slower than using a resource by ID. However, by-name lookups are cached for the duration of the R session, so repeated by-name lookups of the same object are just as fast as a request by ID.</p>
 <p>You can also create a per-Experiment lookup object, which can be used to find resources by name or ID. This makes it convenient to query different types of resources from a single experiment:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">experimentId</span> <span class="op">=</span> <span class="st">"57c4d7d4e69a1e890c4d8d2f"</span>
-<span class="va">lookup</span> <span class="op">=</span> <span class="fu"><a href="../reference/createLookup.html">createLookup</a></span><span class="op">(</span><span class="va">experimentId</span><span class="op">)</span>
-<span class="va">gate</span> <span class="op">=</span> <span class="fu">lookup</span><span class="op">(</span><span class="st">"gates"</span>, <span class="st">"gate_name"</span><span class="op">)</span>
-<span class="va">population</span> <span class="op">=</span> <span class="fu">lookup</span><span class="op">(</span><span class="st">"populations"</span>, <span class="st">"population_name"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">experimentId</span> <span class="op">=</span> <span class="st">"57c4d7d4e69a1e890c4d8d2f"</span></span>
+<span><span class="va">lookup</span> <span class="op">=</span> <span class="fu"><a href="../reference/createLookup.html">createLookup</a></span><span class="op">(</span><span class="va">experimentId</span><span class="op">)</span></span>
+<span><span class="va">gate</span> <span class="op">=</span> <span class="fu">lookup</span><span class="op">(</span><span class="st">"gates"</span>, <span class="st">"gate_name"</span><span class="op">)</span></span>
+<span><span class="va">population</span> <span class="op">=</span> <span class="fu">lookup</span><span class="op">(</span><span class="st">"populations"</span>, <span class="st">"population_name"</span><span class="op">)</span></span></code></pre></div>
 </div>
   </div>
 
@@ -136,7 +136,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

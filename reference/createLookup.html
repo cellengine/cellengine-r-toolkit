@@ -53,29 +53,32 @@ If a name is not specified, a list of all requested resources will be returned.<
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">createLookup</span><span class="op">(</span><span class="va">experimentId</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">createLookup</span><span class="op">(</span><span class="va">experimentId</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>experimentId</dt>
 <dd><p>Experiment to create lookup for.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A function that takes the parameters "resource" and "name":
+    
+
+<p>A function that takes the parameters "resource" and "name":
   resource Type of resource. Available options are "gates", "populations", "fcsfiles", and "compensations".
   name Name of resource to search for.</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="va">lookup</span> <span class="op">&lt;-</span> <span class="fu">createLookup</span><span class="op">(</span><span class="st">"5e1f66a06f5f3f0759b479c9"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">lookup</span><span class="op">(</span><span class="st">"gates"</span>, <span class="st">"test_gate"</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># or:</span></span>
-<span class="r-in"><span class="fu">lookup</span><span class="op">(</span><span class="st">"gates"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="va">lookup</span> <span class="op">&lt;-</span> <span class="fu">createLookup</span><span class="op">(</span><span class="st">"5e1f66a06f5f3f0759b479c9"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">lookup</span><span class="op">(</span><span class="st">"gates"</span>, <span class="st">"test_gate"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># or:</span></span></span>
+<span class="r-in"><span><span class="fu">lookup</span><span class="op">(</span><span class="st">"gates"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -90,7 +93,7 @@ If a name is not specified, a list of all requested resources will be returned.<
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

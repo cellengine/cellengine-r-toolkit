@@ -47,7 +47,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">authenticate</span><span class="op">(</span>username <span class="op">=</span> <span class="cn">NA</span>, password <span class="op">=</span> <span class="cn">NA</span>, otp <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">authenticate</span><span class="op">(</span>username <span class="op">=</span> <span class="cn">NA</span>, password <span class="op">=</span> <span class="cn">NA</span>, otp <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -55,13 +55,18 @@
     <dl><dt>username</dt>
 <dd><p>Your username or email address. If omitted and in an
 interactive session, a prompt will be displayed.</p></dd>
+
+
 <dt>password</dt>
 <dd><p>Your password. If omitted and running in RStudio or the
 getPass library is installed, a prompt will be displayed.</p></dd>
+
+
 <dt>otp</dt>
 <dd><p>A one-time passcode, if your account is configured with two-factor
 authentication. If omitted and in an interactive session, a prompt will be
 displayed. Note that this must be a string.</p></dd>
+
 </dl></div>
     <div id="details">
     <h2>Details</h2>
@@ -72,14 +77,14 @@ consider setting an environment variable (see examples).</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="fu">authenticate</span><span class="op">(</span><span class="op">)</span> <span class="co"># prompts for username and password (and OTP if configured)</span></span>
-<span class="r-in"><span class="fu">authenticate</span><span class="op">(</span><span class="st">"username"</span><span class="op">)</span> <span class="co"># prompts for password (and OTP if configured)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># For non-interactive sessions, use an environment variable or other means to</span></span>
-<span class="r-in"><span class="co"># avoid saving your password in plaintext.</span></span>
-<span class="r-in"><span class="fu">authenticate</span><span class="op">(</span><span class="st">"username"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"API_PASSWORD"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="fu">authenticate</span><span class="op">(</span><span class="op">)</span> <span class="co"># prompts for username and password (and OTP if configured)</span></span></span>
+<span class="r-in"><span><span class="fu">authenticate</span><span class="op">(</span><span class="st">"username"</span><span class="op">)</span> <span class="co"># prompts for password (and OTP if configured)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># For non-interactive sessions, use an environment variable or other means to</span></span></span>
+<span class="r-in"><span><span class="co"># avoid saving your password in plaintext.</span></span></span>
+<span class="r-in"><span><span class="fu">authenticate</span><span class="op">(</span><span class="st">"username"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"API_PASSWORD"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -94,7 +99,7 @@ consider setting an environment variable (see examples).</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

@@ -49,15 +49,18 @@ createXxxGate in a loop."><!-- mathjax --><script src="https://cdnjs.cloudflare.
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">createGates</span><span class="op">(</span><span class="va">experimentId</span>, <span class="va">gates</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">createGates</span><span class="op">(</span><span class="va">experimentId</span>, <span class="va">gates</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>experimentId</dt>
 <dd><p>The ID of the experiment to which to add the gate.</p></dd>
+
+
 <dt>gates</dt>
 <dd><p><code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code> of gates.</p></dd>
+
 </dl></div>
     <div id="details">
     <h2>Details</h2>
@@ -75,22 +78,22 @@ tailoring a large number of gates.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="va">g1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">  type <span class="op">=</span> <span class="st">"RectangleGate"</span>, xChannel <span class="op">=</span> <span class="st">"FSC-A"</span>, yChannel <span class="op">=</span> <span class="st">"SSC-A"</span>,</span>
-<span class="r-in">  model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>rectangle <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>x1 <span class="op">=</span> <span class="fl">1</span>, x2 <span class="op">=</span> <span class="fl">100</span>, y1 <span class="op">=</span> <span class="fl">1</span>, y2 <span class="op">=</span> <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="va">g2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">  type <span class="op">=</span> <span class="st">"PolygonGate"</span>, xChannel <span class="op">=</span> <span class="st">"FSC-A"</span>, yChannel <span class="op">=</span> <span class="st">"SSC-A"</span>,</span>
-<span class="r-in">  model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>polygon <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>vertices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">30</span>, <span class="fl">40</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">60</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="va">g3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">  type <span class="op">=</span> <span class="st">"RangeGate"</span>, xChannel <span class="op">=</span> <span class="st">"V450-480-A"</span>,</span>
-<span class="r-in">  model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>x1 <span class="op">=</span> <span class="fl">1</span>, x2 <span class="op">=</span> <span class="fl">100</span>, y <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">createGates</span><span class="op">(</span><span class="va">experimentId</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">g1</span>, <span class="va">g2</span>, <span class="va">g3</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="va">g1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  type <span class="op">=</span> <span class="st">"RectangleGate"</span>, xChannel <span class="op">=</span> <span class="st">"FSC-A"</span>, yChannel <span class="op">=</span> <span class="st">"SSC-A"</span>,</span></span>
+<span class="r-in"><span>  model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>rectangle <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>x1 <span class="op">=</span> <span class="fl">1</span>, x2 <span class="op">=</span> <span class="fl">100</span>, y1 <span class="op">=</span> <span class="fl">1</span>, y2 <span class="op">=</span> <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">g2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  type <span class="op">=</span> <span class="st">"PolygonGate"</span>, xChannel <span class="op">=</span> <span class="st">"FSC-A"</span>, yChannel <span class="op">=</span> <span class="st">"SSC-A"</span>,</span></span>
+<span class="r-in"><span>  model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>polygon <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>vertices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">30</span>, <span class="fl">40</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">60</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">g3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  type <span class="op">=</span> <span class="st">"RangeGate"</span>, xChannel <span class="op">=</span> <span class="st">"V450-480-A"</span>,</span></span>
+<span class="r-in"><span>  model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>x1 <span class="op">=</span> <span class="fl">1</span>, x2 <span class="op">=</span> <span class="fl">100</span>, y <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">createGates</span><span class="op">(</span><span class="va">experimentId</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">g1</span>, <span class="va">g2</span>, <span class="va">g3</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -105,7 +108,7 @@ tailoring a large number of gates.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

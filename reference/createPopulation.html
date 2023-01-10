@@ -47,15 +47,19 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">createPopulation</span><span class="op">(</span><span class="va">experimentId</span>, <span class="va">name</span>, <span class="va">gates</span>, <span class="va">terminalGateGid</span>, parentId <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">createPopulation</span><span class="op">(</span><span class="va">experimentId</span>, <span class="va">name</span>, <span class="va">gates</span>, <span class="va">terminalGateGid</span>, parentId <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>experimentId</dt>
 <dd><p>The ID of the experiment to which to add the population.</p></dd>
+
+
 <dt>name</dt>
 <dd><p>The name of the population.</p></dd>
+
+
 <dt>gates</dt>
 <dd><p>The list of gates comprising the population. This should be in
 the form <code>list(`$and` = c("gid1", "gid2"))</code>, where <code>"gid1"</code> and
@@ -64,6 +68,8 @@ of <code>$and</code>, <code>$or</code>, <code>$not</code> and <code>$xor</code> 
 however, only populations with the form <code>list(`$and` = c(...gates))</code>
 can be displayed in the Web UI at this time. Alternatively, this may be a
 JSON string (may be easier than constructing the correct R expression).</p></dd>
+
+
 <dt>terminalGateGid</dt>
 <dd><p>The Group ID (<code>gid</code>) of the gate that
 differentiates this population from its parent. Because complex populations
@@ -71,17 +77,20 @@ that deviate from the <code>list(`$and` = c(...gates))</code> form cannot curren
 be displayed in the Web UI, those populations may set this to <code>NULL</code>.
 In the future, this will be required to be a list of GIDs for those
 populations.</p></dd>
+
+
 <dt>parentId</dt>
 <dd><p>ID of the parent population. Use <code>NULL</code> for the
 "ungated" population.</p></dd>
+
 </dl></div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="va">gid1</span> <span class="op">&lt;-</span> <span class="st">"59262d84b1a1fc1193f12b0e"</span></span>
-<span class="r-in"><span class="fu">createPopulation</span><span class="op">(</span><span class="va">experimentId</span>, <span class="st">"Singlets"</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`$and` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">gid1</span><span class="op">)</span><span class="op">)</span>, <span class="va">gid1</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="va">gid1</span> <span class="op">&lt;-</span> <span class="st">"59262d84b1a1fc1193f12b0e"</span></span></span>
+<span class="r-in"><span><span class="fu">createPopulation</span><span class="op">(</span><span class="va">experimentId</span>, <span class="st">"Singlets"</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`$and` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">gid1</span><span class="op">)</span><span class="op">)</span>, <span class="va">gid1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -96,7 +105,7 @@ populations.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

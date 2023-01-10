@@ -47,81 +47,108 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">downloadFcsFiles</span><span class="op">(</span>
-  <span class="va">experimentId</span>,
-  <span class="va">format</span>,
-  <span class="va">destination</span>,
-  overwrite <span class="op">=</span> <span class="cn">F</span>,
-  fcsFileIds <span class="op">=</span> <span class="cn">NULL</span>,
-  populationIds <span class="op">=</span> <span class="cn">NULL</span>,
-  compensationId <span class="op">=</span> <span class="cn">NULL</span>,
-  compensatedQ <span class="op">=</span> <span class="cn">NULL</span>,
-  preSubsampleN <span class="op">=</span> <span class="cn">NULL</span>,
-  preSubsampleP <span class="op">=</span> <span class="cn">NULL</span>,
-  postSubsampleN <span class="op">=</span> <span class="cn">NULL</span>,
-  postSubsampleP <span class="op">=</span> <span class="cn">NULL</span>,
-  seed <span class="op">=</span> <span class="cn">NULL</span>,
-  filenameTemplate <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">downloadFcsFiles</span><span class="op">(</span></span>
+<span>  <span class="va">experimentId</span>,</span>
+<span>  <span class="va">format</span>,</span>
+<span>  <span class="va">destination</span>,</span>
+<span>  overwrite <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>  fcsFileIds <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  populationIds <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  compensationId <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  compensatedQ <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  preSubsampleN <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  preSubsampleP <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  postSubsampleN <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  postSubsampleP <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  seed <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  filenameTemplate <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>experimentId</dt>
 <dd><p>ID of experiment.</p></dd>
+
+
 <dt>format</dt>
 <dd><p>Specifies the file format ("fcs", "tsv (with header)" or
 "tsv (without header)")</p></dd>
+
+
 <dt>destination</dt>
 <dd><p>[String] Write the files to the specified destination.</p></dd>
+
+
 <dt>overwrite</dt>
 <dd><p>[Logical] Allows a destination file to be overwritten.</p></dd>
+
+
 <dt>fcsFileIds</dt>
 <dd><p>[Array&lt;String&gt;] Optional. Defaults to returning all
 non-control files in the experiment.</p></dd>
+
+
 <dt>populationIds</dt>
 <dd><p>[Array&lt;String&gt;] Optional. If provided, only events from
 these populations will be included in the output files. Defaults to ungated.</p></dd>
+
+
 <dt>compensationId</dt>
 <dd><p>[String] Required if populationIds is specified.
 Compensation to use for gating.</p></dd>
+
+
 <dt>compensatedQ</dt>
 <dd><p>[Logical] Optional. If true, applies the compensation
 specified in compensationId to the exported events. For TSV format, the
 numerical values will be the compensated values. For FCS format, the
 numerical values will be unchanged, but the file header will contain the
 compensation as the spill string (file-internal compensation).</p></dd>
+
+
 <dt>preSubsampleN</dt>
 <dd><p>[Integer] Randomly subsample the file to contain this
 many events before gating.</p></dd>
+
+
 <dt>preSubsampleP</dt>
 <dd><p>[Numeric] Randomly subsample the file to contain this
 percent of events (0 to 1) before gating.</p></dd>
+
+
 <dt>postSubsampleN</dt>
 <dd><p>[Integer] Randomly subsample the file to contain this
 many events after gating.</p></dd>
+
+
 <dt>postSubsampleP</dt>
 <dd><p>[Numeric] Randomly subsample the file to contain this
 percent of events (0 to 1) after gating.</p></dd>
+
+
 <dt>seed</dt>
 <dd><p>[Numeric] Seed for random number generator used for
 subsampling. Use for deterministic (reproducible) subsampling. If omitted, a
 pseudo-random value is used.</p></dd>
+
+
 <dt>filenameTemplate</dt>
 <dd><p>[String]    Tokenized template to dynamically name
 each file in the resulting archive, like
 <code>"{fcsfile.filename}-{population._id}"</code>.</p></dd>
+
 </dl></div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="co"># Download all FCS files in the experiment</span></span>
-<span class="r-in"><span class="fu">downloadFcsFiles</span><span class="op">(</span><span class="va">experimentId</span>, <span class="st">"fcs"</span>, <span class="st">"archive.zip"</span>, overwrite <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># Download specific FCS files</span></span>
-<span class="r-in"><span class="va">fcsFileIds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"5d2f8b4b21fd0676fb3a6a72"</span>, <span class="st">"5d2f8b4b21fd0676fb3a6a74"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">downloadFcsFiles</span><span class="op">(</span><span class="va">experimentId</span>, <span class="st">"fcs"</span>, <span class="st">"archive.zip"</span>, fcsFileIds <span class="op">=</span> <span class="va">fcsFileIds</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># Download all FCS files in the experiment</span></span></span>
+<span class="r-in"><span><span class="fu">downloadFcsFiles</span><span class="op">(</span><span class="va">experimentId</span>, <span class="st">"fcs"</span>, <span class="st">"archive.zip"</span>, overwrite <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Download specific FCS files</span></span></span>
+<span class="r-in"><span><span class="va">fcsFileIds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"5d2f8b4b21fd0676fb3a6a72"</span>, <span class="st">"5d2f8b4b21fd0676fb3a6a74"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">downloadFcsFiles</span><span class="op">(</span><span class="va">experimentId</span>, <span class="st">"fcs"</span>, <span class="st">"archive.zip"</span>, fcsFileIds <span class="op">=</span> <span class="va">fcsFileIds</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -136,7 +163,7 @@ each file in the resulting archive, like
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>
