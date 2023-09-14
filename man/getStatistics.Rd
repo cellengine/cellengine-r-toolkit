@@ -13,7 +13,6 @@ getStatistics(
   compensationId,
   populationIds = NULL,
   populations = NULL,
-  scaleSetId = NULL,
   q = 0.5,
   percentOf = NULL,
   includeAnnotations = TRUE
@@ -44,9 +43,6 @@ error will be thrown. If specified, do not specify \code{fcsFileIds}.}
 population by name. If zero or more than one population exists with the
 name, an error will be thrown. If specified, do not specify
 \code{populationIds}.}
-
-\item{scaleSetId}{Optional ID of scale set. If omitted and if a single
-scale set exists in the experiment, that scale set will be used.}
 
 \item{q}{Quantile to calculate for "quantile" statistic, in the range 0 to 1.}
 
@@ -107,16 +103,14 @@ stats <- getStatistics(experimentId,
 # Returns a data.frame of statistics, including the file annotations.
 # Because percentOf is not specified, "percent" will be percent of parent.
 
-# Explicit syntax, using IDs instead of population and file names, and
-# specifying a scaleSetId:
+# Explicit syntax, using IDs instead of population and file names:
 fcsFileIds <- c("9ab5c6d7a8cf24a5c4f9a6c2")
 statistics <- c("percent")
 populationIds <- c("9ab5c6d7a8cf24a5c4f9face")
-scaleSetId <- "9ab5c6d7a8cf24a5c4f9fdde"
 stats <- getStatistics(experimentId,
   fcsFileIds = fcsFileIds,
   statistics = statistics, populationIds = populationIds,
-  compensationId = cellengine::UNCOMPENSATED, scaleSetId = scaleSetId
+  compensationId = cellengine::UNCOMPENSATED
 )
 
 # Percent of ungated:
