@@ -69,61 +69,75 @@
 
     
     
-<div class="section level3">
-<h3 id="installing">Installing:<a class="anchor" aria-label="anchor" href="#installing"></a>
-</h3>
+<div class="section level2">
+<h2 id="installing">Installing<a class="anchor" aria-label="anchor" href="#installing"></a>
+</h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://devtools.r-lib.org/" class="external-link">"devtools"</a></span><span class="op">)</span></span>
 <span><span class="fu">install_github</span><span class="op">(</span><span class="st">"primitybio/cellengine-r-toolkit"</span><span class="op">)</span></span></code></pre></div>
 </div>
+<div class="section level2">
+<h2 id="first-steps">First steps<a class="anchor" aria-label="anchor" href="#first-steps"></a>
+</h2>
 <div class="section level3">
-<h3 id="first-steps">First steps<a class="anchor" aria-label="anchor" href="#first-steps"></a>
+<h3 id="authentication">Authentication<a class="anchor" aria-label="anchor" href="#authentication"></a>
 </h3>
-<div class="section level4">
-<h4 id="authentication">Authentication<a class="anchor" aria-label="anchor" href="#authentication"></a>
-</h4>
 <p>For interactive sessions, calling <code><a href="../reference/authenticate.html">authenticate()</a></code> will prompt you for your login info:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"cellengine"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/authenticate.html">authenticate</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># prompts for username and password (and OTP if configured)</span></span>
 <span><span class="fu"><a href="../reference/authenticate.html">authenticate</a></span><span class="op">(</span><span class="st">"username"</span><span class="op">)</span> <span class="co"># prompts for password (and OTP if configured)</span></span></code></pre></div>
-<p>For non-interactive sessions, we recommend avoiding saving your password in plaintext because it’s not secure. Consider instead using an environment variable or <code>.Renviron</code>.</p>
+<p><a href="https://docs.cellengine.com/api/#authentication" class="external-link">Personal Access Tokens</a> can also be used. These provide secure access with the ability to limit what actions the token can be used to perform. These are recommended over username/password authentication, especially for scripts.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"cellengine"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/authenticate.html">authenticate</a></span><span class="op">(</span><span class="st">"username"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"CELLENGINE_PASSWORD"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/authenticate.html">authenticate</a></span><span class="op">(</span>token <span class="op">=</span> <span class="st">"cep_xxxxxxxxxxxxxxxxxxx"</span><span class="op">)</span></span></code></pre></div>
+<p>Credentials can also be loaded from environment variables:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a><span class="va">CELLENGINE_USERNAME=</span>joesmith <span class="va">CELLENGINE_PASSWORD=</span>mypassword</span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="co"># or</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="va">CELLENGINE_AUTH_TOKEN=</span>cep_xxxxxxxxxxxxxxxxxxx</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"cellengine"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/authenticate.html">authenticate</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># retrieves from environment variables automatically</span></span></code></pre></div>
 </div>
+<div class="section level3">
+<h3 id="basic-operations">Basic operations<a class="anchor" aria-label="anchor" href="#basic-operations"></a>
+</h3>
+<p>The CellEngine R Toolkit provides functions for: * Retrieving, creating and modifying experiments, gates, populations, compensations, FCS files and attachments. * Getting statistics, plots and FCS file content (data matrix). * Converting to and from flowCore objects (partial support, see issue <a href="https://github.com/primitybio/cellengine-r-toolkit/issues/57" class="external-link">#57</a>).</p>
 <div class="section level4">
 <h4 id="get-experiments">Get experiments<a class="anchor" aria-label="anchor" href="#get-experiments"></a>
 </h4>
 <p>You can list all experiments that you have access to:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">experiments</span> <span class="op">=</span> <span class="fu"><a href="../reference/getExperiments.html">getExperiments</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Or fetch individual experiments by ID or name:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">exp2</span> <span class="op">=</span> <span class="fu"><a href="../reference/getExperiment.html">getExperiment</a></span><span class="op">(</span><span class="st">"57c4d7d4e69a1e890c4d8d2f"</span><span class="op">)</span></span>
 <span><span class="va">exp3</span> <span class="op">=</span> <span class="fu"><a href="../reference/getExperiment.html">getExperiment</a></span><span class="op">(</span><span class="fu"><a href="../reference/byName.html">byName</a></span><span class="op">(</span><span class="st">"experiment_name"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
-</div>
-<div class="section level3">
-<h3 id="looking-up-resources-by-name">Looking up Resources by Name:<a class="anchor" aria-label="anchor" href="#looking-up-resources-by-name"></a>
-</h3>
-<p>Gates, Populations, FcsFiles, and Compensations can all be requested by name. If you are looking up a resource from a specific experiment, this must be done with the <code>byName</code> function:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">experimentId</span> <span class="op">=</span> <span class="st">"57c4d7d4e69a1e890c4d8d2f"</span></span>
-<span><span class="va">gate</span> <span class="op">=</span> <span class="fu"><a href="../reference/getGate.html">getGate</a></span><span class="op">(</span><span class="va">expermentId</span>, <span class="fu"><a href="../reference/byName.html">byName</a></span><span class="op">(</span><span class="st">"gate_name"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="section level4">
+<h4 id="looking-up-resources-by-name">Looking up resources by name:<a class="anchor" aria-label="anchor" href="#looking-up-resources-by-name"></a>
+</h4>
+<p>Experiments, gates, populations, FCS files, compensations and attachments can all be requested by name:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">expt</span> <span class="op">=</span> <span class="fu"><a href="../reference/getExperiment.html">getExperiment</a></span><span class="op">(</span><span class="fu"><a href="../reference/byName.html">byName</a></span><span class="op">(</span><span class="st">"experiment_name"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">gate</span> <span class="op">=</span> <span class="fu"><a href="../reference/getGate.html">getGate</a></span><span class="op">(</span><span class="va">expt</span><span class="op">$</span><span class="va">`_id`</span>, <span class="fu"><a href="../reference/byName.html">byName</a></span><span class="op">(</span><span class="st">"gate_name"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Looking up a resource by name requires one extra API call and thus is slightly slower than using a resource by ID. However, by-name lookups are cached for the duration of the R session, so repeated by-name lookups of the same object are just as fast as a request by ID.</p>
 <p>You can also create a per-Experiment lookup object, which can be used to find resources by name or ID. This makes it convenient to query different types of resources from a single experiment:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">experimentId</span> <span class="op">=</span> <span class="st">"57c4d7d4e69a1e890c4d8d2f"</span></span>
 <span><span class="va">lookup</span> <span class="op">=</span> <span class="fu"><a href="../reference/createLookup.html">createLookup</a></span><span class="op">(</span><span class="va">experimentId</span><span class="op">)</span></span>
 <span><span class="va">gate</span> <span class="op">=</span> <span class="fu">lookup</span><span class="op">(</span><span class="st">"gates"</span>, <span class="st">"gate_name"</span><span class="op">)</span></span>
 <span><span class="va">population</span> <span class="op">=</span> <span class="fu">lookup</span><span class="op">(</span><span class="st">"populations"</span>, <span class="st">"population_name"</span><span class="op">)</span></span></code></pre></div>
 </div>
+</div>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-      </div>
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
+</div>
 
 </div>
 
