@@ -1,7 +1,8 @@
 pkg.env <- new.env() # nolint
 
-# Set your development base url in .Renviron in the package directory
 pkg.env$baseURL <- Sys.getenv("CELLENGINE_API_URL", "https://cellengine.com/api/v1")
+
+pkg.env$auth <- c()
 
 handleResponse <- function(response) {
   httr::warn_for_status(response)
@@ -44,36 +45,74 @@ baseGet <- function(url, params = list()) {
   ensureBaseUrl()
   fullURL <- paste(pkg.env$baseURL, url, sep = "/")
   params <- coerceParameters(params)
-  handleResponse(httr::GET(fullURL, query = params, httr::user_agent(ua)))
+  r <- httr::GET(fullURL,
+                 query = params,
+                 httr::user_agent(ua),
+                 httr::add_headers(.headers = pkg.env$auth))
+  handleResponse(r)
 }
 
 basePatch <- function(url, body, params = list()) {
   ensureBaseUrl()
   fullURL <- paste(pkg.env$baseURL, url, sep = "/")
   params <- coerceParameters(params)
-  handleResponse(httr::PATCH(fullURL, body = body, query = params, httr::content_type_json(), httr::user_agent(ua)))
+  r <- httr::PATCH(fullURL,
+                   body = body,
+                   query = params,
+                   httr::content_type_json(),
+                   httr::user_agent(ua),
+                   httr::add_headers(.headers = pkg.env$auth))
+  handleResponse(r)
 }
 
 basePut <- function(url, body, params = list()) {
   ensureBaseUrl()
   fullURL <- paste(pkg.env$baseURL, url, sep = "/")
   params <- coerceParameters(params)
-  handleResponse(httr::PUT(fullURL, body = body, query = params, httr::content_type_json(), httr::user_agent(ua)))
+  r <- httr::PUT(fullURL,
+                 body = body,
+                 query = params,
+                 httr::content_type_json(),
+                 httr::user_agent(ua),
+                 httr::add_headers(.headers = pkg.env$auth))
+  handleResponse(r)
 }
 
 basePost <- function(url, body, params = list()) {
   ensureBaseUrl()
   fullURL <- paste(pkg.env$baseURL, url, sep = "/")
   params <- coerceParameters(params)
-  handleResponse(httr::POST(fullURL, body = body, query = params, httr::content_type_json(), httr::user_agent(ua)))
+  r <- httr::POST(fullURL,
+                  body = body,
+                  query = params,
+                  httr::content_type_json(),
+                  httr::user_agent(ua),
+                  httr::add_headers(.headers = pkg.env$auth))
+  handleResponse(r)
+}
+
+basePost <- function(url, body, params = list()) {
+  ensureBaseUrl()
+  fullURL <- paste0(pkg.env$baseURL, url)
+  params <- coerceParameters(params)
+  r <- httr::POST(fullURL,
+                  body = body,
+                  query = params,
+                  httr::content_type_json(),
+                  httr::user_agent(ua),
+                  httr::add_headers(.headers = pkg.env$auth))
+  handleResponse(r)
 }
 
 baseDelete <- function(url, params = list()) {
   ensureBaseUrl()
   fullURL <- paste(pkg.env$baseURL, url, sep = "/")
   params <- coerceParameters(params)
-  response <- httr::DELETE(fullURL, query = params, httr::user_agent(ua))
-  httr::warn_for_status(response)
+  r <- httr::DELETE(fullURL,
+                    query = params,
+                    httr::user_agent(ua),
+                    httr::add_headers(.headers = pkg.env$auth))
+  httr::warn_for_status(r)
 }
 
 checkDefined <- function(param) {

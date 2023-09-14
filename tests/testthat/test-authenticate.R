@@ -45,3 +45,26 @@ test_that("Correct HTTP request is made with OTP", {
     }
   )
 })
+
+test_that("Authenticating with an access token sets token on subsequent requests", {
+  with_mock(
+    `httr::request_perform` = function(req, handle, refresh) {
+      expect_equal(req$method, "GET")
+      expect_equal(req$url, "https://my.server.com/api/v1/experiments")
+      expect_equal(req$headers, c("Authorization" = "Bearer cep_mypersonalaccesstoken"))
+      response <- httptest::fake_response(
+        req$url,
+        req$method,
+        content = "[]",
+        status_code = 200,
+        headers = list(`Content-Type` = "application/json")
+      )
+      return(response)
+    },
+    {
+      setServer("https://my.server.com")
+      authenticate(token = "cep_mypersonalaccesstoken")
+      getExperiments()
+    }
+  )
+})
