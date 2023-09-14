@@ -82,5 +82,5 @@ createGates <- function(experimentId, gates) {
   })
 
   body <- jsonlite::toJSON(body, null = "null", auto_unbox = TRUE)
-  basePost(paste("experiments", experimentId, "gates", sep = "/"), body)
+  basePost(paste0("/api/v1/experiments/", experimentId, "/gates"), body)
 }

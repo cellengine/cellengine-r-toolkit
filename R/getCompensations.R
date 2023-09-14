@@ -12,6 +12,6 @@
 #' }
 getCompensations <- function(experimentId, params = list()) {
   checkDefined(experimentId)
-  experimentId <- lookupByName("experiments", experimentId)
-  baseGet(paste("experiments", experimentId, "compensations", sep = "/"), params)
+  experimentId <- lookupByName("/api/v1/experiments", experimentId)
+  baseGet(paste0("/api/v1/experiments/", experimentId, "/compensations"), params)
 }

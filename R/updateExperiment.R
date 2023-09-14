@@ -11,7 +11,7 @@
 #' }
 updateExperiment <- function(experimentId, properties = list()) {
   checkDefined(experimentId)
-  experimentId <- lookupByName("experiments", experimentId)
+  experimentId <- lookupByName("/api/v1/experiments", experimentId)
   body <- jsonlite::toJSON(properties, null = "null", auto_unbox = TRUE)
-  basePatch(paste("experiments", experimentId, sep = "/"), body)
+  basePatch(paste0("/api/v1/experiments/", experimentId), body)
 }

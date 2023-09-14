@@ -12,5 +12,5 @@
 #' }
 createExperiment <- function(properties = list(), params = list()) {
   body <- jsonlite::toJSON(properties, null = "null", auto_unbox = TRUE)
-  basePost(paste("experiments", sep = "/"), body, params)
+  basePost("/api/v1/experiments", body, params)
 }

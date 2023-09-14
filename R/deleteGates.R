@@ -26,8 +26,8 @@
 #'
 deleteGates <- function(experimentId, gid = NULL, gateId = NULL, exclude = NULL) {
   checkDefined(experimentId)
-  experimentId <- lookupByName("experiments", experimentId)
-  base <- paste("experiments", experimentId, "gates", sep = "/")
+  experimentId <- lookupByName("/api/v1/experiments", experimentId)
+  base <- paste0("/api/v1/experiments/", experimentId, "/gates")
   # TODO:(ge) Add byName functionality for gateId
 
   if ((is.null(gid) & is.null(gateId)) | (!is.null(gid) & !is.null(gateId))) {

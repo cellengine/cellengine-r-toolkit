@@ -17,8 +17,8 @@
 #' }
 getFcsFile <- function(experimentId, fcsFileId, params = list()) {
   checkDefined(experimentId)
-  experimentId <- lookupByName("experiments", experimentId)
+  experimentId <- lookupByName("/api/v1/experiments", experimentId)
   checkDefined(fcsFileId)
-  fcsFileId <- lookupByName(paste("experiments", experimentId, "fcsfiles", sep = "/"), fcsFileId, "filename")
-  baseGet(paste("experiments", experimentId, "fcsfiles", fcsFileId, sep = "/"), params)
+  fcsFileId <- lookupByName(paste0("/api/v1/experiments/", experimentId, "/fcsfiles"), fcsFileId, "filename")
+  baseGet(paste0("/api/v1/experiments/", experimentId, "/fcsfiles/", fcsFileId), params)
 }

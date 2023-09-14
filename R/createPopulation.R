@@ -38,5 +38,5 @@ createPopulation <- function(experimentId, name, gates, terminalGateGid,
     parentId = jsonlite::unbox(parentId)
   ), null = "null", digits = NA)
 
-  basePost(paste("experiments", experimentId, "populations", sep = "/"), body, list())
+  basePost(paste0("/api/v1/experiments/", experimentId, "/populations"), body, list())
 }

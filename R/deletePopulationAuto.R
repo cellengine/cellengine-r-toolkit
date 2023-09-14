@@ -12,11 +12,11 @@
 #' }
 deletePopulationAuto <- function(experimentId, populationId) {
   checkDefined(experimentId)
-  experimentId <- lookupByName("experiments", experimentId)
+  experimentId <- lookupByName("/api/v1/experiments", experimentId)
   checkDefined(populationId)
-  populationId <- lookupByName(paste("experiments", experimentId, "populations", sep = "/"), populationId)
+  populationId <- lookupByName(paste0("/api/v1/experiments/", experimentId, "/populations"), populationId)
   baseDelete(
-    paste("experiments", experimentId, "populations", populationId, sep = "/"),
+    paste0("/api/v1/experiments/", experimentId, "/populations/", populationId),
     params = list(deleteBranch = "true")
   )
 }

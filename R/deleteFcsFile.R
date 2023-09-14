@@ -11,8 +11,8 @@
 #' }
 deleteFcsFile <- function(experimentId, fcsFileId) {
   checkDefined(experimentId)
-  experimentId <- lookupByName("experiments", experimentId)
+  experimentId <- lookupByName("/api/v1/experiments", experimentId)
   checkDefined(fcsFileId)
-  fcsFileId <- lookupByName(paste("experiments", experimentId, "fcsfiles", sep = "/"), fcsFileId, "filename")
-  baseDelete(paste("experiments", experimentId, "fcsfiles", fcsFileId, sep = "/"))
+  fcsFileId <- lookupByName(paste0("/api/v1/experiments/", experimentId, "/fcsfiles"), fcsFileId, "filename")
+  baseDelete(paste0("/api/v1/experiments/", experimentId, "/fcsfiles/", fcsFileId))
 }

@@ -11,8 +11,8 @@
 #' }
 getGate <- function(experimentId, gateId) {
   checkDefined(experimentId)
-  experimentId <- lookupByName("experiments", experimentId)
+  experimentId <- lookupByName("/api/v1/experiments", experimentId)
   checkDefined(gateId)
-  gateId <- lookupByName(paste("experiments", experimentId, "gates", sep = "/"), gateId)
-  baseGet(paste("experiments", experimentId, "gates", gateId, sep = "/"))
+  gateId <- lookupByName(paste0("/api/v1/experiments/", experimentId, "/gates"), gateId)
+  baseGet(paste0("/api/v1/experiments/", experimentId, "/gates/", gateId))
 }

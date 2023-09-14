@@ -14,9 +14,9 @@
 #'
 updateGateFamily <- function(experimentId, gid, properties = list(), params = list()) {
   checkDefined(experimentId)
-  experimentId <- lookupByName("experiments", experimentId)
+  experimentId <- lookupByName("/api/v1/experiments", experimentId)
   checkDefined(gid)
   body <- jsonlite::toJSON(properties, null = "null", auto_unbox = TRUE)
-  url <- sprintf("experiments/%s/gates?gid=%s", experimentId, gid)
+  url <- sprintf("/api/v1/experiments/%s/gates?gid=%s", experimentId, gid)
   basePatch(url, body, params)
 }

@@ -65,9 +65,9 @@ getEvents <- function(experimentId,
                       subsampling = list(),
                       addEventNumber = FALSE) {
   checkDefined(experimentId)
-  experimentId <- lookupByName("experiments", experimentId)
+  experimentId <- lookupByName("/api/v1/experiments", experimentId)
   checkDefined(fcsFileId)
-  fcsFileId <- lookupByName(paste("experiments", experimentId, "fcsfiles", sep = "/"), fcsFileId, "filename")
+  fcsFileId <- lookupByName(paste0("/api/v1/experiments/", experimentId, "/fcsfiles"), fcsFileId, "filename")
 
   if (is.null(compensation) && !is.null(populationId)) {
     stop("'compensation' parameter is required for gated populations.")
@@ -84,16 +84,12 @@ getEvents <- function(experimentId,
   }
 
   if (!is.null(populationId)) {
-    populationId <- lookupByName(paste("experiments", experimentId, "populations", sep = "/"), populationId)
+    populationId <- lookupByName(paste0("/api/v1/experiments/", experimentId, "/populations"), populationId)
   }
 
   ensureBaseUrl()
 
-  fullURL <- paste(
-    paste(pkg.env$baseURL, "experiments", experimentId, "fcsfiles", fcsFileId, sep = "/"),
-    format,
-    sep = "."
-  )
+  fullURL <- paste0(pkg.env$baseURL, "/api/v1/experiments/", experimentId, "/fcsfiles/", fcsFileId, ".", format)
 
   params <- list(
     populationId = populationId,

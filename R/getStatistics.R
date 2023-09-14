@@ -105,7 +105,7 @@ getStatistics <- function(experimentId,
                           percentOf = NULL,
                           includeAnnotations = TRUE) {
   checkDefined(experimentId)
-  experimentId <- lookupByName("experiments", experimentId)
+  experimentId <- lookupByName("/api/v1/experiments", experimentId)
 
   fcsFileIds <- lookupFilesByName(experimentId, fcsFileIds, fcsFiles)
   populationIds <- lookupPopulationsByName(experimentId, populationIds, populations)
@@ -117,6 +117,7 @@ getStatistics <- function(experimentId,
     stop(sprintf("Statistics [%s] are not allowed.", paste0(statsDiff, collapse = ", ")))
   }
 
+  # TODO remove, this was removed from the API
   scaleSetId <- verifyScaleSets(experimentId, scaleSetId)
 
   # percentOf argument
@@ -190,7 +191,7 @@ getStatistics <- function(experimentId,
     body <- c(body, list(channels = channels))
   }
 
-  path <- paste("experiments", experimentId, "bulkstatistics", sep = "/")
+  path <- paste0("/api/v1/experiments/", experimentId, "/bulkstatistics")
   body <- jsonlite::toJSON(body, null = "null", digits = NA)
   basePost(path, body, list())
 }

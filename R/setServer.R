@@ -8,5 +8,5 @@
 #' setServer("https://mycompany.cellengine.com")
 setServer <- function(host) {
   host <- sub("/$", "", host)
-  pkg.env$baseURL <- paste(host, "/api/v1", sep = "")
+  pkg.env$baseURL <- host
 }

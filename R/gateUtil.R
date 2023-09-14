@@ -82,7 +82,7 @@ commonGateCreate <- function(body, name, gid,
   body <- parseFcsFileArgs(body, tailoredPerFile, fcsFileId, fcsFile, experimentId)
 
   body <- jsonlite::toJSON(body, null = "null", digits = NA)
-  path <- paste("experiments", experimentId, "gates", sep = "/")
+  path <- paste0("/api/v1/experiments/", experimentId, "/gates")
 
   if (createPopulation) {
     gateResp <- basePost(path, body, params = list("createPopulation" = TRUE))
@@ -114,7 +114,7 @@ compoundGateCreate <- function(body, names, gid, gids,
   body <- parseFcsFileArgs(body, tailoredPerFile, fcsFileId, fcsFile, experimentId)
 
   body <- jsonlite::toJSON(body, null = "null", digits = NA)
-  path <- paste("experiments", experimentId, "gates", sep = "/")
+  path <- paste0("/api/v1/experiments/", experimentId, "/gates")
 
   if (createPopulation) {
     gateResp <- basePost(path, body, params = list("createPopulation" = TRUE))
