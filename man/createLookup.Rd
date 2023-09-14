@@ -11,8 +11,8 @@ createLookup(experimentId)
 }
 \value{
 A function that takes the parameters "resource" and "name":
-  resource Type of resource. Available options are "gates", "populations", "fcsfiles", and "compensations".
-  name Name of resource to search for.
+resource Type of resource. Available options are "gates", "populations", "fcsfiles", and "compensations".
+name Name of resource to search for.
 }
 \description{
 Allows creation of a by-name lookup object per experiment, which can
