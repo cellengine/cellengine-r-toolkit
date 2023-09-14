@@ -30,7 +30,7 @@ deleteGates <- function(experimentId, gid = NULL, gateId = NULL, exclude = NULL)
   base <- paste0("/api/v1/experiments/", experimentId, "/gates")
   # TODO:(ge) Add byName functionality for gateId
 
-  if ((is.null(gid) & is.null(gateId)) | (!is.null(gid) & !is.null(gateId))) {
+  if ((is.null(gid) && is.null(gateId)) | (!is.null(gid) && !is.null(gateId))) {
     stop("Either the gid or the gateId must be specified")
   }
 

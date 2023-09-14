@@ -29,8 +29,8 @@ test_that("ellipse gate is converted to flowCore", {
   flowGate <- toFlowCore(gate)
 
   expect_equal(flowGate@filterId, "my gate")
-  expect_equal(flowGate@mean[1], gate$model$ellipse$center[1], tolerance = 0.001, check.names = F)
-  expect_equal(flowGate@mean[2], gate$model$ellipse$center[2], tolerance = 0.001, check.names = F)
+  expect_equal(flowGate@mean[1], gate$model$ellipse$center[1], tolerance = 0.001, check.names = FALSE)
+  expect_equal(flowGate@mean[2], gate$model$ellipse$center[2], tolerance = 0.001, check.names = FALSE)
   expect_equal(flowGate@parameters[[1]]@parameters, gate$xChannel)
   expect_equal(flowGate@parameters[[2]]@parameters, gate$yChannel)
 

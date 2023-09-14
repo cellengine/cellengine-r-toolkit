@@ -29,7 +29,7 @@ test_that("Correct HTTP request is made", {
       expect_equal(resp$`_id`, "592640aa298f1480900e10e4") # assigned server-side
       expect_equal(resp$xChannel, "FSC-A")
       expect_equal(resp$name, "my gate")
-      expect_equal(resp$model$labels, matrix(c(c(26215.4, 0.95), c(235929.6, 0.95)), byrow = T, ncol = 2))
+      expect_equal(resp$model$labels, matrix(c(c(26215.4, 0.95), c(235929.6, 0.95)), byrow = TRUE, ncol = 2))
       expect_equal(resp$model$split$x, 144000)
       expect_equal(resp$model$split$y, 0.5)
       expect_equal(resp$model$locked, FALSE)
@@ -71,7 +71,7 @@ test_that("Correct HTTP request is made, fcsFileId specified", {
       expect_equal(resp$`_id`, "592640aa298f1480900e10e4") # assigned server-side
       expect_equal(resp$xChannel, "FSC-A")
       expect_equal(resp$name, "my gate")
-      expect_equal(resp$model$labels, matrix(c(c(26215.4, 0.95), c(235929.6, 0.95)), byrow = T, ncol = 2))
+      expect_equal(resp$model$labels, matrix(c(c(26215.4, 0.95), c(235929.6, 0.95)), byrow = TRUE, ncol = 2))
       expect_equal(resp$model$split$x, 144000)
       expect_equal(resp$model$split$y, 0.5)
       expect_equal(resp$model$locked, FALSE)
@@ -137,7 +137,7 @@ test_that("Correct HTTP request is made, parentPopulation specified", {
       expect_equal(resp$`_id`, "592640aa298f1480900e10e4") # assigned server-side
       expect_equal(resp$xChannel, "FSC-A")
       expect_equal(resp$name, "my gate")
-      expect_equal(resp$model$labels, matrix(c(c(26215.4, 0.95), c(235929.6, 0.95)), byrow = T, ncol = 2))
+      expect_equal(resp$model$labels, matrix(c(c(26215.4, 0.95), c(235929.6, 0.95)), byrow = TRUE, ncol = 2))
       expect_equal(resp$model$split$x, 144000)
       expect_equal(resp$model$split$y, 0.5)
       expect_equal(resp$model$locked, FALSE)

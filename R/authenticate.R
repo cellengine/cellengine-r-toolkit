@@ -116,7 +116,7 @@ authenticate <- function(username = NA, password = NA, otp = NA, token = NA) {
 
   if (httr::status_code(r) == 400 && parsed$error == '"otp" is required.') {
     if (requireNamespace("getPass", quietly = TRUE)) {
-      otp <- getPass::getPass(msg = "Please enter your one-time code", noblank = T)
+      otp <- getPass::getPass(msg = "Please enter your one-time code", noblank = TRUE)
     } else if (rstudioapi::isAvailable()) {
       otp <- rstudioapi::askForPassword("Please enter your one-time code")
     } else if (interactive()) {

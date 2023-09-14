@@ -474,8 +474,7 @@ test_that("works, percentOf specified as an array", {
           response <- httptest::fake_response(
             req$url,
             req$method,
-            content = "[
-            ]",
+            content = "[]",
             status_code = 200,
             headers = list(`Content-Type` = "application/json")
           )

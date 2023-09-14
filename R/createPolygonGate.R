@@ -45,7 +45,7 @@ createPolygonGate <- function(experimentId, xChannel, yChannel, name,
   if (length(vertices) > 0) {
     label <- c(mean(sapply(vertices, "[[", 1)), mean(sapply(vertices, "[[", 2)))
     vertices <- do.call(rbind, vertices)
-  } else if (length(xVertices) > 0 & length(yVertices) > 0) {
+  } else if (length(xVertices) > 0 && length(yVertices) > 0) {
     warning("Arguments 'xVertices' and 'yVertices' are deprecated. Use 'vertices' instead.")
     label <- c(mean(xVertices), mean(yVertices))
     vertices <- matrix(c(xVertices, yVertices), ncol = 2)

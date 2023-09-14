@@ -15,9 +15,9 @@ covarToParameters <- function(covar) {
   major <- sqrt(eigenvalues[1])
   minor <- sqrt(eigenvalues[2])
 
-  if ((b == 0) & a >= c) {
+  if ((b == 0) && a >= c) {
     alpha <- 0
-  } else if ((b == 0) & a < c) {
+  } else if ((b == 0) && a < c) {
     alpha <- pi / 2
   } else {
     alpha <- atan2(eigenvalues[1] - a, b)
