@@ -85,7 +85,7 @@ error will be thrown. If specified, do not specify <code>fcsFileIds</code>.</p><
 
 <dt>statistics</dt>
 <dd><p>Statistics to export. Valid options: "mean", "median",
-"quantile", "stddev", "cv", "eventcount", "percent", "mad".</p></dd>
+"quantile", "stddev", "cv", "eventcount", "percent", "mad", "geometricmean".</p></dd>
 
 
 <dt>compensationId</dt>
@@ -147,9 +147,9 @@ validation logic must be run. Thus, for performance-critical applications,
 provide IDs instead of names in the <code>fcsFileIds</code>, <code>populationIds</code>
 and <code>percentOf</code> parameters. IDs are also guaranteed to reference unique
 files and populations, while names may be non-unique, in which case an error
-will be raised.
-Specify neither <code>fcsFileIds</code> nor fcsFiles to calculate statistics for
-all non-control FCS files.</p>
+will be raised.</p>
+<p>Specify neither <code>fcsFileIds</code> nor <code>fcsFiles</code> to calculate statistics
+for all non-control FCS files.</p>
     </div>
 
     <div id="ref-examples">

@@ -46,6 +46,7 @@
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/" class="external-link">Keep a Changelog</a>, and this project adheres to <a href="https://semver.org/spec/v2.0.0.html" class="external-link">Semantic Versioning</a>.</p>
 <div class="section level2">
 <h2 id="v1-dev-unreleased">[v1-dev Unreleased]<a class="anchor" aria-label="anchor" href="#v1-dev-unreleased"></a></h2>
+<p>v1 is the first stable release of the CellEngine R toolkit and has several breaking changes compared to the pre-release version.</p>
 <div class="section level3">
 <h3 id="added">Added<a class="anchor" aria-label="anchor" href="#added"></a></h3>
 <ul><li>
@@ -56,24 +57,41 @@
 <code><a href="reference/updateCompensation.html">updateCompensation()</a></code> function</li>
 <li>
 <code><a href="reference/deleteCompensation.html">deleteCompensation()</a></code> function</li>
+<li>All functions now consistently accept <code><a href="reference/byName.html">byName()</a></code> expressions for any ID parameter.</li>
+<li>Support for transfers to S3 to <code><a href="reference/getEvents.html">getEvents()</a></code>
+</li>
+<li>
+<code>PER_FILE</code> compensation constant</li>
+<li>Support for <code>geometricMean</code> as a statistics value in <code><a href="reference/getStatistics.html">getStatistics()</a></code>.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="changed">Changed<a class="anchor" aria-label="anchor" href="#changed"></a></h3>
 <ul><li>
+<strong>Breaking</strong> Failed API requests will now stop instead of warn.</li>
+<li>
 <strong>Breaking</strong> <code><a href="reference/getEvents.html">getEvents()</a></code> now uses <code>check.names=FALSE</code>, so data.frame column names will be identical to the parameter names found in the FCS file. For example, “CD4 (Ax647-A)” will no longer be converted to “CD4..Ax647.A.”.</li>
 <li>
 <strong>Breaking</strong> <code><a href="reference/getEvents.html">getEvents()</a></code> now defaults to <code>headerQ=TRUE</code>, so data.frames will have column names by default now.</li>
 <li>
 <strong>Breaking</strong> In <code><a href="reference/getEvents.html">getEvents()</a></code>, the argument <code>clamp_q</code> was renamed to <code>clampQ</code>.</li>
-<li>Change the default for <code>createPopulation</code> arg in gate creation functions to <code>is.null(fcsFileId)</code>
-</li>
 <li>
-<strong>Breaking</strong> <code>getCompensations</code> now returns a list of lists, with the <code>spillMatrix</code> formatted as a matrix.</li>
+<strong>Breaking</strong> The default for the <code>createPopulation</code> parameter of gate creation functions was changed to <code>is.null(fcsFileId)</code>.</li>
+<li>
+<strong>Breaking</strong> <code><a href="reference/getCompensations.html">getCompensations()</a></code> now returns a list of lists, with the <code>spillMatrix</code> formatted as a matrix.</li>
+<li>
+<strong>Breaking</strong> All functions now return lists instead of data.frames. (In the future, the lists may be changed to S3 classes.)</li>
+<li>
+<strong>Breaking</strong> The <code>xVertices</code> and <code>yVertices</code> parameters of <code>createPolygonGate</code> are replaced <code>vertices=list(c(x1, y1), c(x2, y2), c(x3, y3))</code>.</li>
+<li>
+<strong>Breaking</strong> The <code>create__Gate()</code> functions previously had two parameters for specifying the FCS file for tailoring (<code>fcsFileId</code> and <code>fcsFile</code>) and two parameters for specifying the parent population (<code>parentPopulationId</code> and <code>parentPopulation</code>), with the latter parameters performing a lookup by name. To be consistent with the rest of the toolkit, <code>fcsFile</code> and <code>parentPopulation</code> have been removed. Instead, use <code><a href="reference/byName.html">byName()</a></code> expressions, e.g. <code>createRectangleGate(..., fcsFileId=byName("Sample1.fcs"), parentPopulationId=byName("CD3+"), ...)</code>.</li>
+<li>
+<code><a href="reference/createQuadrantGate.html">createQuadrantGate()</a></code> and <code><a href="reference/createSplitGate.html">createSplitGate()</a></code> accept either <code>createPopulation</code>, singular, for consistency with other <code>create__Gate</code> functions; or <code>createPopulations</code>, plural, to accurately reflect the behavior.</li>
+<li>
+<code>getStatistics(fcsFileIds=NULL, ...)</code> should return statistics for all non-control FCS files.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="removed">Removed<a class="anchor" aria-label="anchor" href="#removed"></a></h3>
-<ul><li>The <code>xVertices</code> and <code>yVertices</code> arguments to <code>createPolygonGate</code> are replaced by <code>vertices=list(c(), c(), c())</code>.</li>
-</ul></div>
+</div>
 </div>
 <div class="section level2">
 <h2 id="unreleased">[Unreleased]<a class="anchor" aria-label="anchor" href="#unreleased"></a></h2>
@@ -110,7 +128,6 @@
 <li>Fix mangling of experiment properties in <code><a href="reference/updateGateFamily.html">updateGateFamily()</a></code>.</li>
 <li>Fix mangling of experiment properties in <code><a href="reference/updateGate.html">updateGate()</a></code>.</li>
 <li>Remove unused <code>params</code> argument from <code><a href="reference/getExperiment.html">getExperiment()</a></code>.</li>
-<li>Run <code>styler</code> on all files with default params</li>
 </ul></div>
 <div class="section level3">
 <h3 id="removed-1">Removed<a class="anchor" aria-label="anchor" href="#removed-1"></a></h3>
