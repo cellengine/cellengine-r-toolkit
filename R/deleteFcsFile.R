@@ -10,9 +10,9 @@
 #' deleteFcsFile(experimentId, fcsFileId)
 #' }
 deleteFcsFile <- function(experimentId, fcsFileId) {
-  checkDefined(experimentId)
+  stopIfParamIsNull(experimentId)
   experimentId <- lookupByName("/api/v1/experiments", experimentId)
-  checkDefined(fcsFileId)
+  stopIfParamIsNull(fcsFileId)
   fcsFileId <- lookupByName(paste0("/api/v1/experiments/", experimentId, "/fcsfiles"), fcsFileId, "filename")
   baseDelete(paste0("/api/v1/experiments/", experimentId, "/fcsfiles/", fcsFileId))
 }

@@ -10,7 +10,7 @@
 #' updateExperiment(experimentId, list("name" = "my experiment"))
 #' }
 updateExperiment <- function(experimentId, properties = list()) {
-  checkDefined(experimentId)
+  stopIfParamIsNull(experimentId)
   experimentId <- lookupByName("/api/v1/experiments", experimentId)
   body <- jsonlite::toJSON(properties, null = "null", auto_unbox = TRUE)
   basePatch(paste0("/api/v1/experiments/", experimentId), body)

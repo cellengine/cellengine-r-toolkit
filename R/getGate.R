@@ -10,9 +10,9 @@
 #' getGate(experimentId, gateId)
 #' }
 getGate <- function(experimentId, gateId) {
-  checkDefined(experimentId)
+  stopIfParamIsNull(experimentId)
   experimentId <- lookupByName("/api/v1/experiments", experimentId)
-  checkDefined(gateId)
+  stopIfParamIsNull(gateId)
   gateId <- lookupByName(paste0("/api/v1/experiments/", experimentId, "/gates"), gateId)
   baseGet(paste0("/api/v1/experiments/", experimentId, "/gates/", gateId))
 }

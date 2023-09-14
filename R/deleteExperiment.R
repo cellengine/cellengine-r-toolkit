@@ -9,7 +9,7 @@
 #' deleteExperiment(experimentId)
 #' }
 deleteExperiment <- function(experimentId) {
-  checkDefined(experimentId)
+  stopIfParamIsNull(experimentId)
   experimentId <- lookupByName("/api/v1/experiments", experimentId)
   baseDelete(paste0("/api/v1/experiments/", experimentId))
 }

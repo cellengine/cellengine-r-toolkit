@@ -12,9 +12,9 @@
 #' }
 #'
 updateGate <- function(experimentId, gateId, properties = list()) {
-  checkDefined(experimentId)
+  stopIfParamIsNull(experimentId)
   experimentId <- lookupByName("/api/v1/experiments", experimentId)
-  checkDefined(gateId)
+  stopIfParamIsNull(gateId)
   gateId <- lookupByName(paste0("/api/v1/experiments/", experimentId, "/gates"), gateId)
   body <- jsonlite::toJSON(properties, null = "null", auto_unbox = TRUE)
   basePatch(paste0("/api/v1/experiments/", experimentId, "/gates/", gateId), body)

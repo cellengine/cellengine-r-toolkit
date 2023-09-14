@@ -28,7 +28,7 @@ commonGateCreate <- function(body, gid,
                              tailoredPerFile, fcsFileId,
                              createPopulation,
                              name = NULL, names = NULL) {
-  checkDefined(experimentId)
+  stopIfParamIsNull(experimentId)
   experimentId <- lookupByName("experiments", experimentId)
 
   # name or names

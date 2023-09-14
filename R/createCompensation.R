@@ -34,7 +34,7 @@
 #' )
 #' }
 createCompensation <- function(experimentId, name, spillMatrix, channels = NULL) {
-  checkDefined(experimentId)
+  stopIfParamIsNull(experimentId)
   experimentId <- lookupByName("/api/v1/experiments", experimentId)
 
   if (is.null(channels)) {

@@ -11,7 +11,7 @@
 #' getCompensations(experimentId, params = list("limit" = "5"))
 #' }
 getCompensations <- function(experimentId, params = list()) {
-  checkDefined(experimentId)
+  stopIfParamIsNull(experimentId)
   experimentId <- lookupByName("/api/v1/experiments", experimentId)
   cs <- baseGet(paste0("/api/v1/experiments/", experimentId, "/compensations"),
                 params)

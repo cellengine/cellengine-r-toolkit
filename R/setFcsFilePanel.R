@@ -32,9 +32,9 @@
 #' setFcsFilePanel(experimentId, fcsFileId, "Panel 1", panel)
 #' }
 setFcsFilePanel <- function(experimentId, fcsFileId, panelName, panel) {
-  checkDefined(experimentId)
+  stopIfParamIsNull(experimentId)
   experimentId <- lookupByName("/api/v1/experiments", experimentId)
-  checkDefined(fcsFileId)
+  stopIfParamIsNull(fcsFileId)
   fcsFileId <- lookupByName(paste0("/api/v1/experiments/", experimentId, "/fcsfiles"), fcsFileId, "filename")
   body <- jsonlite::toJSON(list(
     panelName = panelName,

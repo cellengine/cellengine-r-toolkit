@@ -17,7 +17,7 @@
 #' getFcsFiles(experimentId, params = list("limit" = "5", "fields" = "+filename"))
 #' }
 getFcsFiles <- function(experimentId, params = list()) {
-  checkDefined(experimentId)
+  stopIfParamIsNull(experimentId)
   experimentId <- lookupByName("/api/v1/experiments", experimentId)
   baseGet(paste0("/api/v1/experiments/", experimentId, "/fcsfiles"), params)
 }

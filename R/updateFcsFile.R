@@ -27,9 +27,9 @@
 #' updateFcsFile(experimentId, list("filename" = "my fcs file"))
 #' }
 updateFcsFile <- function(experimentId, fcsFileId, properties = list()) {
-  checkDefined(experimentId)
+  stopIfParamIsNull(experimentId)
   experimentId <- lookupByName("/api/v1/experiments", experimentId)
-  checkDefined(fcsFileId)
+  stopIfParamIsNull(fcsFileId)
   fcsFileId <- lookupByName(paste0("/api/v1/experiments/", experimentId, "/fcsfiles"), fcsFileId, "filename")
   body <- jsonlite::toJSON(properties, null = "null", auto_unbox = TRUE)
   basePatch(paste0("/api/v1/experiments/", experimentId, "/fcsfiles/", fcsFileId), body)

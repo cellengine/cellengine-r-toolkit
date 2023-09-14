@@ -88,9 +88,9 @@ getPlot <- function(experimentId,
                     destination = NULL,
                     overwrite = FALSE,
                     display = TRUE) {
-  checkDefined(experimentId)
+  stopIfParamIsNull(experimentId)
   experimentId <- lookupByName("/api/v1/experiments", experimentId)
-  checkDefined(fcsFileId)
+  stopIfParamIsNull(fcsFileId)
   fcsFileId <- lookupByName(paste0("/api/v1/experiments/", experimentId, "/fcsfiles"), fcsFileId, "filename")
 
   args <- list(

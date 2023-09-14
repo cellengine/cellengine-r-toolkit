@@ -14,9 +14,9 @@
 updatePopulation <- function(experimentId,
                              populationId,
                              properties = list()) {
-  checkDefined(experimentId)
+  stopIfParamIsNull(experimentId)
   experimentId <- lookupByName("/api/v1/experiments", experimentId)
-  checkDefined(populationId)
+  stopIfParamIsNull(populationId)
   populationId <- lookupByName(paste0("/api/v1/experiments/", experimentId, "/populations"), populationId)
   body <- jsonlite::toJSON(properties, null = "null", auto_unbox = TRUE)
   basePatch(paste0("/api/v1/experiments/", experimentId, "/populations/", populationId), body)

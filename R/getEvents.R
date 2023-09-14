@@ -64,9 +64,9 @@ getEvents <- function(experimentId,
                       overwrite = FALSE,
                       subsampling = list(),
                       addEventNumber = FALSE) {
-  checkDefined(experimentId)
+  stopIfParamIsNull(experimentId)
   experimentId <- lookupByName("/api/v1/experiments", experimentId)
-  checkDefined(fcsFileId)
+  stopIfParamIsNull(fcsFileId)
   fcsFileId <- lookupByName(paste0("/api/v1/experiments/", experimentId, "/fcsfiles"), fcsFileId, "filename")
 
   if (is.null(compensation) && !is.null(populationId)) {

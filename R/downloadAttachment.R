@@ -26,9 +26,9 @@ downloadAttachment <- function(experimentId,
                                attachmentId,
                                destination = NULL,
                                overwrite = FALSE) {
-  checkDefined(experimentId)
+  stopIfParamIsNull(experimentId)
   experimentId <- lookupByName("/api/v1/experiments", experimentId)
-  checkDefined(attachmentId)
+  stopIfParamIsNull(attachmentId)
   attachmentId <- lookupByName(paste0("/api/v1/experiments/", experimentId, "/attachments"), attachmentId, "filename")
   ensureBaseUrl()
 

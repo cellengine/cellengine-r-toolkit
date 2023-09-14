@@ -15,9 +15,9 @@
 #' getCompensation(experimentId, byName("Comp 1"))
 #' }
 getCompensation <- function(experimentId, compensationId) {
-  checkDefined(experimentId)
+  stopIfParamIsNull(experimentId)
   experimentId <- lookupByName("/api/v1/experiments", experimentId)
-  checkDefined(compensationId)
+  stopIfParamIsNull(compensationId)
   compensationId <- lookupByName(paste0("/api/v1/experiments/", experimentId, "/compensations"),
                                  compensationId)
   r <- baseGet(paste0("/api/v1/experiments/", experimentId, "/compensations/", compensationId))

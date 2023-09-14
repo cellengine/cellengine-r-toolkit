@@ -27,7 +27,7 @@
 #' }
 createPopulation <- function(experimentId, name, gates, terminalGateGid,
                              parentId = NULL) {
-  checkDefined(experimentId)
+  stopIfParamIsNull(experimentId)
 
   if (!is.character(gates)) gates <- jsonlite::toJSON(gates)
 

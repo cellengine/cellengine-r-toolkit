@@ -14,7 +14,7 @@
 #' getPopulations(experimentId, params = list("limit" = "5", "fields" = "+name"))
 #' }
 getPopulations <- function(experimentId, params = list()) {
-  checkDefined(experimentId)
+  stopIfParamIsNull(experimentId)
   experimentId <- lookupByName("/api/v1/experiments", experimentId)
   baseGet(paste0("/api/v1/experiments/", experimentId, "/populations"), params)
 }

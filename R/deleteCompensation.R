@@ -10,9 +10,9 @@
 #' deleteCompensation(experimentId, compensationId)
 #' }
 deleteCompensation <- function(experimentId, compensationId) {
-  checkDefined(experimentId)
+  stopIfParamIsNull(experimentId)
   experimentId <- lookupByName("/api/v/1/experiments", experimentId)
-  checkDefined(compensationId)
+  stopIfParamIsNull(compensationId)
   compensationId <- lookupByName(paste0("/api/v1/experiments/", experimentId, "/compensations"), compensationId)
   baseDelete(paste0("/api/v1/experiments/", experimentId, "/compensations/", compensationId))
 }

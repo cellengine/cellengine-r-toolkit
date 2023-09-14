@@ -121,7 +121,7 @@ baseDelete <- function(url, params = list()) {
   httr::stop_for_status(r)
 }
 
-checkDefined <- function(param) {
+stopIfParamIsNull <- function(param) {
   if (is.null(param)) {
     stop(paste0("parameter '", deparse(substitute(param)), "' is NULL"))
   }

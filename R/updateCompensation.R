@@ -12,9 +12,9 @@
 #' }
 #'
 updateCompensation <- function(experimentId, compensationId, properties = list()) {
-  checkDefined(experimentId)
+  stopIfParamIsNull(experimentId)
   experimentId <- lookupByName("/api/v1/experiments", experimentId)
-  checkDefined(compensationId)
+  stopIfParamIsNull(compensationId)
   compensationId <- lookupByName(paste0("/api/v1/experiments/", experimentId, "/compensations"),
                                  compensationId)
   body <- jsonlite::toJSON(properties, null = "null", auto_unbox = TRUE)

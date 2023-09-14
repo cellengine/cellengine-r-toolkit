@@ -40,7 +40,7 @@ createGates <- function(experimentId, gates) {
   # This function could be friendlier in terms of valdiating gates, but it is
   # an advanced function.
 
-  checkDefined(experimentId)
+  stopIfParamIsNull(experimentId)
   experimentId <- lookupByName("experiments", experimentId)
 
   body <- lapply(gates, function(g) {

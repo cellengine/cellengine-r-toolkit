@@ -30,9 +30,9 @@
 #' annotateFcsFile(experimentId, file$`_id`, annos)
 #' }
 annotateFcsFile <- function(experimentId, fcsFileId, annotations) {
-  checkDefined(experimentId)
+  stopIfParamIsNull(experimentId)
   experimentId <- lookupByName("experiments", experimentId)
-  checkDefined(fcsFileId)
+  stopIfParamIsNull(fcsFileId)
   fcsFileId <- lookupByName(paste0("/api/v1/experiments/", experimentId, "/fcsfiles"), fcsFileId, "filename")
   body <- jsonlite::toJSON(list("annotations" = annotations), auto_unbox = TRUE)
   basePatch(paste0("/api/v1/experiments/", experimentId, "/fcsfiles/", fcsFileId), body)

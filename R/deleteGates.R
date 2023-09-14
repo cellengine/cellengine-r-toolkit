@@ -25,7 +25,7 @@
 #' }
 #'
 deleteGates <- function(experimentId, gid = NULL, gateId = NULL, exclude = NULL) {
-  checkDefined(experimentId)
+  stopIfParamIsNull(experimentId)
   experimentId <- lookupByName("/api/v1/experiments", experimentId)
   base <- paste0("/api/v1/experiments/", experimentId, "/gates")
   # TODO:(ge) Add byName functionality for gateId
@@ -35,7 +35,7 @@ deleteGates <- function(experimentId, gid = NULL, gateId = NULL, exclude = NULL)
   }
 
   if (!is.null(gateId)) {
-    checkDefined(gateId)
+    stopIfParamIsNull(gateId)
     url <- sprintf("%s/%s", base, gateId)
   } else if (!is.null(gid)) {
     url <- sprintf("%s?gid=%s", base, gid)

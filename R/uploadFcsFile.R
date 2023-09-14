@@ -10,7 +10,7 @@
 #' uploadFcsFile(experimentId, "/path/to/file.fcs")
 #' }
 uploadFcsFile <- function(experimentId, fcsFilePath) {
-  checkDefined(experimentId)
+  stopIfParamIsNull(experimentId)
   experimentId <- lookupByName("/api/v1/experiments", experimentId)
   body <- list("file" = httr::upload_file(fcsFilePath))
   ensureBaseUrl()

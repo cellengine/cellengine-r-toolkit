@@ -99,7 +99,7 @@ getStatistics <- function(experimentId,
                           q = 0.5,
                           percentOf = NULL,
                           includeAnnotations = TRUE) {
-  checkDefined(experimentId)
+  stopIfParamIsNull(experimentId)
   experimentId <- lookupByName("/api/v1/experiments", experimentId)
 
   fcsFileIds <- lookupFilesByName(experimentId, fcsFileIds, fcsFiles)

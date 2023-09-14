@@ -10,7 +10,7 @@
 #' uploadAttachment(experimentId, "/path/to/file")
 #' }
 uploadAttachment <- function(experimentId, attachmentPath) {
-  checkDefined(experimentId)
+  stopIfParamIsNull(experimentId)
   experimentId <- lookupByName("/api/v1/experiments", experimentId)
   body <- list("file" = httr::upload_file(attachmentPath))
   ensureBaseUrl()
