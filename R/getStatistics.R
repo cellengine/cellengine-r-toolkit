@@ -29,8 +29,6 @@
 #'   population by name. If zero or more than one population exists with the
 #'   name, an error will be thrown. If specified, do not specify
 #'   \code{populationIds}.
-#' @param scaleSetId Optional ID of scale set. If omitted and if a single
-#'   scale set exists in the experiment, that scale set will be used.
 #' @param q Quantile to calculate for "quantile" statistic, in the range 0 to 1.
 #' @param percentOf Single population ID or name, or list of population IDs or
 #'   names the same length as \code{populationIds} parameter.
@@ -75,16 +73,14 @@
 #' # Returns a data.frame of statistics, including the file annotations.
 #' # Because percentOf is not specified, "percent" will be percent of parent.
 #'
-#' # Explicit syntax, using IDs instead of population and file names, and
-#' # specifying a scaleSetId:
+#' # Explicit syntax, using IDs instead of population and file names:
 #' fcsFileIds <- c("9ab5c6d7a8cf24a5c4f9a6c2")
 #' statistics <- c("percent")
 #' populationIds <- c("9ab5c6d7a8cf24a5c4f9face")
-#' scaleSetId <- "9ab5c6d7a8cf24a5c4f9fdde"
 #' stats <- getStatistics(experimentId,
 #'   fcsFileIds = fcsFileIds,
 #'   statistics = statistics, populationIds = populationIds,
-#'   compensationId = cellengine::UNCOMPENSATED, scaleSetId = scaleSetId
+#'   compensationId = cellengine::UNCOMPENSATED
 #' )
 #'
 #' # Percent of ungated:
@@ -100,7 +96,6 @@ getStatistics <- function(experimentId,
                           statistics,
                           compensationId,
                           populationIds = NULL, populations = NULL,
-                          scaleSetId = NULL,
                           q = 0.5,
                           percentOf = NULL,
                           includeAnnotations = TRUE) {
@@ -116,9 +111,6 @@ getStatistics <- function(experimentId,
   if (length(statsDiff) > 0) {
     stop(sprintf("Statistics [%s] are not allowed.", paste0(statsDiff, collapse = ", ")))
   }
-
-  # TODO remove, this was removed from the API
-  scaleSetId <- verifyScaleSets(experimentId, scaleSetId)
 
   # percentOf argument
   if (length(percentOf) > 1 && length(percentOf) != length(populationIds)) {
@@ -177,7 +169,6 @@ getStatistics <- function(experimentId,
     populationIds = populationIds,
     compensationId = jsonlite::unbox(compensationId),
     q = jsonlite::unbox(q),
-    scaleSetId = jsonlite::unbox(scaleSetId),
     format = jsonlite::unbox("json"),
     annotations = jsonlite::unbox(includeAnnotations)
   )
@@ -268,18 +259,4 @@ lookupPopulationsByName <- function(experimentId, populationIds, populations) {
     populationIds <- serverPops$`_id`
   }
   return(populationIds)
-}
-
-verifyScaleSets <- function(experimentId, scaleSetId) {
-  if (is.null(scaleSetId)) {
-    serverScaleSets <- getScaleSets(experimentId, params = list(fields = "+_id"))
-    if (!is.data.frame(serverScaleSets)) { # zero-length results are not data.frames
-      stop("No scalesets found in experiment.")
-    }
-    if (nrow(serverScaleSets) > 1) {
-      stop("More than one scaleset exists in experiment. Please specify a scaleSetId to select one.")
-    }
-    scaleSetId <- serverScaleSets$`_id`
-  }
-  return(scaleSetId)
 }

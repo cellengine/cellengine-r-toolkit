@@ -379,116 +379,11 @@ test_that("whitelists statistics", {{ expect_error(
   "Statistics \\[fake1, fake2\\] are not allowed"
 ) }})
 
-test_that("looks up default scaleset; single match", {
-  with_mock(
-    `httr::request_perform` = function(req, handle, refresh) {
-      switch(req$url,
-        "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/scalesets?fields=%2B_id" = {
-          expect_equal(req$method, "GET")
-          response <- httptest::fake_response(
-            req$url,
-            req$method,
-            content = '[
-              {"_id":"591a3b5f1d725115208a7088"}
-            ]',
-            status_code = 200,
-            headers = list(`Content-Type` = "application/json")
-          )
-          return(response)
-        },
-        {
-          stop(sprintf("Unexpected request URL: %s", req$url))
-        }
-      )
-    },
-    {
-      setServer("https://my.server.com")
-      # Specify bad percentOf arg so fn stops after lookup
-      expect_error(
-        getStatistics("591a3b441d725115208a6fda",
-          statistics = c("percent"), compensationId = 0,
-          fcsFileIds = c("fid1"), populationIds = c("pname1"), percentOf = c("a", "b")
-        ),
-        "same length"
-      )
-    }
-  )
-})
-
-test_that("looks up default scaleset; no matches", {
-  with_mock(
-    `httr::request_perform` = function(req, handle, refresh) {
-      switch(req$url,
-        "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/scalesets?fields=%2B_id" = {
-          expect_equal(req$method, "GET")
-          response <- httptest::fake_response(
-            req$url,
-            req$method,
-            content = "[]",
-            status_code = 200,
-            headers = list(`Content-Type` = "application/json")
-          )
-          return(response)
-        },
-        {
-          stop(sprintf("Unexpected request URL: %s", req$url))
-        }
-      )
-    },
-    {
-      setServer("https://my.server.com")
-      expect_error(
-        getStatistics("591a3b441d725115208a6fda",
-          statistics = c("percent"), compensationId = 0,
-          fcsFileIds = c("fid1"), populationIds = c("pname1")
-        ),
-        "No scalesets"
-      )
-    }
-  )
-})
-
-test_that("looks up default scaleset; more than one match", {
-  with_mock(
-    `httr::request_perform` = function(req, handle, refresh) {
-      switch(req$url,
-        "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/scalesets?fields=%2B_id" = {
-          expect_equal(req$method, "GET")
-          response <- httptest::fake_response(
-            req$url,
-            req$method,
-            content = '[
-              {"_id":"591a3b5f1d725115208a7088"},
-              {"_id":"591a3b5f1d725115208a7089"}
-            ]',
-            status_code = 200,
-            headers = list(`Content-Type` = "application/json")
-          )
-          return(response)
-        },
-        {
-          stop(sprintf("Unexpected request URL: %s", req$url))
-        }
-      )
-    },
-    {
-      setServer("https://my.server.com")
-      expect_error(
-        getStatistics("591a3b441d725115208a6fda",
-          statistics = c("percent"), compensationId = 0,
-          fcsFileIds = c("fid1"), populationIds = c("pname1")
-        ),
-        "More than one scaleset"
-      )
-    }
-  )
-})
-
 test_that("validates percentOf array is same length as populationIds", {{ setServer("https://my.server.com")
   expect_error(
     getStatistics("591a3b441d725115208a6fda",
       statistics = c("percent"), compensationId = 0,
-      fcsFileIds = c("fid1"), populationIds = c("pname1"), scaleSetId = "abc", percentOf = c("a", "b")
+      fcsFileIds = c("fid1"), populationIds = c("pname1"), percentOf = c("a", "b")
     ),
     "same length"
   ) }})
@@ -500,7 +395,7 @@ test_that("works, percentOf specified as single value", {
         "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/bulkstatistics" = {
           expect_equal(req$method, "POST")
           body <- rawToChar(req$options$postfields)
-          expect_equal(body, '{\"fcsFileIds\":[\"591a3b441d725115208a6fdb\"],\"statistics\":[\"percent\"],\"populationIds\":[\"591a3b441d725115208a6fdc\"],\"compensationId\":0,\"q\":0.5,\"scaleSetId\":\"591a3b441d725115208a6fdd\",\"format\":\"json\",\"annotations\":true,\"percentOf\":\"591a3b441d725115208a6fde\"}') # nolint
+          expect_equal(body, '{\"fcsFileIds\":[\"591a3b441d725115208a6fdb\"],\"statistics\":[\"percent\"],\"populationIds\":[\"591a3b441d725115208a6fdc\"],\"compensationId\":0,\"q\":0.5,\"format\":\"json\",\"annotations\":true,\"percentOf\":\"591a3b441d725115208a6fde\"}') # nolint
           response <- httptest::fake_response(
             req$url,
             req$method,
@@ -526,7 +421,7 @@ test_that("works, percentOf specified as single value", {
       res <- getStatistics("591a3b441d725115208a6fda",
         statistics = c("percent"), compensationId = 0,
         fcsFileIds = c("591a3b441d725115208a6fdb"), populationIds = c("591a3b441d725115208a6fdc"),
-        scaleSetId = "591a3b441d725115208a6fdd", percentOf = "591a3b441d725115208a6fde"
+        percentOf = "591a3b441d725115208a6fde"
       )
       expect_true(is.data.frame(res))
       expect_equal(res[1, "filename"], "abc.fcs")
@@ -542,7 +437,7 @@ test_that("works, percentOf not specified", {
         "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/bulkstatistics" = {
           expect_equal(req$method, "POST")
           body <- rawToChar(req$options$postfields)
-          expect_equal(body, '{\"fcsFileIds\":[\"591a3b441d725115208a6fdb\"],\"statistics\":[\"percent\"],\"populationIds\":[\"591a3b441d725115208a6fdc\"],\"compensationId\":0,\"q\":0.5,\"scaleSetId\":\"591a3b441d725115208a6fdd\",\"format\":\"json\",\"annotations\":true}') # nolint
+          expect_equal(body, '{\"fcsFileIds\":[\"591a3b441d725115208a6fdb\"],\"statistics\":[\"percent\"],\"populationIds\":[\"591a3b441d725115208a6fdc\"],\"compensationId\":0,\"q\":0.5,\"format\":\"json\",\"annotations\":true}') # nolint
           response <- httptest::fake_response(
             req$url,
             req$method,
@@ -562,8 +457,7 @@ test_that("works, percentOf not specified", {
       setServer("https://my.server.com")
       getStatistics("591a3b441d725115208a6fda",
         statistics = c("percent"), compensationId = 0,
-        fcsFileIds = c("591a3b441d725115208a6fdb"), populationIds = c("591a3b441d725115208a6fdc"),
-        scaleSetId = "591a3b441d725115208a6fdd"
+        fcsFileIds = c("591a3b441d725115208a6fdb"), populationIds = c("591a3b441d725115208a6fdc")
       )
     }
   )
@@ -576,7 +470,7 @@ test_that("works, percentOf specified as an array", {
         "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/bulkstatistics" = {
           expect_equal(req$method, "POST")
           body <- rawToChar(req$options$postfields)
-          expect_equal(body, '{\"fcsFileIds\":[\"591a3b441d725115208a6fdb\"],\"statistics\":[\"percent\"],\"populationIds\":[\"591a3b441d725115208a6fdc\",\"591a3b441d725115208a6fd1\"],\"compensationId\":0,\"q\":0.5,\"scaleSetId\":\"591a3b441d725115208a6fdd\",\"format\":\"json\",\"annotations\":true,\"percentOf\":[\"591a3b441d725115208a6fde\",\"591a3b441d725115208a6fd2\"]}') # nolint
+          expect_equal(body, '{\"fcsFileIds\":[\"591a3b441d725115208a6fdb\"],\"statistics\":[\"percent\"],\"populationIds\":[\"591a3b441d725115208a6fdc\",\"591a3b441d725115208a6fd1\"],\"compensationId\":0,\"q\":0.5,\"format\":\"json\",\"annotations\":true,\"percentOf\":[\"591a3b441d725115208a6fde\",\"591a3b441d725115208a6fd2\"]}') # nolint
           response <- httptest::fake_response(
             req$url,
             req$method,
@@ -596,8 +490,9 @@ test_that("works, percentOf specified as an array", {
       setServer("https://my.server.com")
       getStatistics("591a3b441d725115208a6fda",
         statistics = c("percent"), compensationId = 0,
-        fcsFileIds = c("591a3b441d725115208a6fdb"), populationIds = c("591a3b441d725115208a6fdc", "591a3b441d725115208a6fd1"), # nolint
-        scaleSetId = "591a3b441d725115208a6fdd", percentOf = c("591a3b441d725115208a6fde", "591a3b441d725115208a6fd2")
+        fcsFileIds = c("591a3b441d725115208a6fdb"),
+        populationIds = c("591a3b441d725115208a6fdc", "591a3b441d725115208a6fd1"),
+        percentOf = c("591a3b441d725115208a6fde", "591a3b441d725115208a6fd2")
       )
     }
   )
@@ -623,7 +518,7 @@ test_that("works, percentOf specified as a single name", {
         "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/bulkstatistics" = {
           expect_equal(req$method, "POST")
           body <- rawToChar(req$options$postfields)
-          expect_equal(body, '{\"fcsFileIds\":[\"591a3b441d725115208a6fdb\"],\"statistics\":[\"percent\"],\"populationIds\":[\"591a3b441d725115208a6fdc\",\"591a3b441d725115208a6fd1\"],\"compensationId\":0,\"q\":0.5,\"scaleSetId\":\"591a3b441d725115208a6fdd\",\"format\":\"json\",\"annotations\":true,\"percentOf\":"591a3b5f1d725115208a7088"}') # nolint
+          expect_equal(body, '{\"fcsFileIds\":[\"591a3b441d725115208a6fdb\"],\"statistics\":[\"percent\"],\"populationIds\":[\"591a3b441d725115208a6fdc\",\"591a3b441d725115208a6fd1\"],\"compensationId\":0,\"q\":0.5,\"format\":\"json\",\"annotations\":true,\"percentOf\":"591a3b5f1d725115208a7088"}') # nolint
           response <- httptest::fake_response(
             req$url,
             req$method,
@@ -642,8 +537,9 @@ test_that("works, percentOf specified as a single name", {
       setServer("https://my.server.com")
       getStatistics("591a3b441d725115208a6fda",
         statistics = c("percent"), compensationId = 0,
-        fcsFileIds = c("591a3b441d725115208a6fdb"), populationIds = c("591a3b441d725115208a6fdc", "591a3b441d725115208a6fd1"), # nolint
-        scaleSetId = "591a3b441d725115208a6fdd", percentOf = "pname1"
+        fcsFileIds = c("591a3b441d725115208a6fdb"),
+        populationIds = c("591a3b441d725115208a6fdc", "591a3b441d725115208a6fd1"),
+        percentOf = "pname1"
       )
     }
   )
@@ -670,7 +566,7 @@ test_that("works, percentOf specified as an array of names", {
         "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/bulkstatistics" = {
           expect_equal(req$method, "POST")
           body <- rawToChar(req$options$postfields)
-          expect_equal(body, '{\"fcsFileIds\":[\"591a3b441d725115208a6fdb\"],\"statistics\":[\"percent\"],\"populationIds\":[\"591a3b441d725115208a6fdc\",\"591a3b441d725115208a6fd1\"],\"compensationId\":0,\"q\":0.5,\"scaleSetId\":\"591a3b441d725115208a6fdd\",\"format\":\"json\",\"annotations\":true,\"percentOf\":["591a3b5f1d725115208a7088","591a3b5f1d725115208a7090"]}') # nolint
+          expect_equal(body, '{\"fcsFileIds\":[\"591a3b441d725115208a6fdb\"],\"statistics\":[\"percent\"],\"populationIds\":[\"591a3b441d725115208a6fdc\",\"591a3b441d725115208a6fd1\"],\"compensationId\":0,\"q\":0.5,\"format\":\"json\",\"annotations\":true,\"percentOf\":["591a3b5f1d725115208a7088","591a3b5f1d725115208a7090"]}') # nolint
           response <- httptest::fake_response(
             req$url,
             req$method,
@@ -691,7 +587,7 @@ test_that("works, percentOf specified as an array of names", {
         statistics = c("percent"), compensationId = 0,
         fcsFileIds = c("591a3b441d725115208a6fdb"),
         populationIds = c("591a3b441d725115208a6fdc", "591a3b441d725115208a6fd1"),
-        scaleSetId = "591a3b441d725115208a6fdd", percentOf = c("pname1", "pname2")
+        percentOf = c("pname1", "pname2")
       )
     }
   )
@@ -717,7 +613,7 @@ test_that("works, percentOf specified as a mixed array of names, IDs and UNGATED
         "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/bulkstatistics" = {
           expect_equal(req$method, "POST")
           body <- rawToChar(req$options$postfields)
-          expect_equal(body, '{\"fcsFileIds\":[\"591a3b441d725115208a6fdb\"],\"statistics\":[\"percent\"],\"populationIds\":["591a3b441d725115208a6fdc","591a3b441d725115208a6fd1","591a3b441d725115208a6fe1"],\"compensationId\":0,\"q\":0.5,\"scaleSetId\":\"591a3b441d725115208a6fdd\",\"format\":\"json\",\"annotations\":true,\"percentOf\":["591a3b5f1d725115208a7088","591a3b5f1d725115208a7090",""]}') # nolint
+          expect_equal(body, '{\"fcsFileIds\":[\"591a3b441d725115208a6fdb\"],\"statistics\":[\"percent\"],\"populationIds\":["591a3b441d725115208a6fdc","591a3b441d725115208a6fd1","591a3b441d725115208a6fe1"],\"compensationId\":0,\"q\":0.5,\"format\":\"json\",\"annotations\":true,\"percentOf\":["591a3b5f1d725115208a7088","591a3b5f1d725115208a7090",""]}') # nolint
           response <- httptest::fake_response(
             req$url,
             req$method,
@@ -736,8 +632,9 @@ test_that("works, percentOf specified as a mixed array of names, IDs and UNGATED
       setServer("https://my.server.com")
       getStatistics("591a3b441d725115208a6fda",
         statistics = c("percent"), compensationId = 0,
-        fcsFileIds = c("591a3b441d725115208a6fdb"), populationIds = c("591a3b441d725115208a6fdc", "591a3b441d725115208a6fd1", "591a3b441d725115208a6fe1"), # nolint
-        scaleSetId = "591a3b441d725115208a6fdd", percentOf = c("pname1", "591a3b5f1d725115208a7090", UNGATED)
+        fcsFileIds = c("591a3b441d725115208a6fdb"),
+        populationIds = c("591a3b441d725115208a6fdc", "591a3b441d725115208a6fd1", "591a3b441d725115208a6fe1"), # nolint
+        percentOf = c("pname1", "591a3b5f1d725115208a7090", UNGATED)
       )
     }
   )
@@ -750,7 +647,7 @@ test_that("works, percentOf specified as null (ungated)", {
         "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/bulkstatistics" = {
           expect_equal(req$method, "POST")
           body <- rawToChar(req$options$postfields)
-          expect_equal(body, '{\"fcsFileIds\":[\"591a3b441d725115208a6fdb\"],\"statistics\":[\"percent\"],\"populationIds\":[\"591a3b441d725115208a6fdc\",\"591a3b441d725115208a6fd1\"],\"compensationId\":0,\"q\":0.5,\"scaleSetId\":\"591a3b441d725115208a6fdd\",\"format\":\"json\",\"annotations\":true,\"percentOf\":""}') # nolint
+          expect_equal(body, '{\"fcsFileIds\":[\"591a3b441d725115208a6fdb\"],\"statistics\":[\"percent\"],\"populationIds\":[\"591a3b441d725115208a6fdc\",\"591a3b441d725115208a6fd1\"],\"compensationId\":0,\"q\":0.5,\"format\":\"json\",\"annotations\":true,\"percentOf\":""}') # nolint
           response <- httptest::fake_response(
             req$url,
             req$method,
@@ -769,8 +666,9 @@ test_that("works, percentOf specified as null (ungated)", {
       setServer("https://my.server.com")
       getStatistics("591a3b441d725115208a6fda",
         statistics = c("percent"), compensationId = 0,
-        fcsFileIds = c("591a3b441d725115208a6fdb"), populationIds = c("591a3b441d725115208a6fdc", "591a3b441d725115208a6fd1"), # nolint
-        scaleSetId = "591a3b441d725115208a6fdd", percentOf = UNGATED
+        fcsFileIds = c("591a3b441d725115208a6fdb"),
+        populationIds = c("591a3b441d725115208a6fdc", "591a3b441d725115208a6fd1"),
+        percentOf = UNGATED
       )
     }
   )
@@ -783,7 +681,7 @@ test_that("works, gets statistics for all FCS files and populations", {
         "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/bulkstatistics" = {
           expect_equal(req$method, "POST")
           body <- rawToChar(req$options$postfields)
-          expect_equal(body, '{\"fcsFileIds\":null,\"statistics\":[\"percent\"],\"populationIds\":null,\"compensationId\":0,\"q\":0.5,\"scaleSetId\":\"591a3b441d725115208a6fdd\",\"format\":\"json\",\"annotations\":true,\"percentOf\":""}') # nolint
+          expect_equal(body, '{\"fcsFileIds\":null,\"statistics\":[\"percent\"],\"populationIds\":null,\"compensationId\":0,\"q\":0.5,\"format\":\"json\",\"annotations\":true,\"percentOf\":""}') # nolint
           response <- httptest::fake_response(
             req$url,
             req$method,
@@ -803,7 +701,7 @@ test_that("works, gets statistics for all FCS files and populations", {
       getStatistics("591a3b441d725115208a6fda",
         statistics = c("percent"), compensationId = 0,
         fcsFileIds = NULL, populationIds = NULL,
-        scaleSetId = "591a3b441d725115208a6fdd", percentOf = UNGATED
+        percentOf = UNGATED
       )
     }
   )
