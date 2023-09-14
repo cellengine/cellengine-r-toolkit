@@ -45,8 +45,8 @@
 <p>All notable changes to this project will be documented in this file.</p>
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/" class="external-link">Keep a Changelog</a>, and this project adheres to <a href="https://semver.org/spec/v2.0.0.html" class="external-link">Semantic Versioning</a>.</p>
 <div class="section level2">
-<h2 id="v1-dev-unreleased">[v1-dev Unreleased]<a class="anchor" aria-label="anchor" href="#v1-dev-unreleased"></a></h2>
-<p>v1 is the first stable release of the CellEngine R toolkit and has several breaking changes compared to the pre-release version.</p>
+<h2 id="v1-release-candidate">[v1 Release Candidate]<a class="anchor" aria-label="anchor" href="#v1-release-candidate"></a></h2>
+<p>v1 will be the first stable release of the CellEngine R toolkit and has several breaking changes compared to the pre-release version.</p>
 <div class="section level3">
 <h3 id="added">Added<a class="anchor" aria-label="anchor" href="#added"></a></h3>
 <ul><li>
@@ -91,46 +91,6 @@
 </ul></div>
 <div class="section level3">
 <h3 id="removed">Removed<a class="anchor" aria-label="anchor" href="#removed"></a></h3>
-</div>
-</div>
-<div class="section level2">
-<h2 id="unreleased">[Unreleased]<a class="anchor" aria-label="anchor" href="#unreleased"></a></h2>
-<div class="section level3">
-<h3 id="added-1">Added<a class="anchor" aria-label="anchor" href="#added-1"></a></h3>
-<ul><li>
-<code><a href="reference/downloadFcsFiles.html">downloadFcsFiles()</a></code> function</li>
-<li>
-<code><a href="reference/downloadAttachment.html">downloadAttachment()</a></code> function</li>
-<li>
-<code><a href="reference/updatePopulation.html">updatePopulation()</a></code> function</li>
-<li>
-<code><a href="reference/applyScaleSet.html">applyScaleSet()</a></code> function</li>
-<li>The <code><a href="reference/authenticate.html">authenticate()</a></code> function will now prompt for your username, password and OTP (if configured) when running in RStudio or when the <code>getPass</code> library is installed.</li>
-<li>The <code>authenticate</code> function now supports two-factor authentication.</li>
-<li>The <code>authenticate</code> function now supports credentials stored in environment variables .</li>
-<li>The <code>authenticate</code> function now supports <a href="https://docs.cellengine.com/api/#authentication" class="external-link">Personal Access Tokens</a>.</li>
-<li>Support <code><a href="reference/byName.html">byName()</a></code> for the <code>gateId</code> argument in <code><a href="reference/updateGate.html">updateGate()</a></code>
-</li>
-<li>Introduce <code>lintr</code> as a linter with an Actions workflow</li>
-<li>Add <code>fromFlowCore</code> to convert flowCore objects to CellEngine</li>
-<li>Add <code>toFlowCore</code> to convert CellEngine objects to flowCore</li>
-<li>Add <code>updateFcsFile</code>
-</li>
-<li>Add <code>getPlot</code> function</li>
-<li>Support <code>addEventNumber</code> as a parameter in <code><a href="reference/getEvents.html">getEvents()</a></code>.</li>
-</ul></div>
-<div class="section level3">
-<h3 id="changed-1">Changed<a class="anchor" aria-label="anchor" href="#changed-1"></a></h3>
-<ul><li>Fix for <a href="https://github.com/primitybio/cellengine-r-toolkit/issues/48" class="external-link">confusing bulk entity retrieval</a>
-</li>
-<li>For performance, <code><a href="reference/applyScale.html">applyScale()</a></code> now only accepts atomic vectors. Lists can no longer be used.</li>
-<li>Fix mangling of experiment properties in <code><a href="reference/updateExperiment.html">updateExperiment()</a></code>.</li>
-<li>Fix mangling of experiment properties in <code><a href="reference/updateGateFamily.html">updateGateFamily()</a></code>.</li>
-<li>Fix mangling of experiment properties in <code><a href="reference/updateGate.html">updateGate()</a></code>.</li>
-<li>Remove unused <code>params</code> argument from <code><a href="reference/getExperiment.html">getExperiment()</a></code>.</li>
-</ul></div>
-<div class="section level3">
-<h3 id="removed-1">Removed<a class="anchor" aria-label="anchor" href="#removed-1"></a></h3>
 </div>
 </div>
 </div>
