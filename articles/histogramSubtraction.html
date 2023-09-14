@@ -56,7 +56,7 @@
 
       
 
-      </header><script src="histogramSubtraction_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Subtracting Histograms</h1>
@@ -69,14 +69,28 @@
 
     
     
-<p>The function below subtracts two histograms to calculate an estimated “percent positive.” Four estimation methods are provided:</p>
+<p>The function below subtracts two histograms to calculate an estimated
+“percent positive.” Four estimation methods are provided:</p>
 <ul>
-<li><p><code>"channel-by-channel"</code> is as described in <a href="https://pubmed.ncbi.nlm.nih.gov/3061754/" class="external-link">Overton 1988</a> and simply subtracts the two histograms, bin-by-bin, then sets negative differences to zero. (Histogram bins were historically called “channels” on old, analog cytometers.)</p></li>
-<li><p><code>"Overton"</code> is as described in <a href="https://onlinelibrary.wiley.com/doi/epdf/10.1002/cyto.990100421" class="external-link">Overton 1989</a> and is like “channel-by-channel,” except negative values are subtracted from other bins instead of set to zero.</p></li>
-<li><p><code>"ENS"</code> is the “enhanced normalized subtraction method” described in <a href="https://www.vsh.com/publication/JourneyThroughImmunofluorescenceAnalysis.pdf" class="external-link uri">https://www.vsh.com/publication/JourneyThroughImmunofluorescenceAnalysis.pdf</a>. In some places, this is also referred to as the “super-enhanced D value,” “SED” or “SEDymax,” although there is another unpublished definition for “SED” that is different from “ENS.” See also <a href="https://www.vsh.com/Publication/SuperEnhancedDValue.pdf" class="external-link uri">https://www.vsh.com/Publication/SuperEnhancedDValue.pdf</a>. This method does not support <code>showPlot=TRUE</code>.</p></li>
-<li><p><code>"KS"</code> is the Kolmogorov-Smirnov test D-value. Its value is the same as <code>"Overton"</code> but it does not support <code>showPlot=TRUE</code>.</p></li>
+<li><p><code>"channel-by-channel"</code> is as described in <a href="https://pubmed.ncbi.nlm.nih.gov/3061754/" class="external-link">Overton 1988</a> and
+simply subtracts the two histograms, bin-by-bin, then sets negative
+differences to zero. (Histogram bins were historically called “channels”
+on old, analog cytometers.)</p></li>
+<li><p><code>"Overton"</code> is as described in <a href="https://onlinelibrary.wiley.com/doi/epdf/10.1002/cyto.990100421" class="external-link">Overton
+1989</a> and is like “channel-by-channel,” except negative values are
+subtracted from other bins instead of set to zero.</p></li>
+<li><p><code>"ENS"</code> is the “enhanced normalized subtraction
+method” described in <a href="https://www.vsh.com/publication/JourneyThroughImmunofluorescenceAnalysis.pdf" class="external-link uri">https://www.vsh.com/publication/JourneyThroughImmunofluorescenceAnalysis.pdf</a>.
+In some places, this is also referred to as the “super-enhanced D
+value,” “SED” or “SEDymax,” although there is another unpublished
+definition for “SED” that is different from “ENS.” See also <a href="https://www.vsh.com/Publication/SuperEnhancedDValue.pdf" class="external-link uri">https://www.vsh.com/Publication/SuperEnhancedDValue.pdf</a>.
+This method does not support <code>showPlot=TRUE</code>.</p></li>
+<li><p><code>"KS"</code> is the Kolmogorov-Smirnov test D-value. Its
+value is the same as <code>"Overton"</code> but it does not support
+<code>showPlot=TRUE</code>.</p></li>
 </ul>
-<p>Below is an example histogram and the percent positive calculated by each method:</p>
+<p>Below is an example histogram and the percent positive calculated by
+each method:</p>
 <div style="display: flex;">
 <p><img src="histosub1.png" style="max-width: unset;"></p>
 <table class="table">
@@ -142,7 +156,7 @@
 <span>                               <span class="va">bins</span><span class="op">=</span><span class="fl">256</span>,</span>
 <span>                               <span class="va">showPlot</span><span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> <span class="op">{</span></span>
 <span></span>
-<span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="op">(</span><span class="va">method</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"channel-by-channel"</span>, <span class="st">"Overton"</span>, <span class="st">"ENS"</span>, <span class="st">"KS"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="op">(</span><span class="va">method</span> <span class="op"><a href="https://rdrr.io/pkg/flowCore/man/filter-in-methods.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"channel-by-channel"</span>, <span class="st">"Overton"</span>, <span class="st">"ENS"</span>, <span class="st">"KS"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span>    <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="st">"method must be one of 'channel-by-channel', 'Overton', 'ENS' or 'KS'."</span><span class="op">)</span></span>
 <span></span>
 <span>  <span class="va">experiment</span> <span class="op">=</span> <span class="fu"><a href="../reference/getExperiment.html">getExperiment</a></span><span class="op">(</span><span class="va">experimentId</span><span class="op">)</span></span>

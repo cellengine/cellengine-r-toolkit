@@ -56,7 +56,7 @@
 
       
 
-      </header><script src="flowDensity_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>flowDensity</h1>
@@ -72,7 +72,12 @@
 <div class="section level3">
 <h3 id="converting-flowdensity-gates">Converting flowDensity gates:<a class="anchor" aria-label="anchor" href="#converting-flowdensity-gates"></a>
 </h3>
-<p><a href="https://bioconductor.org/packages/release/bioc/html/flowDensity.html" class="external-link">flowDensity</a> gates can be converted to CellEngine gates. The class of a flowDensity gate is <code>"CellPopulation"</code>. The <code>flowDensity@filter</code> is always a polygon, so <code><a href="../reference/createPolygonGate.html">cellengine::createPolygonGate</a></code> can be used for this purpose:</p>
+<p><a href="https://bioconductor.org/packages/release/bioc/html/flowDensity.html" class="external-link">flowDensity</a>
+gates can be converted to CellEngine gates. The class of a flowDensity
+gate is <code>"CellPopulation"</code>. The
+<code>flowDensity@filter</code> is always a polygon, so
+<code><a href="../reference/createPolygonGate.html">cellengine::createPolygonGate</a></code> can be used for this
+purpose:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">file</span> <span class="op">=</span> <span class="st">"sample1.fcs"</span></span>
 <span><span class="va">flowDensityGate</span> <span class="op">&lt;-</span> <span class="fu">flowDensity</span><span class="fu">::</span><span class="fu">flowDensity</span><span class="op">(</span><span class="va">file</span>, <span class="va">params</span><span class="op">)</span><span class="op">@</span><span class="va">filter</span></span>

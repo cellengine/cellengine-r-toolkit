@@ -56,7 +56,7 @@
 
       
 
-      </header><script src="flowCut_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>flowCut</h1>
@@ -69,8 +69,13 @@
 
     
     
-<p><a href="https://rdrr.io/github/jmeskas/flowCut/man/flowCut.html" class="external-link"><code>flowCut</code></a> is an R package that automatically removes outlier events in cytometry data.</p>
-<p>This example shows how to run flowCut on all FCS files in a CellEngine experiment. The new files can either be uploaded to the same experiment or to a new experiment. See code comments for options regarding this behavior.</p>
+<p><a href="https://rdrr.io/github/jmeskas/flowCut/man/flowCut.html" class="external-link"><code>flowCut</code></a>
+is an R package that automatically removes outlier events in cytometry
+data.</p>
+<p>This example shows how to run flowCut on all FCS files in a
+CellEngine experiment. The new files can either be uploaded to the same
+experiment or to a new experiment. See code comments for options
+regarding this behavior.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"cellengine"</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"flowCut"</span><span class="op">)</span></span>
@@ -97,24 +102,24 @@
 <span>            overwrite<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span>  <span class="co"># Read it as a flowFrame.</span></span>
-<span>  <span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">read.FCS</span><span class="op">(</span><span class="va">tempFileName</span><span class="op">)</span></span>
+<span>  <span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/flowCore/man/read.FCS.html" class="external-link">read.FCS</a></span><span class="op">(</span><span class="va">tempFileName</span><span class="op">)</span></span>
 <span></span>
 <span>  <span class="co"># Store the raw values for later.</span></span>
-<span>  <span class="va">rawData</span> <span class="op">&lt;-</span> <span class="fu">exprs</span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
+<span>  <span class="va">rawData</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/exprs.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
 <span></span>
 <span>  <span class="co"># flowCut needs transformed (scaled) data. Apply the CellEngine scaleset.</span></span>
-<span>  <span class="fu">exprs</span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.matrix.html" class="external-link">data.matrix</a></span><span class="op">(</span><span class="fu"><a href="../reference/applyScaleSet.html">applyScaleSet</a></span><span class="op">(</span><span class="va">scaleSet</span>, <span class="va">rawData</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/exprs.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.matrix.html" class="external-link">data.matrix</a></span><span class="op">(</span><span class="fu"><a href="../reference/applyScaleSet.html">applyScaleSet</a></span><span class="op">(</span><span class="va">scaleSet</span>, <span class="va">rawData</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span>  <span class="co"># Run flowCut. Note that this step is slow. See flowCut documentation for</span></span>
 <span>  <span class="co"># additional options.</span></span>
 <span>  <span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">flowCut</span><span class="op">(</span><span class="va">data</span>, Directory<span class="op">=</span><span class="va">workingDir</span>, FileID<span class="op">=</span><span class="va">fcsFile</span><span class="op">$</span><span class="va">filename</span><span class="op">)</span></span>
 <span></span>
 <span>  <span class="co"># Remove the outliers from the raw data matrix.</span></span>
-<span>  <span class="fu">exprs</span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">rawData</span><span class="op">[</span><span class="op">-</span><span class="va">result</span><span class="op">$</span><span class="va">ind</span>,<span class="op">]</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/Biobase/man/exprs.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">rawData</span><span class="op">[</span><span class="op">-</span><span class="va">result</span><span class="op">$</span><span class="va">ind</span>,<span class="op">]</span></span>
 <span></span>
 <span>  <span class="co"># Save the result as a new FCS file.</span></span>
 <span>  <span class="va">destFileName</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">sub</a></span><span class="op">(</span><span class="st">"(.*)\\.(.*)$"</span>, <span class="st">"\\1_flowcut.\\2"</span>, <span class="va">tempFileName</span><span class="op">)</span></span>
-<span>  <span class="fu">write.FCS</span><span class="op">(</span><span class="va">data</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/flowCore/man/write.FCS.html" class="external-link">write.FCS</a></span><span class="op">(</span><span class="va">data</span>,</span>
 <span>            <span class="va">destFileName</span>,</span>
 <span>            endian<span class="op">=</span><span class="st">"little"</span><span class="op">)</span> <span class="co"># (small performance optimization)</span></span>
 <span></span>

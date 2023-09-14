@@ -56,7 +56,7 @@
 
       
 
-      </header><script src="gettingStarted_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Getting Started</h1>
@@ -74,7 +74,7 @@
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://devtools.r-lib.org/" class="external-link">"devtools"</a></span><span class="op">)</span></span>
-<span><span class="fu">install_github</span><span class="op">(</span><span class="st">"primitybio/cellengine-r-toolkit"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"primitybio/cellengine-r-toolkit"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="first-steps">First steps<a class="anchor" aria-label="anchor" href="#first-steps"></a>
@@ -82,19 +82,24 @@
 <div class="section level3">
 <h3 id="authentication">Authentication<a class="anchor" aria-label="anchor" href="#authentication"></a>
 </h3>
-<p>For interactive sessions, calling <code><a href="../reference/authenticate.html">authenticate()</a></code> will prompt you for your login info:</p>
+<p>For interactive sessions, calling <code><a href="../reference/authenticate.html">authenticate()</a></code> will
+prompt you for your login info:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"cellengine"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/authenticate.html">authenticate</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># prompts for username and password (and OTP if configured)</span></span>
 <span><span class="fu"><a href="../reference/authenticate.html">authenticate</a></span><span class="op">(</span><span class="st">"username"</span><span class="op">)</span> <span class="co"># prompts for password (and OTP if configured)</span></span></code></pre></div>
-<p><a href="https://docs.cellengine.com/api/#authentication" class="external-link">Personal Access Tokens</a> can also be used. These provide secure access with the ability to limit what actions the token can be used to perform. These are recommended over username/password authentication, especially for scripts.</p>
+<p><a href="https://docs.cellengine.com/api/#authentication" class="external-link">Personal
+Access Tokens</a> can also be used. These provide secure access with the
+ability to limit what actions the token can be used to perform. These
+are recommended over username/password authentication, especially for
+scripts.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"cellengine"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/authenticate.html">authenticate</a></span><span class="op">(</span>token <span class="op">=</span> <span class="st">"cep_xxxxxxxxxxxxxxxxxxx"</span><span class="op">)</span></span></code></pre></div>
 <p>Credentials can also be loaded from environment variables:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a><span class="va">CELLENGINE_USERNAME=</span>joesmith <span class="va">CELLENGINE_PASSWORD=</span>mypassword</span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="co"># or</span></span>
-<span id="cb4-3"><a href="#cb4-3"></a><span class="va">CELLENGINE_AUTH_TOKEN=</span>cep_xxxxxxxxxxxxxxxxxxx</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="va">CELLENGINE_USERNAME</span><span class="op">=</span>joesmith <span class="va">CELLENGINE_PASSWORD</span><span class="op">=</span>mypassword</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># or</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="va">CELLENGINE_AUTH_TOKEN</span><span class="op">=</span>cep_xxxxxxxxxxxxxxxxxxx</span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"cellengine"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/authenticate.html">authenticate</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># retrieves from environment variables automatically</span></span></code></pre></div>
@@ -102,7 +107,11 @@
 <div class="section level3">
 <h3 id="basic-operations">Basic operations<a class="anchor" aria-label="anchor" href="#basic-operations"></a>
 </h3>
-<p>The CellEngine R Toolkit provides functions for: * Retrieving, creating and modifying experiments, gates, populations, compensations, FCS files and attachments. * Getting statistics, plots and FCS file content (data matrix). * Converting to and from flowCore objects (partial support, see issue <a href="https://github.com/primitybio/cellengine-r-toolkit/issues/57" class="external-link">#57</a>).</p>
+<p>The CellEngine R Toolkit provides functions for: * Retrieving,
+creating and modifying experiments, gates, populations, compensations,
+FCS files and attachments. * Getting statistics, plots and FCS file
+content (data matrix). * Converting to and from flowCore objects
+(partial support, see issue <a href="https://github.com/primitybio/cellengine-r-toolkit/issues/57" class="external-link">#57</a>).</p>
 <div class="section level4">
 <h4 id="get-experiments">Get experiments<a class="anchor" aria-label="anchor" href="#get-experiments"></a>
 </h4>
@@ -117,12 +126,18 @@
 <div class="section level4">
 <h4 id="looking-up-resources-by-name">Looking up resources by name:<a class="anchor" aria-label="anchor" href="#looking-up-resources-by-name"></a>
 </h4>
-<p>Experiments, gates, populations, FCS files, compensations and attachments can all be requested by name:</p>
+<p>Experiments, gates, populations, FCS files, compensations and
+attachments can all be requested by name:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">expt</span> <span class="op">=</span> <span class="fu"><a href="../reference/getExperiment.html">getExperiment</a></span><span class="op">(</span><span class="fu"><a href="../reference/byName.html">byName</a></span><span class="op">(</span><span class="st">"experiment_name"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">gate</span> <span class="op">=</span> <span class="fu"><a href="../reference/getGate.html">getGate</a></span><span class="op">(</span><span class="va">expt</span><span class="op">$</span><span class="va">`_id`</span>, <span class="fu"><a href="../reference/byName.html">byName</a></span><span class="op">(</span><span class="st">"gate_name"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>Looking up a resource by name requires one extra API call and thus is slightly slower than using a resource by ID. However, by-name lookups are cached for the duration of the R session, so repeated by-name lookups of the same object are just as fast as a request by ID.</p>
-<p>You can also create a per-Experiment lookup object, which can be used to find resources by name or ID. This makes it convenient to query different types of resources from a single experiment:</p>
+<p>Looking up a resource by name requires one extra API call and thus is
+slightly slower than using a resource by ID. However, by-name lookups
+are cached for the duration of the R session, so repeated by-name
+lookups of the same object are just as fast as a request by ID.</p>
+<p>You can also create a per-Experiment lookup object, which can be used
+to find resources by name or ID. This makes it convenient to query
+different types of resources from a single experiment:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">experimentId</span> <span class="op">=</span> <span class="st">"57c4d7d4e69a1e890c4d8d2f"</span></span>
 <span><span class="va">lookup</span> <span class="op">=</span> <span class="fu"><a href="../reference/createLookup.html">createLookup</a></span><span class="op">(</span><span class="va">experimentId</span><span class="op">)</span></span>
