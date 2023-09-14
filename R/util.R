@@ -71,8 +71,8 @@ basePost <- function(url, body, params = list()) {
 baseDelete <- function(url, params = list()) {
   ensureBaseUrl()
   fullURL <- paste(pkg.env$baseURL, url, sep = "/")
-  response <- httr::DELETE(fullURL, query = params, httr::user_agent(ua))
   params <- coerceParameters(params)
+  response <- httr::DELETE(fullURL, query = params, httr::user_agent(ua))
   httr::warn_for_status(response)
 }
 
