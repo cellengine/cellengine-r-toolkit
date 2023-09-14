@@ -94,9 +94,9 @@ articles:
   - title: Getting Started
     contents:
       - gettingStarted
-  - title: Tailoring Gates
+  - title: Gating
     contents:
-      - tailoringGates
+      - workingWithGates
   - title: Using with Other Cytometry Packages
     contents:
       - flowCut

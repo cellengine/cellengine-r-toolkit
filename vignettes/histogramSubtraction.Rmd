@@ -92,14 +92,12 @@ subtractHistograms <- function(experimentId,
                         population,
                         compensatedQ = TRUE,
                         compensation = experiment$activeCompensation,
-                        headerQ = TRUE,
                         format="TSV")
   file2data = getEvents(experimentId,
                         file2,
                         population,
                         compensatedQ = TRUE,
                         compensation = experiment$activeCompensation,
-                        headerQ = TRUE,
                         format="TSV")
 
   # TODO: in v1 of the CellEngine toolkit, remove make.names here.

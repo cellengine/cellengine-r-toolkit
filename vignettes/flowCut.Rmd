@@ -21,9 +21,12 @@ experimentId <- "6243c57bf83b21038c59a4dd" # replace with your experiment ID
 workingDir <- file.path(tempdir(), "flowCut")
 dir.create(workingDir, recursive=T, showWarnings=F)
 
+# Get all non-deleted FCS files
 fcsFiles <- getFcsFiles(experimentId, params=list("query"="eq(deleted,null)"))
+# Get the scaleset for the experiment
 scaleSet <- getScaleSets(experimentId)[1,]
 
+# Loop through all FCS files
 for (fileI in 1:nrow(fcsFiles)) {
   fcsFile <- fcsFiles[fileI,]
   print(paste0("Processing ", fcsFile$filename, "..."))

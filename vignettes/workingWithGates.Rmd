@@ -1,0 +1,257 @@
+---
+title: "Working with Gates"
+output: rmarkdown::html_vignette
+---
+
+### Gates and Populations in CellEngine
+
+#### Basics
+
+**Gates** are geometric shapes that define boundaries within which events
+(cells) must be contained to be considered part of a population. Gates may be
+any one of RectangleGate, PolygonGate, EllipseGate, RangeGate, QuadrantGate or
+SplitGate. Each gate has a `gid` value, explained below.
+
+On a biological basis, **populations** are groups of cells that are analyzed
+together. For example, you might have a "CD4+ T cells" population. In
+CellEngine's implementation, populations are gates combined with Boolean
+operators. For example, "CD4+ T cells" might be defined as `{$and: [<Singlets>,
+<T cells>, <CD4+>]}`, where the values in `<brackets>` are the `gid` values for
+those gates. Any of `$and`, `$or`, `$not` and `$xor` can be used, but note that
+the CellEngine UI cannot display certain complex populations.
+
+Populations have two additional parameters of note besides their gates:
+
+* `parentId` - This is used to construct the hierarchy.
+* `terminalGateGid` - This is an optional parameter that, in a typical,
+  step-wise hierarchy, indicates the *one* gate that distinguishes a population
+  from its parent. For example, given the hierarchy *Ungated > Singlets > T cells*,
+  the populations would look like this:
+
+  ```
+  {
+    name: "Ungated",
+    _id: null,
+    gates: '{"$and": []}',
+    terminalGateGid: null,
+    parentId: null
+  }
+
+  {
+    name: "Singlets",
+    _id: "64daccf0ff756d82e41155ba",
+    gates: '{"$and": ["<singlets GID>"]}',
+    terminalGateGid: "<singlets GID>",
+    parentId: null
+  }
+
+  {
+    name: "T cells",
+    _id: "64daccf0ff756d82e41155bb",
+    gates: '{"$and": ["<singlets GID>", "<T cells GID>"]}',
+    terminalGateGid: "<T cells GID>",
+    parentId: "64daccf0ff756d82e41155ba"
+  }
+  ```
+
+  Boolean populations that don't have a single gate that distinguishes them from
+  their parent have this value set to `NULL`.
+
+#### Gate tailoring
+
+CellEngine allows each FCS file to have a unique gate geometry by **"tailoring"
+gates** per-file. Tailored gates exist in a group. Within a group, there's
+the global gate, which is used for any FCS file that does not have a
+file-specific gate; and there are zero or more tailored gates, each of which is
+used for a specific FCS file. All gates in the group have the same `gid` (group
+ID) value. The global gate has an `fcsFileId` value of `NA`, and the
+file-specific gates have `fcsFileId` values set to the `_id` of their
+corresponding FCS file.
+
+**Compound gates (quadrant and split)** are made up of "sectors." Quadrant gates
+have four sectors (upper-right, upper-left, lower-left, lower-right) and split
+gates have two sectors (left and right). In addition to the top-level `gid`
+(like simple gates), these gates have `model.gids` and `names` lists that
+specify the group ID and name for each sector, in the order shown above.
+Populations using compound gates must reference these sector group IDs.
+
+---
+
+The above is all you need to know to get started with creating gates with the
+CellEngine R Toolkit, but the CellEngine API documentation for
+[gates](https://docs.cellengine.com/api/#gates) and
+[populations](https://docs.cellengine.com/api/#populations) has more detailed
+information and examples.
+
+### Creating a simple gate and population
+
+First let's create a basic polygon gate.
+
+```R
+library("cellengine")
+authenticate() # prompts for username and password
+
+# Get an existing experiment called "My experiment"
+experiment = getExperiment(byName("My experiment"))
+
+res = createPolygonGate(
+  experimentId=experiment$`_id`,
+  "FSC-A", "FSC-H", # the X and Y channels
+  "my gate", # the gate name
+  list( # the vertices
+    c(37836.07, 971.51),
+    c(1588732.12, 154.646),
+    c(8139.405, 664.78),
+    c(9441.949, 781.32)
+  ),
+  createPopulation = TRUE,
+  parentPopulationId = cellengine::UNGATED
+)
+```
+
+Two things to observe:
+
+* We used `createPopulation = TRUE` and `parentPopulationId = cellengine::UNGATED`.
+  This tells CellEngine to create a corresponding population for the gate at the
+  root level, under "Ungated". The `res` object contains `res$gate` and
+  `res$population` members, so you can access both the created gate and created
+  population.
+
+* The gate coordinates are in "scaled data space." That means that the scale
+  function that is used to show the data in CellEngine (i.e., linear, log or
+  arcsinh) also needs to be applied to the gate coordinates. You can see what
+  scale is in used by clicking "edit scales" in CellEngine, or by calling
+  `getScaleSets()` in the R toolkit.
+
+  You can use the toolkit's `applyScale()` function to convert from raw data
+  space to scaled data space.
+
+To create the next gate and population in the hierarchy, below "my gate", repeat
+the above, but set
+`parentPopulationId = byName("my gate")` or `` parentPopulationId = res$population$`_id` ``.
+
+### Creating a set of tailored gates
+
+First we're going to make the global gate. This is the same as above, except
+we'll add `tailoredPerFile = TRUE`:
+
+```R
+res = createPolygonGate(
+  experimentId=experiment$`_id`,
+  "FSC-A", "FSC-H",
+  "my other gate",
+  list(
+    c(37836.07, 971.51),
+    c(1588732.12, 154.646),
+    c(8139.405, 664.78),
+    c(9441.949, 781.32)
+  ),
+  createPopulation = TRUE,
+  parentPopulationId = byName("singlets"),
+  tailoredPerFile = TRUE # <-- added
+)
+```
+
+Now we're going to make a tailored gate:
+
+```R
+res2 = createPolygonGate(
+  experimentId=experiment$`_id`,
+  "FSC-A", "FSC-H",
+  "my other gate",
+  list(
+    c(12345, 900),
+    c(160002, 175),
+    c(8000, 750),
+    c(9410, 800)
+  ),
+  gid = res$gate$gid, # <-- added
+  tailoredPerFile = TRUE,
+  fcsFileId = byName("file1.fcs") # <-- added
+  # createPopulation is FALSE or omitted
+  # parentPopulationId is omitted
+)
+```
+
+Notice:
+
+* We set `gid = res$gate$gid` so that this new gate will be in the same gate
+  group as the gate we created in the previous step.
+* We added `fcsFileId = byName("file1.fcs")`. This creates a gate specific to
+  that file.
+* We removed `createPopulation` and `parentPopulationId` because we're not
+  creating a population again; we're just creating a gate tailored to this file.
+* The gate vertices are different from the global gate.
+* The channels and name are the same as the global gate. CellEngine currently
+  doesn't strictly require that tailored gates have the same name and channels;
+  it's up to the user to ensure the same values are used.
+
+Now if you open CellEngine and flip through the FCS files in this experiment,
+you should see the file-specific gates being used.
+
+### Converting to and from flowCore gates
+
+CellEngine has support for converting ellipse, polygon and rectangle gates to
+and from flowCore gates. [More gate types will be supported eventually.](https://github.com/primitybio/cellengine-r-toolkit/issues/57)
+
+Given a flowCore gate:
+
+```R
+rectGate <- rectangleGate(
+  filterId = "Gate 1",
+  "FL1-H" = c(0, 12), "FL2-H" = c(0, 12)
+)
+```
+
+We can add it to a CellEngine experiment as follows:
+
+```R
+fromFlowCore(rectGate, experimentId = byName("my experiment"), name = "my gate")
+# "my gate" should now exist in the CellEngine experiment.
+```
+
+`fromFlowCore()` will pass `...` arguments on to the `create__Gate()`
+function, so you can, for example, create a population by passing `createPopulation = TRUE, parentPopulationId = byName("parent")`, or tailor the gate by passing `tailoredPerFile = TRUE, fcsFileId = byName("myfile.fcs")`.
+
+Similarly, you can convert a CellEngine gate to flowCore:
+
+```R
+ceGate <- getGate(experimentId = byName("my experiment"), gateId = byName("singlets"))
+fcGate <- toFlowCore(ceGate)
+```
+
+### Creating complex populations
+
+Using `createPopulation = TRUE` works to create common, step-wise hierarchies.
+What if you want to make a "not" or "or" population?
+
+```R
+# Given GIDs from the gate creation procedures above:
+singletsGid = "64daccf0ff756d82e4115588" # the Singlets gate
+cd4Gid = "64daccf0ff756d82e4115599" # the CD4+ gate
+il2gid = "64daccf0ff756d82e41155aa" # the IL2+ gate
+il4gid = "64daccf0ff756d82e41155ab" # the IL4+ gate
+# Create an "or(IL2+, IL4+)" population below Singlets > CD4+:
+createPopulation(
+  experimentId = byName("my experiment"),
+  name = "or(IL2+, IL4+)",
+  gates = sprintf('{"$and": ["%s", "%s", {"$or": ["%s", "%s"]}]}',
+                  singletsGid, cd4Gid, il2gid, il4gid),
+  terminalGateGid = NULL,
+  parentId = byName("CD4+")
+)
+```
+
+Notice:
+
+* We set `terminalGateGid = NULL`. As described under [basics](#basics), this
+  property is set to `NULL` for Boolean populations.
+* The `gates` property is set to a JSON string built up of Boolean operators and
+  GIDs. It can be extremely difficult to get R to convert lists and vectors to
+  the expected JSON; you can try to use `jsonlite` (especially
+  `jsonlite::unbox()`), or you can construct strings manually.
+
+### References
+
+* [CellEngine API documentation for gates](https://docs.cellengine.com/api/#gates)
+* [CellEngine API documentation for populations](https://docs.cellengine.com/api/#populations)

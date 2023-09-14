@@ -2,26 +2,20 @@ CellEngine R API Toolkit
 -----
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-We are currently working on several breaking changes that will be released in
-our first stable release, [v1.0](https://github.com/primitybio/cellengine-r-toolkit/milestone/1).
+Changes are documented in the [changelog](https://github.com/primitybio/cellengine-r-toolkit/blob/master/CHANGELOG.md).
 
-To install the v0.x version (no breaking changes will be made):
-```R
-library("devtools")
-install_github("primitybio/cellengine-r-toolkit")
-```
+**The master branch is now a release candidate for v1.0.0.**
 
-To install a preview of the upcoming v1.0 version (unstable):
+To install the v1.0 release candidate:
 ```R
 library("devtools")
 install_github("primitybio/cellengine-r-toolkit", ref="v1-dev")
 ```
 
-Quick start:
-
+To install the legacy v0.x version:
 ```R
-library("cellengine")
-authenticate("username", Sys.getenv("CELLENGINE_PASSWORD"))
-
-experiments = getExperiments()
+library("devtools")
+install_github("primitybio/cellengine-r-toolkit", ref="v0.x")
 ```
+
+Refer to the [Getting Started vignette](https://primitybio.github.io/cellengine-r-toolkit/articles/gettingStarted.html) for next steps!
