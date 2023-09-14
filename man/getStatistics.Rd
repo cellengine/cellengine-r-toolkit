@@ -51,32 +51,32 @@ scale set exists in the experiment, that scale set will be used.}
 \item{q}{Quantile to calculate for "quantile" statistic, in the range 0 to 1.}
 
 \item{percentOf}{Single population ID or name, or list of population IDs or
-  names the same length as \code{populationIds} parameter.
+names the same length as \code{populationIds} parameter.
 
-  \itemize{
-    \item If omitted or the string "PARENT", then the percent of parent will
-      be calculated for each population.
+\itemize{
+\item If omitted or the string "PARENT", then the percent of parent will
+be calculated for each population.\preformatted{\\item If a single ID or name is provided, then the percent of that
+   population will be calculated for each population specified in
+   \code{populations} or \code{populationIds} (useful for calculating
+   e.g. percent of singlets or leukocytes).
 
-    \item If a single ID or name is provided, then the percent of that
-       population will be calculated for each population specified in
-       \code{populations} or \code{populationIds} (useful for calculating
-       e.g. percent of singlets or leukocytes).
+\\item If an array of IDs or names is provided, then the percent of each
+   of those populations will be calculated.
+}
 
-    \item If an array of IDs or names is provided, then the percent of each
-       of those populations will be calculated.
-  }
+}
 
-  In the latter two cases, if a name or list of names instead of IDs are
-  provided, an attempt will be made to find those populations by name. IDs
-  are detected as matching a 24-character string comprised of the characters
-  \code{A-Fa-f0-9}.}
+In the latter two cases, if a name or list of names instead of IDs are
+provided, an attempt will be made to find those populations by name. IDs
+are detected as matching a 24-character string comprised of the characters
+\code{A-Fa-f0-9}.}
 
 \item{includeAnnotations}{Includes FCS file annotations in the returned data
 frame.}
 }
 \value{
 Statistics as a data frame, including file annotations and
-  information about the statistics such as the channel name and population.
+information about the statistics such as the channel name and population.
 }
 \description{
 Retrieves statistics from FCS files, returning the results as a data frame.

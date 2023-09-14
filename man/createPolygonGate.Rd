@@ -34,10 +34,10 @@ createPolygonGate(
 
 \item{vertices}{List of vectors of coordinates, like list(c(x,y), c(x,y), ...)}
 
-\item{xVertices}{**Deprecated** Use `vertices` instead. List of x
+\item{xVertices}{\strong{Deprecated} Use \code{vertices} instead. List of x
 coordinates for the polygon's vertices.}
 
-\item{yVertices}{**Deprecated** Use `vertices` instead. List of y
+\item{yVertices}{\strong{Deprecated} Use \code{vertices} instead. List of y
 coordinates for the polygon's vertices.}
 
 \item{label}{Position of the label. Defaults to the midpoint of the gate.}

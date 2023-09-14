@@ -48,14 +48,14 @@ file to be overwritten.}
 
 \item{subsampling}{Optional, subsampling parameters in the form
 \code{list(preSubsampleN = number, preSubsampleP = number,
-postSubsampleN = number, postSubsampleP = number, seed = number)}.
+  postSubsampleN = number, postSubsampleP = number, seed = number)}.
 Subsample-N options specify absolute subsampling values, and subsample-P options
 specify a fractional subsampling value (0 to 1); specify only one pre-
 and/or one post-subsample option. Specify a \code{seed} for reproducible
 downsampling.}
 
 \item{addEventNumber}{Optional. Add an event number column to the exported
-file. When a `populationId` is specified (when gating), this number
+file. When a \code{populationId} is specified (when gating), this number
 corresponds to the index of the event in the original file.}
 }
 \description{

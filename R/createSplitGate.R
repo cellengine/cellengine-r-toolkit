@@ -42,9 +42,6 @@ createSplitGate <- function(experimentId, xChannel, name, x, y = 0.5,
                             parentPopulationId = NULL, parentPopulation = NULL,
                             tailoredPerFile = FALSE, fcsFileId = NULL, fcsFile = NULL,
                             locked = FALSE, createPopulation = TRUE) {
-
-
-
   # set labels based on axis scale
   if (length(labels) == 0) {
     scales <- data.frame(getScaleSets(experimentId)$scales)
