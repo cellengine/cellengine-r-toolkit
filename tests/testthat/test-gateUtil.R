@@ -154,19 +154,31 @@ test_that("throws an error if multiple fcsFiles match", {
   )
 })
 
-test_that("throws an error if both fcsFileId and fcsFile are provided", {{ setServer("https://my.server.com")
-  expect_error(
-    parseFcsFileArgs(list(), TRUE, "591a3b441d725115208a6fdc", "name", "591a3b441d725115208a6fda"),
-    "Please specify only one"
-  ) }})
+test_that("throws an error if both fcsFileId and fcsFile are provided", {
+  {
+    setServer("https://my.server.com")
+    expect_error(
+      parseFcsFileArgs(list(), TRUE, "591a3b441d725115208a6fdc", "name", "591a3b441d725115208a6fda"),
+      "Please specify only one"
+    )
+  }
+})
 
-test_that("doesn't assign fcsFileId if not tailored", {{ setServer("https://my.server.com")
-  result <- parseFcsFileArgs(list(), FALSE, NULL, "name", "591a3b441d725115208a6fda")
-  expect_null(result$fcsFileId) }})
+test_that("doesn't assign fcsFileId if not tailored", {
+  {
+    setServer("https://my.server.com")
+    result <- parseFcsFileArgs(list(), FALSE, NULL, "name", "591a3b441d725115208a6fda")
+    expect_null(result$fcsFileId)
+  }
+})
 
-test_that("doesn't assign fcsFileId if global tailored gate", {{ setServer("https://my.server.com")
-  result <- parseFcsFileArgs(list(), TRUE, NULL, NULL, "591a3b441d725115208a6fda")
-  expect_null(result$fcsFileId) }})
+test_that("doesn't assign fcsFileId if global tailored gate", {
+  {
+    setServer("https://my.server.com")
+    result <- parseFcsFileArgs(list(), TRUE, NULL, NULL, "591a3b441d725115208a6fda")
+    expect_null(result$fcsFileId)
+  }
+})
 
 test_that("throws an error if no fcsFiles match", {
   with_mock(

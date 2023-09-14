@@ -5,31 +5,31 @@
 #' @param experimentId ID of experiment.
 #' @param format Specifies the file format ("fcs", "tsv (with header)" or
 #' "tsv (without header)")
-#' @param destination [String] Write the files to the specified destination.
-#' @param overwrite [Logical] Allows a destination file to be overwritten.
-#' @param fcsFileIds [Array<String>] Optional. Defaults to returning all
+#' @param destination String. Write the files to the specified destination.
+#' @param overwrite Logical. Allows a destination file to be overwritten.
+#' @param fcsFileIds List of string. Optional. Defaults to returning all
 #' non-control files in the experiment.
-#' @param populationIds [Array<String>] Optional. If provided, only events from
+#' @param populationIds List of string. Optional. If provided, only events from
 #' these populations will be included in the output files. Defaults to ungated.
-#' @param compensationId [String] Required if populationIds is specified.
+#' @param compensationId String. Required if populationIds is specified.
 #' Compensation to use for gating.
-#' @param compensatedQ [Logical] Optional. If true, applies the compensation
+#' @param compensatedQ Logical. Optional. If true, applies the compensation
 #' specified in compensationId to the exported events. For TSV format, the
 #' numerical values will be the compensated values. For FCS format, the
 #' numerical values will be unchanged, but the file header will contain the
 #' compensation as the spill string (file-internal compensation).
-#' @param preSubsampleN [Integer] Randomly subsample the file to contain this
+#' @param preSubsampleN Integer. Randomly subsample the file to contain this
 #' many events before gating.
-#' @param preSubsampleP [Numeric] Randomly subsample the file to contain this
+#' @param preSubsampleP Numeric. Randomly subsample the file to contain this
 #' percent of events (0 to 1) before gating.
-#' @param postSubsampleN [Integer] Randomly subsample the file to contain this
+#' @param postSubsampleN Integer. Randomly subsample the file to contain this
 #' many events after gating.
-#' @param postSubsampleP [Numeric] Randomly subsample the file to contain this
+#' @param postSubsampleP Numeric. Randomly subsample the file to contain this
 #' percent of events (0 to 1) after gating.
-#' @param seed [Numeric] Seed for random number generator used for
+#' @param seed Numeric. Seed for random number generator used for
 #' subsampling. Use for deterministic (reproducible) subsampling. If omitted, a
 #' pseudo-random value is used.
-#' @param filenameTemplate [String]	Tokenized template to dynamically name
+#' @param filenameTemplate String. Tokenized template to dynamically name
 #' each file in the resulting archive, like
 #' \code{"{fcsfile.filename}-{population._id}"}.
 #' @export
@@ -44,7 +44,7 @@
 downloadFcsFiles <- function(experimentId,
                              format,
                              destination,
-                             overwrite = F,
+                             overwrite = FALSE,
                              fcsFileIds = NULL,
                              populationIds = NULL,
                              compensationId = NULL,
@@ -71,7 +71,7 @@ downloadFcsFiles <- function(experimentId,
     seed = jsonlite::unbox(seed),
     filenameTemplate = jsonlite::unbox(filenameTemplate)
   )
-  body <- body[-which(lapply(body, is.null) == T)]
+  body <- body[-which(lapply(body, is.null) == TRUE)]
   body <- jsonlite::toJSON(body, null = "null", digits = NA)
 
   fullURL <- paste(

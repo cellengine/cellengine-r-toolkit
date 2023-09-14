@@ -92,9 +92,9 @@ test_that("fromFlowCore overloads for flowDensity gate", {
     experimentId <- "5d2f8b4b21fd0676fb3a6a70"
     f <- read.FCS("../5k.fcs", transformation = "linearize")
     flow <- flowDensity(f,
-      channels = c("FSC-A", "FSC-W"), position = c(F, F),
-      percentile = c(.99999, .99999), use.percentile = c(T, T),
-      ellip.gate = T, scale = .99
+      channels = c("FSC-A", "FSC-W"), position = c(FALSE, FALSE),
+      percentile = c(.99999, .99999), use.percentile = c(TRUE, TRUE),
+      ellip.gate = TRUE, scale = .99
     )
 
     # when:
@@ -209,9 +209,9 @@ test_that("flowDensity is converted to polygonGate", {
     experimentId <- "5d2f8b4b21fd0676fb3a6a70"
     f <- read.FCS("../5k.fcs", transformation = "linearize")
     flow <- flowDensity(f,
-      channels = c("FSC-A", "FSC-W"), position = c(F, F),
-      percentile = c(.99999, .99999), use.percentile = c(T, T),
-      ellip.gate = T, scale = .99
+      channels = c("FSC-A", "FSC-W"), position = c(FALSE, FALSE),
+      percentile = c(.99999, .99999), use.percentile = c(TRUE, TRUE),
+      ellip.gate = TRUE, scale = .99
     )
 
     # when
