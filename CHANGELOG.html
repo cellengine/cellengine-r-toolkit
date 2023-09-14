@@ -69,7 +69,9 @@
 <li>
 <strong>Breaking</strong> <code>getCompensations</code> now returns a list of lists, with the <code>spillMatrix</code> formatted as a matrix.</li>
 </ul></div>
-<div class="section level3"><h3 id="removed">Removed<a class="anchor" aria-label="anchor" href="#removed"></a></h3></div>
+<div class="section level3">
+<h3 id="removed">Removed<a class="anchor" aria-label="anchor" href="#removed"></a></h3>
+<ul><li>The <code>xVertices</code> and <code>yVertices</code> arguments to <code>createPolygonGate</code> are replaced by <code>vertices=list(c(), c(), c())</code>.</li></ul></div>
 </div>
 <div class="section level2">
 <h2 id="unreleased">[Unreleased]<a class="anchor" aria-label="anchor" href="#unreleased"></a></h2>
@@ -107,8 +109,6 @@
 <li>Fix mangling of experiment properties in <code><a href="reference/updateGate.html">updateGate()</a></code>.</li>
 <li>Remove unused <code>params</code> argument from <code><a href="reference/getExperiment.html">getExperiment()</a></code>.</li>
 <li>Run <code>styler</code> on all files with default params</li>
-<li>Deprecate <code>createPolygonGate</code> args <code>xVertices=c()</code> and <code>yVertices=c()</code> in favor of <code>vertices=list(c(), c(), c())</code>
-</li>
 </ul></div>
 <div class="section level3"><h3 id="removed-1">Removed<a class="anchor" aria-label="anchor" href="#removed-1"></a></h3></div>
 </div>

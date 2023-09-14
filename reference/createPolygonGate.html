@@ -52,9 +52,7 @@
 <span>  <span class="va">xChannel</span>,</span>
 <span>  <span class="va">yChannel</span>,</span>
 <span>  <span class="va">name</span>,</span>
-<span>  vertices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  xVertices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  yVertices <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="va">vertices</span>,</span>
 <span>  label <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  gid <span class="op">=</span> <span class="fu"><a href="generateId.html">generateId</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  parentPopulationId <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -63,7 +61,7 @@
 <span>  fcsFileId <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  fcsFile <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  locked <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  createPopulation <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  createPopulation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">fcsFileId</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -86,17 +84,8 @@
 
 
 <dt>vertices</dt>
-<dd><p>List of vectors of coordinates, like list(c(x,y), c(x,y), ...)</p></dd>
-
-
-<dt>xVertices</dt>
-<dd><p><strong>Deprecated</strong> Use <code>vertices</code> instead. List of x
-coordinates for the polygon's vertices.</p></dd>
-
-
-<dt>yVertices</dt>
-<dd><p><strong>Deprecated</strong> Use <code>vertices</code> instead. List of y
-coordinates for the polygon's vertices.</p></dd>
+<dd><p>List of vectors of coordinates, like
+<code>list(c(x,y), c(x,y), ...)</code>.</p></dd>
 
 
 <dt>label</dt>
