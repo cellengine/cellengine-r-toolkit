@@ -3,15 +3,15 @@ title: "Getting Started"
 output: rmarkdown::html_vignette
 ---
 
-### Installing:
+## Installing
 ```R
 library("devtools")
 install_github("primitybio/cellengine-r-toolkit")
 ```
 
-### First steps
+## First steps
 
-#### Authentication
+### Authentication
 
 For interactive sessions, calling `authenticate()` will prompt you for your
 login info:
@@ -22,13 +22,33 @@ authenticate() # prompts for username and password (and OTP if configured)
 authenticate("username") # prompts for password (and OTP if configured)
 ```
 
-For non-interactive sessions, we recommend avoiding saving your password in
-plaintext because it's not secure. Consider instead using an environment
-variable or `.Renviron`.
+[Personal Access Tokens](https://docs.cellengine.com/api/#authentication) can
+also be used. These provide secure access with the ability to limit what actions
+the token can be used to perform. These are recommended over username/password
+authentication, especially for scripts.
+
 ```R
 library("cellengine")
-authenticate("username", Sys.getenv("CELLENGINE_PASSWORD"))
+authenticate(token = "cep_xxxxxxxxxxxxxxxxxxx")
 ```
+
+Credentials can also be loaded from environment variables:
+```sh
+CELLENGINE_USERNAME=joesmith CELLENGINE_PASSWORD=mypassword
+# or
+CELLENGINE_AUTH_TOKEN=cep_xxxxxxxxxxxxxxxxxxx
+```
+```R
+library("cellengine")
+authenticate() # retrieves from environment variables automatically
+```
+
+### Basic operations
+
+The CellEngine R Toolkit provides functions for:
+* Retrieving, creating and modifying experiments, gates, populations, compensations, FCS files and attachments.
+* Getting statistics, plots and FCS file content (data matrix).
+* Converting to and from flowCore objects (partial support, see issue [#57](https://github.com/primitybio/cellengine-r-toolkit/issues/57)).
 
 #### Get experiments
 
@@ -38,20 +58,18 @@ experiments = getExperiments()
 ```
 
 Or fetch individual experiments by ID or name:
-
 ```R
 exp2 = getExperiment("57c4d7d4e69a1e890c4d8d2f")
 exp3 = getExperiment(byName("experiment_name"))
 ```
 
-### Looking up Resources by Name:
+#### Looking up resources by name:
 
-Gates, Populations, FcsFiles, and Compensations can all be requested by name.
-If you are looking up a resource from a specific experiment, this must be done
-with the `byName` function:
+Experiments, gates, populations, FCS files, compensations and attachments can
+all be requested by name:
 ```R
-experimentId = "57c4d7d4e69a1e890c4d8d2f"
-gate = getGate(expermentId, byName("gate_name"))
+expt = getExperiment(byName("experiment_name"))
+gate = getGate(expt$`_id`, byName("gate_name"))
 ```
 
 Looking up a resource by name requires one extra API call and thus is slightly
