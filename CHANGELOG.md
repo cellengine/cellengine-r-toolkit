@@ -4,6 +4,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1-dev Unreleased]
+
+### Added
+- `createCompensation()` function
+- `getCompensation()` function
+- `updateCompensation()` function
+- `deleteCompensation()` function
+
+### Changed
+- **Breaking** `getEvents()` now uses `check.names=FALSE`, so data.frame column
+  names will be identical to the parameter names found in the FCS file. For
+  example, "CD4 (Ax647-A)" will no longer be converted to "CD4..Ax647.A.".
+- **Breaking** `getEvents()` now defaults to `headerQ=TRUE`, so data.frames will
+  have column names by default now.
+- **Breaking** In `getEvents()`, the argument `clamp_q` was renamed to `clampQ`.
+- Change the default for `createPopulation` arg in gate creation functions to `is.null(fcsFileId)`
+- **Breaking** `getCompensations` now returns a list of lists, with the `spillMatrix` formatted as a matrix.
+
+### Removed
+
 ## [Unreleased]
 
 ### Added
@@ -27,12 +47,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support `addEventNumber` as a parameter in `getEvents()`.
 
 ### Changed
-- **Breaking** `getEvents()` now uses `check.names=FALSE`, so data.frame column
-  names will be identical to the parameter names found in the FCS file. For
-  example, "CD4 (Ax647-A)" will no longer be converted to "CD4..Ax647.A.".
-- **Breaking** `getEvents()` now defaults to `headerQ=TRUE`, so data.frames will
-  have column names by default now.
-- **Breaking** In `getEvents()`, the argument `clamp_q` was renamed to `clampQ`.
 - Fix for [confusing bulk entity retrieval](https://github.com/primitybio/cellengine-r-toolkit/issues/48)
 - For performance, `applyScale()` now only accepts atomic vectors. Lists can no
   longer be used.
@@ -43,6 +57,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Run `styler` on all files with default params
 - Deprecate `createPolygonGate` args `xVertices=c()` and
   `yVertices=c()` in favor of `vertices=list(c(), c(), c())`
-- Remove defunct `scaleSetId` parameter from `getStatistics()`.
 
 ### Removed

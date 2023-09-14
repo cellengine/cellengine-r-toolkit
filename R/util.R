@@ -4,13 +4,13 @@ pkg.env$baseURL <- Sys.getenv("CELLENGINE_BASE_URL", "https://cellengine.com")
 
 pkg.env$auth <- c()
 
-handleResponse <- function(response) {
+handleResponse <- function(response, ...) {
   httr::warn_for_status(response)
   if (response$headers$`Content-Type` == "image/png") {
     return(httr::content(response, as = "raw"))
   }
   content <- httr::content(response, "text", encoding = "UTF-8")
-  return(jsonlite::fromJSON(content))
+  return(jsonlite::fromJSON(content, ...))
 }
 
 ua <- (function() {
@@ -41,7 +41,7 @@ coerceParameters <- function(params) {
   return(params)
 }
 
-baseGet <- function(url, params = list()) {
+baseGet <- function(url, params = list(), ...) {
   ensureBaseUrl()
   fullURL <- paste0(pkg.env$baseURL, url)
   params <- coerceParameters(params)
@@ -49,10 +49,10 @@ baseGet <- function(url, params = list()) {
                  query = params,
                  httr::user_agent(ua),
                  httr::add_headers(.headers = pkg.env$auth))
-  handleResponse(r)
+  handleResponse(r, ...)
 }
 
-basePatch <- function(url, body, params = list()) {
+basePatch <- function(url, body, params = list(), ...) {
   ensureBaseUrl()
   fullURL <- paste0(pkg.env$baseURL, url)
   params <- coerceParameters(params)
@@ -62,7 +62,7 @@ basePatch <- function(url, body, params = list()) {
                    httr::content_type_json(),
                    httr::user_agent(ua),
                    httr::add_headers(.headers = pkg.env$auth))
-  handleResponse(r)
+  handleResponse(r, ...)
 }
 
 basePut <- function(url, body, params = list()) {
@@ -78,7 +78,7 @@ basePut <- function(url, body, params = list()) {
   handleResponse(r)
 }
 
-basePost <- function(url, body, params = list()) {
+basePost <- function(url, body, params = list(), ...) {
   ensureBaseUrl()
   fullURL <- paste0(pkg.env$baseURL, url)
   params <- coerceParameters(params)
@@ -88,20 +88,7 @@ basePost <- function(url, body, params = list()) {
                   httr::content_type_json(),
                   httr::user_agent(ua),
                   httr::add_headers(.headers = pkg.env$auth))
-  handleResponse(r)
-}
-
-basePost <- function(url, body, params = list()) {
-  ensureBaseUrl()
-  fullURL <- paste0(pkg.env$baseURL, url)
-  params <- coerceParameters(params)
-  r <- httr::POST(fullURL,
-                  body = body,
-                  query = params,
-                  httr::content_type_json(),
-                  httr::user_agent(ua),
-                  httr::add_headers(.headers = pkg.env$auth))
-  handleResponse(r)
+  handleResponse(r, ...)
 }
 
 baseDelete <- function(url, params = list()) {
@@ -248,4 +235,16 @@ createLookup <- function(experimentId) {
     }
     data
   }
+}
+
+formatCompensationResponse <- function(r) {
+  size <- length(r$channels)
+  r$spillMatrix <- matrix(
+    r$spillMatrix,
+    nrow = size,
+    ncol = size,
+    byrow = TRUE,
+    dimnames = list(r$channels, r$channels)
+  )
+  r
 }

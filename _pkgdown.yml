@@ -44,7 +44,11 @@ reference:
 
   - title: Compensations
     contents:
+      - createCompensation
+      - deleteCompensation
+      - getCompensation
       - getCompensations
+      - updateCompensation
 
   - title: Gates and Populations
     contents:

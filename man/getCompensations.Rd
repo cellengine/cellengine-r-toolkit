@@ -7,7 +7,7 @@
 getCompensations(experimentId, params = list())
 }
 \arguments{
-\item{experimentId}{ID of experiment.}
+\item{experimentId}{ID of experiment or a \code{byName} expression.}
 
 \item{params}{Optional query parameters.}
 }
