@@ -16,7 +16,7 @@ test_that("makes expected HTTP request", {
     },
     {
       setServer("https://my.server.com")
-      resp <- getEvents("591a3b441d725115208a6fda", "591a3b441d725115208a6fdc", addEventNumber=T)
+      resp <- getEvents("591a3b441d725115208a6fda", "591a3b441d725115208a6fdc", addEventNumber = TRUE)
     }
   )
 })

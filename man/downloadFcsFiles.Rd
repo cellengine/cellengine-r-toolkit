@@ -8,7 +8,7 @@ downloadFcsFiles(
   experimentId,
   format,
   destination,
-  overwrite = F,
+  overwrite = FALSE,
   fcsFileIds = NULL,
   populationIds = NULL,
   compensationId = NULL,
@@ -27,42 +27,42 @@ downloadFcsFiles(
 \item{format}{Specifies the file format ("fcs", "tsv (with header)" or
 "tsv (without header)")}
 
-\item{destination}{[String] Write the files to the specified destination.}
+\item{destination}{String. Write the files to the specified destination.}
 
-\item{overwrite}{[Logical] Allows a destination file to be overwritten.}
+\item{overwrite}{Logical. Allows a destination file to be overwritten.}
 
-\item{fcsFileIds}{[Array<String>] Optional. Defaults to returning all
+\item{fcsFileIds}{List of string. Optional. Defaults to returning all
 non-control files in the experiment.}
 
-\item{populationIds}{[Array<String>] Optional. If provided, only events from
+\item{populationIds}{List of string. Optional. If provided, only events from
 these populations will be included in the output files. Defaults to ungated.}
 
-\item{compensationId}{[String] Required if populationIds is specified.
+\item{compensationId}{String. Required if populationIds is specified.
 Compensation to use for gating.}
 
-\item{compensatedQ}{[Logical] Optional. If true, applies the compensation
+\item{compensatedQ}{Logical. Optional. If true, applies the compensation
 specified in compensationId to the exported events. For TSV format, the
 numerical values will be the compensated values. For FCS format, the
 numerical values will be unchanged, but the file header will contain the
 compensation as the spill string (file-internal compensation).}
 
-\item{preSubsampleN}{[Integer] Randomly subsample the file to contain this
+\item{preSubsampleN}{Integer. Randomly subsample the file to contain this
 many events before gating.}
 
-\item{preSubsampleP}{[Numeric] Randomly subsample the file to contain this
+\item{preSubsampleP}{Numeric. Randomly subsample the file to contain this
 percent of events (0 to 1) before gating.}
 
-\item{postSubsampleN}{[Integer] Randomly subsample the file to contain this
+\item{postSubsampleN}{Integer. Randomly subsample the file to contain this
 many events after gating.}
 
-\item{postSubsampleP}{[Numeric] Randomly subsample the file to contain this
+\item{postSubsampleP}{Numeric. Randomly subsample the file to contain this
 percent of events (0 to 1) after gating.}
 
-\item{seed}{[Numeric] Seed for random number generator used for
+\item{seed}{Numeric. Seed for random number generator used for
 subsampling. Use for deterministic (reproducible) subsampling. If omitted, a
 pseudo-random value is used.}
 
-\item{filenameTemplate}{[String]    Tokenized template to dynamically name
+\item{filenameTemplate}{String. Tokenized template to dynamically name
 each file in the resulting archive, like
 \code{"{fcsfile.filename}-{population._id}"}.}
 }
