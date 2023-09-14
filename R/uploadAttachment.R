@@ -11,9 +11,9 @@
 #' }
 uploadAttachment <- function(experimentId, attachmentPath) {
   checkDefined(experimentId)
-  experimentId <- lookupByName("experiments", experimentId)
+  experimentId <- lookupByName("/api/v1/experiments", experimentId)
   body <- list("file" = httr::upload_file(attachmentPath))
   ensureBaseUrl()
-  fullURL <- paste(pkg.env$baseURL, "experiments", experimentId, "attachments", sep = "/")
+  fullURL <- paste0(pkg.env$baseURL, "/api/v1/experiments/", experimentId, "/attachments")
   handleResponse(httr::POST(fullURL, body = body, httr::user_agent(ua)))
 }

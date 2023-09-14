@@ -39,7 +39,7 @@ test_that("lookupByName stops for 0 matches", {
     {
       setServer("https://cellengine.com")
       expect_error(
-        lookupByName("experiments", byName("My experiment")),
+        lookupByName("/api/v1/experiments", byName("My experiment")),
         "Resource with the name 'My experiment' does not exist."
       )
     }
@@ -63,7 +63,7 @@ test_that("lookupByName stops for >1 match", {
     {
       setServer("https://cellengine.com")
       expect_error(
-        lookupByName("experiments", byName("My experiment")),
+        lookupByName("/api/v1/experiments", byName("My experiment")),
         "More than one resource with the name 'My experiment' exists."
       )
     }
@@ -87,7 +87,7 @@ test_that("lookupByName returns for 1 match", {
     {
       setServer("https://cellengine.com")
       expect_equal(
-        lookupByName("experiments", byName("My experiment")),
+        lookupByName("/api/v1/experiments", byName("My experiment")),
         "591a3b441d725115208a6fda"
       )
     }

@@ -56,7 +56,7 @@ downloadFcsFiles <- function(experimentId,
                              seed = NULL,
                              filenameTemplate = NULL) {
   checkDefined(experimentId)
-  experimentId <- lookupByName("experiments", experimentId)
+  experimentId <- lookupByName("/api/v1/experiments", experimentId)
 
   body <- list(
     format = jsonlite::unbox(format),
@@ -74,19 +74,8 @@ downloadFcsFiles <- function(experimentId,
   body <- body[-which(lapply(body, is.null) == TRUE)]
   body <- jsonlite::toJSON(body, null = "null", digits = NA)
 
-  fullURL <- paste(
-    paste(
-      pkg.env$baseURL,
-      "experiments",
-      experimentId,
-      "fcsfiles", "zip",
-      sep = "/"
-    ),
-    sep = "."
-  )
-
   response <- httr::POST(
-    fullURL,
+    paste0(pkg.env$baseURL, "/api/v1/experiments/", experimentId, "/fcsfiles/zip"),
     body = body,
     httr::content_type_json(),
     httr::user_agent(ua),

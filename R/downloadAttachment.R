@@ -27,12 +27,12 @@ downloadAttachment <- function(experimentId,
                                destination = NULL,
                                overwrite = FALSE) {
   checkDefined(experimentId)
-  experimentId <- lookupByName("experiments", experimentId)
+  experimentId <- lookupByName("/api/v1/experiments", experimentId)
   checkDefined(attachmentId)
-  attachmentId <- lookupByName(paste("experiments", experimentId, "attachments", sep = "/"), attachmentId, "filename")
+  attachmentId <- lookupByName(paste0("/api/v1/experiments/", experimentId, "/attachments"), attachmentId, "filename")
   ensureBaseUrl()
 
-  fullURL <- paste(pkg.env$baseURL, "experiments", experimentId, "attachments", attachmentId, sep = "/")
+  fullURL <- paste0(pkg.env$baseURL, "/api/v1/experiments/", experimentId, "/attachments/", attachmentId)
 
   if (is.null(destination)) {
     response <- httr::GET(fullURL, httr::user_agent(ua))

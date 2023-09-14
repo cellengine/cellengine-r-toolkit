@@ -11,9 +11,9 @@
 #' }
 uploadFcsFile <- function(experimentId, fcsFilePath) {
   checkDefined(experimentId)
-  experimentId <- lookupByName("experiments", experimentId)
+  experimentId <- lookupByName("/api/v1/experiments", experimentId)
   body <- list("file" = httr::upload_file(fcsFilePath))
   ensureBaseUrl()
-  fullURL <- paste(pkg.env$baseURL, "experiments", experimentId, "fcsfiles", sep = "/")
+  fullURL <- paste0(pkg.env$baseURL, "/api/v1/experiments/", experimentId, "/fcsfiles")
   handleResponse(httr::POST(fullURL, body = body, httr::user_agent(ua)))
 }

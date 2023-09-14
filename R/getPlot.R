@@ -89,9 +89,9 @@ getPlot <- function(experimentId,
                     overwrite = FALSE,
                     display = TRUE) {
   checkDefined(experimentId)
-  experimentId <- lookupByName("experiments", experimentId)
+  experimentId <- lookupByName("/api/v1/experiments", experimentId)
   checkDefined(fcsFileId)
-  fcsFileId <- lookupByName(paste("experiments", experimentId, "fcsfiles", sep = "/"), fcsFileId, "filename")
+  fcsFileId <- lookupByName(paste0("/api/v1/experiments/", experimentId, "/fcsfiles"), fcsFileId, "filename")
 
   args <- list(
     fcsFileId = fcsFileId,
@@ -104,7 +104,7 @@ getPlot <- function(experimentId,
   )
 
   args[names(params)] <- params
-  bytes <- baseGet(paste("experiments", experimentId, "plot", sep = "/"), args)
+  bytes <- baseGet(paste0("/api/v1/experiments/", experimentId, "/plot"), args)
 
   if (!is.null(destination)) {
     if (!overwrite && file.exists(destination)) {

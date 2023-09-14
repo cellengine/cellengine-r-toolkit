@@ -28,9 +28,9 @@
 #' }
 updateFcsFile <- function(experimentId, fcsFileId, properties = list()) {
   checkDefined(experimentId)
-  experimentId <- lookupByName("experiments", experimentId)
+  experimentId <- lookupByName("/api/v1/experiments", experimentId)
   checkDefined(fcsFileId)
-  fcsFileId <- lookupByName(paste("experiments", experimentId, "fcsfiles", sep = "/"), fcsFileId, "filename")
+  fcsFileId <- lookupByName(paste0("/api/v1/experiments/", experimentId, "/fcsfiles"), fcsFileId, "filename")
   body <- jsonlite::toJSON(properties, null = "null", auto_unbox = TRUE)
-  basePatch(paste("experiments", experimentId, "fcsfiles", fcsFileId, sep = "/"), body)
+  basePatch(paste0("/api/v1/experiments/", experimentId, "/fcsfiles/", fcsFileId), body)
 }

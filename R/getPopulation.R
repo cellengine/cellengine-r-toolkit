@@ -16,8 +16,8 @@
 #' }
 getPopulation <- function(experimentId, populationId, params = list()) {
   checkDefined(experimentId)
-  experimentId <- lookupByName("experiments", experimentId)
+  experimentId <- lookupByName("/api/v1/experiments", experimentId)
   checkDefined(populationId)
-  populationId <- lookupByName(paste("experiments", experimentId, "populations", sep = "/"), populationId)
-  baseGet(paste("experiments", experimentId, "populations", populationId, sep = "/"), params)
+  populationId <- lookupByName(paste0("/api/v1/experiments/", experimentId, "/populations"), populationId)
+  baseGet(paste0("/api/v1/experiments/", experimentId, "/populations/", populationId), params)
 }

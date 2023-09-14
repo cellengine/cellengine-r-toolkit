@@ -12,6 +12,6 @@
 #' }
 getAttachments <- function(experimentId, params = list()) {
   checkDefined(experimentId)
-  experimentId <- lookupByName("experiments", experimentId)
-  baseGet(paste("experiments", experimentId, "attachments", sep = "/"), params)
+  experimentId <- lookupByName("/api/v1/experiments", experimentId)
+  baseGet(paste0("/api/v1/experiments/", experimentId, "/attachments"), params)
 }

@@ -1,6 +1,6 @@
 pkg.env <- new.env() # nolint
 
-pkg.env$baseURL <- Sys.getenv("CELLENGINE_API_URL", "https://cellengine.com/api/v1")
+pkg.env$baseURL <- Sys.getenv("CELLENGINE_BASE_URL", "https://cellengine.com")
 
 pkg.env$auth <- c()
 
@@ -43,7 +43,7 @@ coerceParameters <- function(params) {
 
 baseGet <- function(url, params = list()) {
   ensureBaseUrl()
-  fullURL <- paste(pkg.env$baseURL, url, sep = "/")
+  fullURL <- paste0(pkg.env$baseURL, url)
   params <- coerceParameters(params)
   r <- httr::GET(fullURL,
                  query = params,
@@ -54,7 +54,7 @@ baseGet <- function(url, params = list()) {
 
 basePatch <- function(url, body, params = list()) {
   ensureBaseUrl()
-  fullURL <- paste(pkg.env$baseURL, url, sep = "/")
+  fullURL <- paste0(pkg.env$baseURL, url)
   params <- coerceParameters(params)
   r <- httr::PATCH(fullURL,
                    body = body,
@@ -67,7 +67,7 @@ basePatch <- function(url, body, params = list()) {
 
 basePut <- function(url, body, params = list()) {
   ensureBaseUrl()
-  fullURL <- paste(pkg.env$baseURL, url, sep = "/")
+  fullURL <- paste0(pkg.env$baseURL, url)
   params <- coerceParameters(params)
   r <- httr::PUT(fullURL,
                  body = body,
@@ -80,7 +80,7 @@ basePut <- function(url, body, params = list()) {
 
 basePost <- function(url, body, params = list()) {
   ensureBaseUrl()
-  fullURL <- paste(pkg.env$baseURL, url, sep = "/")
+  fullURL <- paste0(pkg.env$baseURL, url)
   params <- coerceParameters(params)
   r <- httr::POST(fullURL,
                   body = body,
@@ -106,7 +106,7 @@ basePost <- function(url, body, params = list()) {
 
 baseDelete <- function(url, params = list()) {
   ensureBaseUrl()
-  fullURL <- paste(pkg.env$baseURL, url, sep = "/")
+  fullURL <- paste0(pkg.env$baseURL, url)
   params <- coerceParameters(params)
   r <- httr::DELETE(fullURL,
                     query = params,
@@ -234,7 +234,7 @@ createLookup <- function(experimentId) {
     if (resource %in% allowedArgs == FALSE) {
       stop(sprintf("Resource must be one of %s", paste(allowedArgs, collapse = ", ")))
     }
-    listpath <- sprintf("experiments/%s/%s", experimentId, resource)
+    listpath <- sprintf("/api/v1/experiments/%s/%s", experimentId, resource)
 
     if (name == "") {
       data <- baseGet(listpath)

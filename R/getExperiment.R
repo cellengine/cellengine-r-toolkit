@@ -14,6 +14,6 @@
 #' }
 getExperiment <- function(experimentId) {
   checkDefined(experimentId)
-  experimentId <- lookupByName("experiments", experimentId)
-  baseGet(paste("experiments", experimentId, sep = "/"))
+  experimentId <- lookupByName("/api/v1/experiments", experimentId)
+  baseGet(paste0("/api/v1/experiments/", experimentId))
 }
