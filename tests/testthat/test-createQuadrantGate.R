@@ -30,7 +30,7 @@ test_that("Correct HTTP request is made", {
       expect_equal(resp$xChannel, "FSC-A")
       expect_equal(resp$yChannel, "FSC-W")
       expect_equal(resp$name, "my gate")
-      expect_equal(resp$model$labels, matrix(c(c(196608.00, 0.75), c(0.75, 196608.00), c(196608.00, 196608.00), c(0.75, 0.75)), byrow = T, ncol = 2)) # nolint
+      expect_equal(resp$model$labels, matrix(c(c(196608.00, 0.75), c(0.75, 196608.00), c(196608.00, 196608.00), c(0.75, 0.75)), byrow = TRUE, ncol = 2)) # nolint
       expect_equal(resp$model$quadrant$x, 118010.391752577)
       expect_equal(resp$model$quadrant$y, 182870.515463918)
       expect_equal(resp$model$locked, FALSE)
@@ -155,7 +155,7 @@ test_that("Correct HTTP request is made, parentPopulation specified", {
       expect_equal(resp$name, "my gate")
       expect_equal(
         resp$model$labels,
-        matrix(c(c(196608.00, 0.75), c(0.75, 196608.00), c(196608.00, 196608.00), c(0.75, 0.75)), byrow = T, ncol = 2)
+        matrix(c(c(196608.00, 0.75), c(0.75, 196608.00), c(196608.00, 196608.00), c(0.75, 0.75)), byrow = TRUE, ncol = 2)
       )
       expect_equal(resp$model$quadrant$x, 118010.391752577)
       expect_equal(resp$model$quadrant$y, 182870.515463918)
