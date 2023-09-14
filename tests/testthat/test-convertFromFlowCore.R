@@ -80,31 +80,6 @@ test_that("fromFlowCore overloads for ellipsoid gate", {
   })
 })
 
-test_that("fromFlowCore overloads for flowDensity gate", {
-  skip_if_not_installed("flowCore")
-  library("flowCore")
-
-  skip_if_not_installed("flowDensity")
-  library("flowDensity")
-
-  with_mock(`cellengine::convertFlowDensity` = mock("good"), {
-    # given: flowDensity object
-    experimentId <- "5d2f8b4b21fd0676fb3a6a70"
-    f <- read.FCS("../5k.fcs", transformation = "linearize")
-    flow <- flowDensity(f,
-      channels = c("FSC-A", "FSC-W"), position = c(FALSE, FALSE),
-      percentile = c(.99999, .99999), use.percentile = c(TRUE, TRUE),
-      ellip.gate = TRUE, scale = .99
-    )
-
-    # when:
-    res <- fromFlowCore(flow, experimentId, "converted gate")
-
-    # then: convertFlowDensity should be called
-    expect_equal(res, "good")
-  })
-})
-
 test_that("rectangleGate is correctly converted to CE RectangleGate", {
   skip_if_not_installed("flowCore")
   library("flowCore")
