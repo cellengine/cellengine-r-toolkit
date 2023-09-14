@@ -51,7 +51,7 @@
 <span>  <span class="va">experimentId</span>,</span>
 <span>  <span class="va">format</span>,</span>
 <span>  <span class="va">destination</span>,</span>
-<span>  overwrite <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>  overwrite <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  fcsFileIds <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  populationIds <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  compensationId <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -77,30 +77,30 @@
 
 
 <dt>destination</dt>
-<dd><p>[String] Write the files to the specified destination.</p></dd>
+<dd><p>String. Write the files to the specified destination.</p></dd>
 
 
 <dt>overwrite</dt>
-<dd><p>[Logical] Allows a destination file to be overwritten.</p></dd>
+<dd><p>Logical. Allows a destination file to be overwritten.</p></dd>
 
 
 <dt>fcsFileIds</dt>
-<dd><p>[Array&lt;String&gt;] Optional. Defaults to returning all
+<dd><p>List of string. Optional. Defaults to returning all
 non-control files in the experiment.</p></dd>
 
 
 <dt>populationIds</dt>
-<dd><p>[Array&lt;String&gt;] Optional. If provided, only events from
+<dd><p>List of string. Optional. If provided, only events from
 these populations will be included in the output files. Defaults to ungated.</p></dd>
 
 
 <dt>compensationId</dt>
-<dd><p>[String] Required if populationIds is specified.
+<dd><p>String. Required if populationIds is specified.
 Compensation to use for gating.</p></dd>
 
 
 <dt>compensatedQ</dt>
-<dd><p>[Logical] Optional. If true, applies the compensation
+<dd><p>Logical. Optional. If true, applies the compensation
 specified in compensationId to the exported events. For TSV format, the
 numerical values will be the compensated values. For FCS format, the
 numerical values will be unchanged, but the file header will contain the
@@ -108,33 +108,33 @@ compensation as the spill string (file-internal compensation).</p></dd>
 
 
 <dt>preSubsampleN</dt>
-<dd><p>[Integer] Randomly subsample the file to contain this
+<dd><p>Integer. Randomly subsample the file to contain this
 many events before gating.</p></dd>
 
 
 <dt>preSubsampleP</dt>
-<dd><p>[Numeric] Randomly subsample the file to contain this
+<dd><p>Numeric. Randomly subsample the file to contain this
 percent of events (0 to 1) before gating.</p></dd>
 
 
 <dt>postSubsampleN</dt>
-<dd><p>[Integer] Randomly subsample the file to contain this
+<dd><p>Integer. Randomly subsample the file to contain this
 many events after gating.</p></dd>
 
 
 <dt>postSubsampleP</dt>
-<dd><p>[Numeric] Randomly subsample the file to contain this
+<dd><p>Numeric. Randomly subsample the file to contain this
 percent of events (0 to 1) after gating.</p></dd>
 
 
 <dt>seed</dt>
-<dd><p>[Numeric] Seed for random number generator used for
+<dd><p>Numeric. Seed for random number generator used for
 subsampling. Use for deterministic (reproducible) subsampling. If omitted, a
 pseudo-random value is used.</p></dd>
 
 
 <dt>filenameTemplate</dt>
-<dd><p>[String]    Tokenized template to dynamically name
+<dd><p>String. Tokenized template to dynamically name
 each file in the resulting archive, like
 <code>"{fcsfile.filename}-{population._id}"</code>.</p></dd>
 

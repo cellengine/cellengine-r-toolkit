@@ -56,7 +56,6 @@
 <span>  <span class="va">compensationId</span>,</span>
 <span>  populationIds <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  populations <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  scaleSetId <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  q <span class="op">=</span> <span class="fl">0.5</span>,</span>
 <span>  percentOf <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  includeAnnotations <span class="op">=</span> <span class="cn">TRUE</span></span>
@@ -106,30 +105,26 @@ name, an error will be thrown. If specified, do not specify
 <code>populationIds</code>.</p></dd>
 
 
-<dt>scaleSetId</dt>
-<dd><p>Optional ID of scale set. If omitted and if a single
-scale set exists in the experiment, that scale set will be used.</p></dd>
-
-
 <dt>q</dt>
 <dd><p>Quantile to calculate for "quantile" statistic, in the range 0 to 1.</p></dd>
 
 
 <dt>percentOf</dt>
 <dd><p>Single population ID or name, or list of population IDs or
-  names the same length as <code>populationIds</code> parameter.</p>
-<p></p><ul><li><p>If omitted or the string "PARENT", then the percent of parent will
-      be calculated for each population.</p></li>
-<li><p>If a single ID or name is provided, then the percent of that
-       population will be calculated for each population specified in
-       <code>populations</code> or <code>populationIds</code> (useful for calculating
-       e.g. percent of singlets or leukocytes).</p></li>
-<li><p>If an array of IDs or names is provided, then the percent of each
-       of those populations will be calculated.</p></li>
+names the same length as <code>populationIds</code> parameter.</p>
+<ul><li><p>If omitted or the string "PARENT", then the percent of parent will
+be calculated for each population.</p><div class="sourceCode"><pre><code>\item If a single ID or name is provided, then the percent of that
+   population will be calculated for each population specified in
+   \code{populations} or \code{populationIds} (useful for calculating
+   e.g. percent of singlets or leukocytes).
+
+\item If an array of IDs or names is provided, then the percent of each
+   of those populations will be calculated.
+</code></pre></div></li>
 </ul><p>In the latter two cases, if a name or list of names instead of IDs are
-  provided, an attempt will be made to find those populations by name. IDs
-  are detected as matching a 24-character string comprised of the characters
-  <code>A-Fa-f0-9</code>.</p></dd>
+provided, an attempt will be made to find those populations by name. IDs
+are detected as matching a 24-character string comprised of the characters
+<code>A-Fa-f0-9</code>.</p></dd>
 
 
 <dt>includeAnnotations</dt>
@@ -142,7 +137,7 @@ frame.</p></dd>
     
 
 <p>Statistics as a data frame, including file annotations and
-  information about the statistics such as the channel name and population.</p>
+information about the statistics such as the channel name and population.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -173,16 +168,14 @@ all non-control FCS files.</p>
 <span class="r-in"><span><span class="co"># Returns a data.frame of statistics, including the file annotations.</span></span></span>
 <span class="r-in"><span><span class="co"># Because percentOf is not specified, "percent" will be percent of parent.</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Explicit syntax, using IDs instead of population and file names, and</span></span></span>
-<span class="r-in"><span><span class="co"># specifying a scaleSetId:</span></span></span>
+<span class="r-in"><span><span class="co"># Explicit syntax, using IDs instead of population and file names:</span></span></span>
 <span class="r-in"><span><span class="va">fcsFileIds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"9ab5c6d7a8cf24a5c4f9a6c2"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">statistics</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"percent"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">populationIds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"9ab5c6d7a8cf24a5c4f9face"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">scaleSetId</span> <span class="op">&lt;-</span> <span class="st">"9ab5c6d7a8cf24a5c4f9fdde"</span></span></span>
 <span class="r-in"><span><span class="va">stats</span> <span class="op">&lt;-</span> <span class="fu">getStatistics</span><span class="op">(</span><span class="va">experimentId</span>,</span></span>
 <span class="r-in"><span>  fcsFileIds <span class="op">=</span> <span class="va">fcsFileIds</span>,</span></span>
 <span class="r-in"><span>  statistics <span class="op">=</span> <span class="va">statistics</span>, populationIds <span class="op">=</span> <span class="va">populationIds</span>,</span></span>
-<span class="r-in"><span>  compensationId <span class="op">=</span> <span class="fu">cellengine</span><span class="fu">::</span><span class="va"><a href="UNCOMPENSATED.html">UNCOMPENSATED</a></span>, scaleSetId <span class="op">=</span> <span class="va">scaleSetId</span></span></span>
+<span class="r-in"><span>  compensationId <span class="op">=</span> <span class="fu">cellengine</span><span class="fu">::</span><span class="va"><a href="UNCOMPENSATED.html">UNCOMPENSATED</a></span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Percent of ungated:</span></span></span>

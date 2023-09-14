@@ -57,7 +57,10 @@
 <code><a href="reference/applyScaleSet.html">applyScaleSet()</a></code> function</li>
 <li>The <code><a href="reference/authenticate.html">authenticate()</a></code> function will now prompt for your username, password and OTP (if configured) when running in RStudio or when the <code>getPass</code> library is installed.</li>
 <li>The <code>authenticate</code> function now supports two-factor authentication.</li>
-<li>Support <code><a href="reference/byName.html">byName()</a></code> for the <code>gateId</code> argument in <code><a href="reference/updateGate.html">updateGate()</a></code>.</li>
+<li>The <code>authenticate</code> function now supports credentials stored in environment variables .</li>
+<li>The <code>authenticate</code> function now supports <a href="https://docs.cellengine.com/api/#authentication" class="external-link">Personal Access Tokens</a>.</li>
+<li>Support <code><a href="reference/byName.html">byName()</a></code> for the <code>gateId</code> argument in <code><a href="reference/updateGate.html">updateGate()</a></code>
+</li>
 <li>Introduce <code>lintr</code> as a linter with an Actions workflow</li>
 <li>Add <code>fromFlowCore</code> to convert flowCore objects to CellEngine</li>
 <li>Add <code>toFlowCore</code> to convert CellEngine objects to flowCore</li>
@@ -78,6 +81,7 @@
 <li>Run <code>styler</code> on all files with default params</li>
 <li>Deprecate <code>createPolygonGate</code> args <code>xVertices=c()</code> and <code>yVertices=c()</code> in favor of <code>vertices=list(c(), c(), c())</code>
 </li>
+<li>Remove defunct <code>scaleSetId</code> parameter from <code><a href="reference/getStatistics.html">getStatistics()</a></code>.</li>
 </ul></div>
 <div class="section level3"><h3 id="removed">Removed<a class="anchor" aria-label="anchor" href="#removed"></a></h3></div>
 </div>
