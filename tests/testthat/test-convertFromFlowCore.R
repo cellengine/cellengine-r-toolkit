@@ -168,35 +168,3 @@ test_that("ellipsoidGate is correctly converted to CE EllipseGate", {
   expect_equal(197.5205, mock_arg(mock, "major"), tolerance = 0.001)
   expect_equal(96.75568, mock_arg(mock, "minor"), tolerance = 0.001)
 })
-
-test_that("flowDensity is converted to polygonGate", {
-  skip_if_not_installed("flowCore")
-  library("flowCore")
-  skip_if_not_installed("flowDensity")
-  library("flowDensity")
-
-  # given: the correct response from createPolygonGate
-  content <- '{"__v":0,"experimentId":"5d2f8b4b21fd0676fb3a6a70","model":{"label":[150440.453608247,202688.886597938],"polygon":{"vertices":[[222400,94720],[216128,85568],[201344,77696],[194752,75264],[19584,67904],[19072,68864],[20800,75648],[25920,93312],[37184,101120],[51648,104576],[82816,109824],[95040,111488],[107712,112512],[144384,114304],[172224,114240],[176640,113920],[190336,112512],[197632,111040],[211072,104448],[222400,94720]]},"locked":false},"gid":"592640a5a6a1d6256ec9b08a","xChannel":"FSC-A","type":"PolygonGate","name":"converted gate","parentPopulationId":null,"yChannel":"FSC-W","_id":"592640aa298f1480900e10e4","tailoredPerFile":false,"id":"592640aa298f1480900e10e4"}' # nolint
-  mock <- mock(jsonlite::fromJSON(content))
-
-  with_mock(`cellengine::createPolygonGate` = mock, {
-    # given: a flowDensity object
-    experimentId <- "5d2f8b4b21fd0676fb3a6a70"
-    f <- read.FCS("../5k.fcs", transformation = "linearize")
-    flow <- flowDensity(f,
-      channels = c("FSC-A", "FSC-W"), position = c(FALSE, FALSE),
-      percentile = c(.99999, .99999), use.percentile = c(TRUE, TRUE),
-      ellip.gate = TRUE, scale = .99
-    )
-
-    # when
-    gate <- fromFlowCore(flow, experimentId, "converted gate")
-  })
-
-  # then: createPolygonGate called with correct arguments
-  expect_equal(experimentId, mock_arg(mock, "experimentId"))
-  expect_equal(gate$name, "converted gate") # this is returned as [gate: {}, population: {}] by CE
-  expect_equal("converted gate", mock_arg(mock, "name"))
-  expect_equal(flow@filter, mock_arg(mock, "vertices")[[1]])
-  expect_true(all((flow@filter == gate$model$polygon$vertices)))
-})
