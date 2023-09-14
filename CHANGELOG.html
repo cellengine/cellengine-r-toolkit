@@ -44,9 +44,37 @@
 <p>All notable changes to this project will be documented in this file.</p>
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/" class="external-link">Keep a Changelog</a>, and this project adheres to <a href="https://semver.org/spec/v2.0.0.html" class="external-link">Semantic Versioning</a>.</p>
 <div class="section level2">
-<h2 id="unreleased">[Unreleased]<a class="anchor" aria-label="anchor" href="#unreleased"></a></h2>
+<h2 id="v1-dev-unreleased">[v1-dev Unreleased]<a class="anchor" aria-label="anchor" href="#v1-dev-unreleased"></a></h2>
 <div class="section level3">
 <h3 id="added">Added<a class="anchor" aria-label="anchor" href="#added"></a></h3>
+<ul><li>
+<code><a href="reference/createCompensation.html">createCompensation()</a></code> function</li>
+<li>
+<code><a href="reference/getCompensation.html">getCompensation()</a></code> function</li>
+<li>
+<code><a href="reference/updateCompensation.html">updateCompensation()</a></code> function</li>
+<li>
+<code><a href="reference/deleteCompensation.html">deleteCompensation()</a></code> function</li>
+</ul></div>
+<div class="section level3">
+<h3 id="changed">Changed<a class="anchor" aria-label="anchor" href="#changed"></a></h3>
+<ul><li>
+<strong>Breaking</strong> <code><a href="reference/getEvents.html">getEvents()</a></code> now uses <code>check.names=FALSE</code>, so data.frame column names will be identical to the parameter names found in the FCS file. For example, “CD4 (Ax647-A)” will no longer be converted to “CD4..Ax647.A.”.</li>
+<li>
+<strong>Breaking</strong> <code><a href="reference/getEvents.html">getEvents()</a></code> now defaults to <code>headerQ=TRUE</code>, so data.frames will have column names by default now.</li>
+<li>
+<strong>Breaking</strong> In <code><a href="reference/getEvents.html">getEvents()</a></code>, the argument <code>clamp_q</code> was renamed to <code>clampQ</code>.</li>
+<li>Change the default for <code>createPopulation</code> arg in gate creation functions to <code>is.null(fcsFileId)</code>
+</li>
+<li>
+<strong>Breaking</strong> <code>getCompensations</code> now returns a list of lists, with the <code>spillMatrix</code> formatted as a matrix.</li>
+</ul></div>
+<div class="section level3"><h3 id="removed">Removed<a class="anchor" aria-label="anchor" href="#removed"></a></h3></div>
+</div>
+<div class="section level2">
+<h2 id="unreleased">[Unreleased]<a class="anchor" aria-label="anchor" href="#unreleased"></a></h2>
+<div class="section level3">
+<h3 id="added-1">Added<a class="anchor" aria-label="anchor" href="#added-1"></a></h3>
 <ul><li>
 <code><a href="reference/downloadFcsFiles.html">downloadFcsFiles()</a></code> function</li>
 <li>
@@ -70,14 +98,8 @@
 <li>Support <code>addEventNumber</code> as a parameter in <code><a href="reference/getEvents.html">getEvents()</a></code>.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="changed">Changed<a class="anchor" aria-label="anchor" href="#changed"></a></h3>
-<ul><li>
-<strong>Breaking</strong> <code><a href="reference/getEvents.html">getEvents()</a></code> now uses <code>check.names=FALSE</code>, so data.frame column names will be identical to the parameter names found in the FCS file. For example, “CD4 (Ax647-A)” will no longer be converted to “CD4..Ax647.A.”.</li>
-<li>
-<strong>Breaking</strong> <code><a href="reference/getEvents.html">getEvents()</a></code> now defaults to <code>headerQ=TRUE</code>, so data.frames will have column names by default now.</li>
-<li>
-<strong>Breaking</strong> In <code><a href="reference/getEvents.html">getEvents()</a></code>, the argument <code>clamp_q</code> was renamed to <code>clampQ</code>.</li>
-<li>Fix for <a href="https://github.com/primitybio/cellengine-r-toolkit/issues/48" class="external-link">confusing bulk entity retrieval</a>
+<h3 id="changed-1">Changed<a class="anchor" aria-label="anchor" href="#changed-1"></a></h3>
+<ul><li>Fix for <a href="https://github.com/primitybio/cellengine-r-toolkit/issues/48" class="external-link">confusing bulk entity retrieval</a>
 </li>
 <li>For performance, <code><a href="reference/applyScale.html">applyScale()</a></code> now only accepts atomic vectors. Lists can no longer be used.</li>
 <li>Fix mangling of experiment properties in <code><a href="reference/updateExperiment.html">updateExperiment()</a></code>.</li>
@@ -87,9 +109,8 @@
 <li>Run <code>styler</code> on all files with default params</li>
 <li>Deprecate <code>createPolygonGate</code> args <code>xVertices=c()</code> and <code>yVertices=c()</code> in favor of <code>vertices=list(c(), c(), c())</code>
 </li>
-<li>Remove defunct <code>scaleSetId</code> parameter from <code><a href="reference/getStatistics.html">getStatistics()</a></code>.</li>
 </ul></div>
-<div class="section level3"><h3 id="removed">Removed<a class="anchor" aria-label="anchor" href="#removed"></a></h3></div>
+<div class="section level3"><h3 id="removed-1">Removed<a class="anchor" aria-label="anchor" href="#removed-1"></a></h3></div>
 </div>
 </div>
 

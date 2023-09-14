@@ -58,6 +58,9 @@
     <loc>/reference/byName.html</loc>
   </url>
   <url>
+    <loc>/reference/createCompensation.html</loc>
+  </url>
+  <url>
     <loc>/reference/createEllipseGate.html</loc>
   </url>
   <url>
@@ -88,6 +91,9 @@
     <loc>/reference/createSplitGate.html</loc>
   </url>
   <url>
+    <loc>/reference/deleteCompensation.html</loc>
+  </url>
+  <url>
     <loc>/reference/deleteExperiment.html</loc>
   </url>
   <url>
@@ -113,6 +119,9 @@
   </url>
   <url>
     <loc>/reference/getAttachments.html</loc>
+  </url>
+  <url>
+    <loc>/reference/getCompensation.html</loc>
   </url>
   <url>
     <loc>/reference/getCompensations.html</loc>
@@ -167,6 +176,9 @@
   </url>
   <url>
     <loc>/reference/toFlowCore.html</loc>
+  </url>
+  <url>
+    <loc>/reference/updateCompensation.html</loc>
   </url>
   <url>
     <loc>/reference/updateExperiment.html</loc>
