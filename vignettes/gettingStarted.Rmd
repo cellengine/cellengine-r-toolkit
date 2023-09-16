@@ -6,7 +6,7 @@ output: rmarkdown::html_vignette
 ## Installing
 ```R
 library("devtools")
-install_github("primitybio/cellengine-r-toolkit")
+install_github("cellengine/cellengine-r-toolkit")
 ```
 
 ## First steps
@@ -48,7 +48,7 @@ authenticate() # retrieves from environment variables automatically
 The CellEngine R Toolkit provides functions for:
 * Retrieving, creating and modifying experiments, gates, populations, compensations, FCS files and attachments.
 * Getting statistics, plots and FCS file content (data matrix).
-* Converting to and from flowCore objects (partial support, see issue [#57](https://github.com/primitybio/cellengine-r-toolkit/issues/57)).
+* Converting to and from flowCore objects (partial support, see issue [#57](https://github.com/cellengine/cellengine-r-toolkit/issues/57)).
 
 #### Get experiments
 

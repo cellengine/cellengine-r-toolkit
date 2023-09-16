@@ -192,7 +192,7 @@ you should see the file-specific gates being used.
 ### Converting to and from flowCore gates
 
 CellEngine has support for converting ellipse, polygon and rectangle gates to
-and from flowCore gates. [More gate types will be supported eventually.](https://github.com/primitybio/cellengine-r-toolkit/issues/57)
+and from flowCore gates. [More gate types will be supported eventually.](https://github.com/cellengine/cellengine-r-toolkit/issues/57)
 
 Given a flowCore gate:
 
