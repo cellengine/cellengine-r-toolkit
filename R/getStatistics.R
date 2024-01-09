@@ -220,7 +220,7 @@ getStatistics <- function(experimentId,
       row$reagent = NA
     return(row)
   })
-  as.data.frame(prepared)
+  jsonlite:::simplifyDataFrame(prepared, flatten = FALSE, simplifyMatrix = TRUE)
 }
 
 lookupFilesByName <- function(experimentId, fcsFileIds, fcsFiles) {
