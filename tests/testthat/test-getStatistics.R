@@ -394,7 +394,7 @@ test_that("works, percentOf specified as single value", {
         "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/bulkstatistics" = {
           expect_equal(req$method, "POST")
           body <- rawToChar(req$options$postfields)
-          expect_equal(body, '{\"fcsFileIds\":[\"591a3b441d725115208a6fdb\"],\"statistics\":[\"percent\"],\"populationIds\":[\"591a3b441d725115208a6fdc\"],\"compensationId\":0,\"q\":0.5,\"format\":\"json\",\"annotations\":true,\"percentOf\":\"591a3b441d725115208a6fde\"}') # nolint
+          expect_equal(body, '{\"fcsFileIds\":[\"591a3b441d725115208a6fdb\"],\"statistics\":[\"percent\"],\"populationIds\":[\"591a3b441d725115208a6fdc\"],\"compensationId\":0,\"q\":0.5,\"format\":\"json\",\"annotations\":true,\"layout\":\"medium\",\"percentOf\":\"591a3b441d725115208a6fde\"}') # nolint
           response <- httptest::fake_response(
             req$url,
             req$method,
@@ -436,7 +436,7 @@ test_that("works, percentOf not specified", {
         "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/bulkstatistics" = {
           expect_equal(req$method, "POST")
           body <- rawToChar(req$options$postfields)
-          expect_equal(body, '{\"fcsFileIds\":[\"591a3b441d725115208a6fdb\"],\"statistics\":[\"percent\"],\"populationIds\":[\"591a3b441d725115208a6fdc\"],\"compensationId\":0,\"q\":0.5,\"format\":\"json\",\"annotations\":true}') # nolint
+          expect_equal(body, '{\"fcsFileIds\":[\"591a3b441d725115208a6fdb\"],\"statistics\":[\"percent\"],\"populationIds\":[\"591a3b441d725115208a6fdc\"],\"compensationId\":0,\"q\":0.5,\"format\":\"json\",\"annotations\":true,\"layout\":\"medium\"}') # nolint
           response <- httptest::fake_response(
             req$url,
             req$method,
@@ -469,7 +469,7 @@ test_that("works, percentOf specified as an array", {
         "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/bulkstatistics" = {
           expect_equal(req$method, "POST")
           body <- rawToChar(req$options$postfields)
-          expect_equal(body, '{\"fcsFileIds\":[\"591a3b441d725115208a6fdb\"],\"statistics\":[\"percent\"],\"populationIds\":[\"591a3b441d725115208a6fdc\",\"591a3b441d725115208a6fd1\"],\"compensationId\":0,\"q\":0.5,\"format\":\"json\",\"annotations\":true,\"percentOf\":[\"591a3b441d725115208a6fde\",\"591a3b441d725115208a6fd2\"]}') # nolint
+          expect_equal(body, '{\"fcsFileIds\":[\"591a3b441d725115208a6fdb\"],\"statistics\":[\"percent\"],\"populationIds\":[\"591a3b441d725115208a6fdc\",\"591a3b441d725115208a6fd1\"],\"compensationId\":0,\"q\":0.5,\"format\":\"json\",\"annotations\":true,\"layout\":\"medium\",\"percentOf\":[\"591a3b441d725115208a6fde\",\"591a3b441d725115208a6fd2\"]}') # nolint
           response <- httptest::fake_response(
             req$url,
             req$method,
@@ -516,7 +516,7 @@ test_that("works, percentOf specified as a single name", {
         "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/bulkstatistics" = {
           expect_equal(req$method, "POST")
           body <- rawToChar(req$options$postfields)
-          expect_equal(body, '{\"fcsFileIds\":[\"591a3b441d725115208a6fdb\"],\"statistics\":[\"percent\"],\"populationIds\":[\"591a3b441d725115208a6fdc\",\"591a3b441d725115208a6fd1\"],\"compensationId\":0,\"q\":0.5,\"format\":\"json\",\"annotations\":true,\"percentOf\":"591a3b5f1d725115208a7088"}') # nolint
+          expect_equal(body, '{\"fcsFileIds\":[\"591a3b441d725115208a6fdb\"],\"statistics\":[\"percent\"],\"populationIds\":[\"591a3b441d725115208a6fdc\",\"591a3b441d725115208a6fd1\"],\"compensationId\":0,\"q\":0.5,\"format\":\"json\",\"annotations\":true,\"layout\":\"medium\",\"percentOf\":"591a3b5f1d725115208a7088"}') # nolint
           response <- httptest::fake_response(
             req$url,
             req$method,
@@ -564,7 +564,7 @@ test_that("works, percentOf specified as an array of names", {
         "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/bulkstatistics" = {
           expect_equal(req$method, "POST")
           body <- rawToChar(req$options$postfields)
-          expect_equal(body, '{\"fcsFileIds\":[\"591a3b441d725115208a6fdb\"],\"statistics\":[\"percent\"],\"populationIds\":[\"591a3b441d725115208a6fdc\",\"591a3b441d725115208a6fd1\"],\"compensationId\":0,\"q\":0.5,\"format\":\"json\",\"annotations\":true,\"percentOf\":["591a3b5f1d725115208a7088","591a3b5f1d725115208a7090"]}') # nolint
+          expect_equal(body, '{\"fcsFileIds\":[\"591a3b441d725115208a6fdb\"],\"statistics\":[\"percent\"],\"populationIds\":[\"591a3b441d725115208a6fdc\",\"591a3b441d725115208a6fd1\"],\"compensationId\":0,\"q\":0.5,\"format\":\"json\",\"annotations\":true,\"layout\":\"medium\",\"percentOf\":["591a3b5f1d725115208a7088","591a3b5f1d725115208a7090"]}') # nolint
           response <- httptest::fake_response(
             req$url,
             req$method,
@@ -611,7 +611,7 @@ test_that("works, percentOf specified as a mixed array of names, IDs and UNGATED
         "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/bulkstatistics" = {
           expect_equal(req$method, "POST")
           body <- rawToChar(req$options$postfields)
-          expect_equal(body, '{\"fcsFileIds\":[\"591a3b441d725115208a6fdb\"],\"statistics\":[\"percent\"],\"populationIds\":["591a3b441d725115208a6fdc","591a3b441d725115208a6fd1","591a3b441d725115208a6fe1"],\"compensationId\":0,\"q\":0.5,\"format\":\"json\",\"annotations\":true,\"percentOf\":["591a3b5f1d725115208a7088","591a3b5f1d725115208a7090",null]}') # nolint
+          expect_equal(body, '{\"fcsFileIds\":[\"591a3b441d725115208a6fdb\"],\"statistics\":[\"percent\"],\"populationIds\":["591a3b441d725115208a6fdc","591a3b441d725115208a6fd1","591a3b441d725115208a6fe1"],\"compensationId\":0,\"q\":0.5,\"format\":\"json\",\"annotations\":true,\"layout\":\"medium\",\"percentOf\":["591a3b5f1d725115208a7088","591a3b5f1d725115208a7090",null]}') # nolint
           response <- httptest::fake_response(
             req$url,
             req$method,
@@ -645,7 +645,7 @@ test_that("works, percentOf specified as UNGATED", {
         "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/bulkstatistics" = {
           expect_equal(req$method, "POST")
           body <- rawToChar(req$options$postfields)
-          expect_equal(body, '{\"fcsFileIds\":[\"591a3b441d725115208a6fdb\"],\"statistics\":[\"percent\"],\"populationIds\":[\"591a3b441d725115208a6fdc\",\"591a3b441d725115208a6fd1\"],\"compensationId\":0,\"q\":0.5,\"format\":\"json\",\"annotations\":true,\"percentOf\":null}') # nolint
+          expect_equal(body, '{\"fcsFileIds\":[\"591a3b441d725115208a6fdb\"],\"statistics\":[\"percent\"],\"populationIds\":[\"591a3b441d725115208a6fdc\",\"591a3b441d725115208a6fd1\"],\"compensationId\":0,\"q\":0.5,\"format\":\"json\",\"annotations\":true,\"layout\":\"medium\",\"percentOf\":null}') # nolint
           response <- httptest::fake_response(
             req$url,
             req$method,
@@ -679,7 +679,7 @@ test_that("works, gets statistics for all FCS files", {
         "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/bulkstatistics" = {
           expect_equal(req$method, "POST")
           body <- rawToChar(req$options$postfields)
-          expect_equal(body, '{\"fcsFileIds\":[],\"statistics\":[\"percent\"],\"populationIds\":null,\"compensationId\":0,\"q\":0.5,\"format\":\"json\",\"annotations\":true,\"percentOf\":null}') # nolint
+          expect_equal(body, '{\"fcsFileIds\":[],\"statistics\":[\"percent\"],\"populationIds\":null,\"compensationId\":0,\"q\":0.5,\"format\":\"json\",\"annotations\":true,\"layout\":\"medium\",\"percentOf\":null}') # nolint
           response <- httptest::fake_response(
             req$url,
             req$method,

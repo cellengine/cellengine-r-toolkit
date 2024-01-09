@@ -35,16 +35,14 @@
 #'   names.
 #'
 #'   \itemize{
-#'     \item If omitted or the string "PARENT", then the percent of parent will
-#'       be calculated for each population.
-#'
+#'     \item If omitted or the string \code{"PARENT"}, then the percent of
+#'        parent will be calculated for each population.
 #'     \item If a single ID or name is provided, then the percent of that
-#'        population will be calculated for each population specified in
-#'        \code{populations} or \code{populationIds} (useful for calculating
-#'        e.g. percent of singlets or leukocytes).
-#'
+#'       population will be calculated for each population specified in
+#'       \code{populations} or \code{populationIds} (useful for calculating
+#'       e.g. percent of singlets or leukocytes).
 #'     \item If an array of IDs or names is provided, then the percent of each
-#'        of those populations will be calculated.
+#'       of those populations will be calculated.
 #'   }
 #'
 #'   In the latter two cases, if a name or list of names instead of IDs are
@@ -53,6 +51,19 @@
 #'   \code{A-Fa-f0-9}.
 #' @param includeAnnotations Includes FCS file annotations in the returned data
 #'   frame.
+#' @param layout One of the following:
+#'
+#'   \itemize{
+#'     \item \code{"tall-skinny"}: One row/object per combination of FCS file,
+#'       population, statistic and channel.
+#'     \item \code{"medium"}: (default) One row/object per combination of FCS
+#'        file, population and channel. Separate column/property for each
+#'        statistic.
+#'     \item \code{"short-wide"}: One row/object per FCS file. One
+#'       column/property per combination of population, statistic and channel.
+#'       This format is not readily machine-readable and does not include
+#"       population IDs or the \code{uniquePopulationName}.
+#'   }
 #'
 #' @return Statistics as a data frame, including file annotations and
 #'   information about the statistics such as the channel name and population.
@@ -99,9 +110,21 @@ getStatistics <- function(experimentId,
                           populationIds = NULL, populations = NULL,
                           q = 0.5,
                           percentOf = NULL,
-                          includeAnnotations = TRUE) {
+                          includeAnnotations = TRUE,
+                          layout = "medium") {
   stopIfParamIsNull(experimentId)
   experimentId <- lookupByName("/api/v1/experiments", experimentId)
+
+  if (!is.character(layout)) {
+    stop("'layout' must be a string.")
+  }
+  layout <- tolower(layout)
+  if (!layout %in% c("tall-skinny", "medium", "short-wide")) {
+    stop(sprintf(
+      "'layout' must be one of 'tall-skinny', 'medium' or 'short-wide'. Got '%s'.",
+      layout
+    ))
+  }
 
   fcsFileIds <- lookupFilesByName(experimentId, fcsFileIds, fcsFiles)
   # All files if unspecified ([] in the API req)
@@ -163,7 +186,8 @@ getStatistics <- function(experimentId,
     compensationId = jsonlite::unbox(compensationId),
     q = jsonlite::unbox(q),
     format = jsonlite::unbox("json"),
-    annotations = jsonlite::unbox(includeAnnotations)
+    annotations = jsonlite::unbox(includeAnnotations),
+    layout = jsonlite::unbox(layout)
   )
 
   if (!is.null(percentOf)) {

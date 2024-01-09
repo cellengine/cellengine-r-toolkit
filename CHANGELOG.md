@@ -19,6 +19,7 @@ breaking changes compared to the pre-release version.
 - Support for transfers to S3 to `getEvents()`
 - `PER_FILE` compensation constant
 - Support for `geometricMean` as a statistics value in `getStatistics()`.
+- Support for `layout` argument in `getStatistics()`.
 
 ### Changed
 - **Breaking** Failed API requests will now stop instead of warn.

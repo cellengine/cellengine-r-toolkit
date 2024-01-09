@@ -15,7 +15,8 @@ getStatistics(
   populations = NULL,
   q = 0.5,
   percentOf = NULL,
-  includeAnnotations = TRUE
+  includeAnnotations = TRUE,
+  layout = "medium"
 )
 }
 \arguments{
@@ -50,16 +51,14 @@ name, an error will be thrown. If specified, do not specify
 names.
 
 \itemize{
-\item If omitted or the string "PARENT", then the percent of parent will
-be calculated for each population.\preformatted{\\item If a single ID or name is provided, then the percent of that
-   population will be calculated for each population specified in
-   \code{populations} or \code{populationIds} (useful for calculating
-   e.g. percent of singlets or leukocytes).
-
-\\item If an array of IDs or names is provided, then the percent of each
-   of those populations will be calculated.
-}
-
+\item If omitted or the string \code{"PARENT"}, then the percent of
+parent will be calculated for each population.
+\item If a single ID or name is provided, then the percent of that
+population will be calculated for each population specified in
+\code{populations} or \code{populationIds} (useful for calculating
+e.g. percent of singlets or leukocytes).
+\item If an array of IDs or names is provided, then the percent of each
+of those populations will be calculated.
 }
 
 In the latter two cases, if a name or list of names instead of IDs are
@@ -69,6 +68,19 @@ are detected as matching a 24-character string comprised of the characters
 
 \item{includeAnnotations}{Includes FCS file annotations in the returned data
 frame.}
+
+\item{layout}{One of the following:
+
+\itemize{
+\item \code{"tall-skinny"}: One row/object per combination of FCS file,
+population, statistic and channel.
+\item \code{"medium"}: (default) One row/object per combination of FCS
+file, population and channel. Separate column/property for each
+statistic.
+\item \code{"short-wide"}: One row/object per FCS file. One
+column/property per combination of population, statistic and channel.
+This format is not readily machine-readable and does not include
+}}
 }
 \value{
 Statistics as a data frame, including file annotations and
