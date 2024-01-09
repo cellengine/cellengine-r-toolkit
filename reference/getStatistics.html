@@ -58,7 +58,8 @@
 <span>  populations <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  q <span class="op">=</span> <span class="fl">0.5</span>,</span>
 <span>  percentOf <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  includeAnnotations <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  includeAnnotations <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  layout <span class="op">=</span> <span class="st">"medium"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -112,15 +113,14 @@ name, an error will be thrown. If specified, do not specify
 <dt>percentOf</dt>
 <dd><p>Single population ID or name, or list of population IDs or
 names.</p>
-<ul><li><p>If omitted or the string "PARENT", then the percent of parent will
-be calculated for each population.</p><div class="sourceCode"><pre><code>\item If a single ID or name is provided, then the percent of that
-   population will be calculated for each population specified in
-   \code{populations} or \code{populationIds} (useful for calculating
-   e.g. percent of singlets or leukocytes).
-
-\item If an array of IDs or names is provided, then the percent of each
-   of those populations will be calculated.
-</code></pre></div></li>
+<ul><li><p>If omitted or the string <code>"PARENT"</code>, then the percent of
+parent will be calculated for each population.</p></li>
+<li><p>If a single ID or name is provided, then the percent of that
+population will be calculated for each population specified in
+<code>populations</code> or <code>populationIds</code> (useful for calculating
+e.g. percent of singlets or leukocytes).</p></li>
+<li><p>If an array of IDs or names is provided, then the percent of each
+of those populations will be calculated.</p></li>
 </ul><p>In the latter two cases, if a name or list of names instead of IDs are
 provided, an attempt will be made to find those populations by name. IDs
 are detected as matching a 24-character string comprised of the characters
@@ -130,6 +130,19 @@ are detected as matching a 24-character string comprised of the characters
 <dt>includeAnnotations</dt>
 <dd><p>Includes FCS file annotations in the returned data
 frame.</p></dd>
+
+
+<dt>layout</dt>
+<dd><p>One of the following:</p>
+<ul><li><p><code>"tall-skinny"</code>: One row/object per combination of FCS file,
+population, statistic and channel.</p></li>
+<li><p><code>"medium"</code>: (default) One row/object per combination of FCS
+file, population and channel. Separate column/property for each
+statistic.</p></li>
+<li><p><code>"short-wide"</code>: One row/object per FCS file. One
+column/property per combination of population, statistic and channel.
+This format is not readily machine-readable and does not include</p></li>
+</ul></dd>
 
 </dl></div>
     <div id="value">
