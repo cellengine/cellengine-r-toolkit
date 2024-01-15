@@ -41,8 +41,8 @@
 #'       population will be calculated for each population specified in
 #'       \code{populations} or \code{populationIds} (useful for calculating
 #'       e.g. percent of singlets or leukocytes).
-#'     \item If an array of IDs or names is provided, then the percent of each
-#'       of those populations will be calculated.
+#'     \item If an array of IDs, \code{"PARENT"} or names is provided, then the
+#'       percent of each of those populations will be calculated.
 #'   }
 #'
 #'   In the latter two cases, if a name or list of names instead of IDs are
@@ -134,7 +134,7 @@ getStatistics <- function(experimentId,
   populationIds <- lookupPopulationsByName(experimentId, populationIds, populations)
 
   # percentOf argument
-  percentofNonIds <- !grepl("^[A-Fa-f0-9]{24}$|^$", percentOf) # not ID or UNGATED
+  percentofNonIds <- !grepl("^[A-Fa-f0-9]{24}$|^$|^PARENT$", percentOf) # not ID or UNGATED or PARENT
   if (any(percentofNonIds)) { # one or more values are not IDs; lookup by name
     queryPopulations <- percentOf[percentofNonIds]
     quotedQueryPopulations <- paste0(shQuote(queryPopulations, type = "cmd"), collapse = ",")

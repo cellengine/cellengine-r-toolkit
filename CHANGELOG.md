@@ -49,5 +49,6 @@ breaking changes compared to the pre-release version.
   functions; or `createPopulations`, plural, to accurately reflect the behavior.
 - `getStatistics(fcsFileIds=NULL, ...)` should return statistics for all
   non-control FCS files.
+- `getStatistics()` should support `percentOf=c("PARENT")`.
 
 ### Removed

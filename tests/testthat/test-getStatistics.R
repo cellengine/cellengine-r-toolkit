@@ -430,6 +430,49 @@ test_that("works, percentOf specified as single value", {
   )
 })
 
+test_that("works, percentOf 'PARENT'", {
+  with_mock(
+    `httr::request_perform` = function(req, handle, refresh) {
+      switch(req$url,
+        "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/bulkstatistics" = {
+          expect_equal(req$method, "POST")
+          body <- rawToChar(req$options$postfields)
+          expect_equal(body, '{\"fcsFileIds\":[\"591a3b441d725115208a6fdb\"],\"statistics\":[\"percent\"],\"populationIds\":[\"591a3b441d725115208a6fdc\"],\"compensationId\":0,\"q\":0.5,\"format\":\"json\",\"annotations\":true,\"layout\":\"medium\",\"percentOf\":[\"591a3b441d725115208a6fde\",\"PARENT\"]}') # nolint
+          response <- httptest::fake_response(
+            req$url,
+            req$method,
+            content = '[
+              {
+                "fcsFileId":"591a3b441d725115208a6fdb","filename":"abc.fcs","populationId":"591a3b441d725115208a6fdc",
+                "population":"positivePop","annotations":{"row":"A","column":"1"},"parentPopulation":"singlets",
+                "parentPopulationId":"591a3b441d725115208a6fde","percent":21.89535144846171
+              }
+            ]',
+            status_code = 200,
+            headers = list(`Content-Type` = "application/json")
+          )
+          return(response)
+        },
+        {
+          stop(sprintf("Unexpected request URL: %s", req$url))
+        }
+      )
+    },
+    {
+      setServer("https://my.server.com")
+      res <- getStatistics("591a3b441d725115208a6fda",
+        statistics = c("percent"), compensationId = 0,
+        fcsFileIds = c("591a3b441d725115208a6fdb"), populationIds = c("591a3b441d725115208a6fdc"),
+        percentOf = c("591a3b441d725115208a6fde", "PARENT")
+      )
+      expect_true(is.data.frame(res))
+      expect_equal(nrow(res), 1)
+      expect_equal(res[1, "filename"], "abc.fcs")
+      expect_equal(res[1, "annotations"]$row, "A")
+    }
+  )
+})
+
 test_that("works, percentOf not specified", {
   with_mock(
     `httr::request_perform` = function(req, handle, refresh) {

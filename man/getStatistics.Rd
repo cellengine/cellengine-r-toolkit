@@ -57,8 +57,8 @@ parent will be calculated for each population.
 population will be calculated for each population specified in
 \code{populations} or \code{populationIds} (useful for calculating
 e.g. percent of singlets or leukocytes).
-\item If an array of IDs or names is provided, then the percent of each
-of those populations will be calculated.
+\item If an array of IDs, \code{"PARENT"} or names is provided, then the
+percent of each of those populations will be calculated.
 }
 
 In the latter two cases, if a name or list of names instead of IDs are
