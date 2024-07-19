@@ -35,12 +35,17 @@ downloadAttachment <- function(experimentId,
   fullURL <- paste0(pkg.env$baseURL, "/api/v1/experiments/", experimentId, "/attachments/", attachmentId)
 
   if (is.null(destination)) {
-    response <- httr::GET(fullURL, httr::user_agent(ua))
+    response <- httr::GET(fullURL,
+                          httr::user_agent(ua),
+                          httr::add_headers(.headers = pkg.env$auth))
     httr::stop_for_status(response, "download attachment")
     content <- httr::content(response, "raw")
     return(content)
   } else {
-    response <- httr::GET(fullURL, httr::user_agent(ua), httr::write_disk(destination, overwrite))
+    response <- httr::GET(fullURL,
+                          httr::user_agent(ua),
+                          httr::add_headers(.headers = pkg.env$auth),
+                          httr::write_disk(destination, overwrite))
     httr::stop_for_status(response, "download attachment")
   }
 }

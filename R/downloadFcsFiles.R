@@ -78,6 +78,7 @@ downloadFcsFiles <- function(experimentId,
     paste0(pkg.env$baseURL, "/api/v1/experiments/", experimentId, "/fcsfiles/zip"),
     body = body,
     httr::content_type_json(),
+    httr::add_headers(.headers = pkg.env$auth),
     httr::user_agent(ua),
     httr::write_disk(destination, overwrite)
   )

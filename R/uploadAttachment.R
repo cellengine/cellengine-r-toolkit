@@ -15,5 +15,9 @@ uploadAttachment <- function(experimentId, attachmentPath) {
   body <- list("file" = httr::upload_file(attachmentPath))
   ensureBaseUrl()
   fullURL <- paste0(pkg.env$baseURL, "/api/v1/experiments/", experimentId, "/attachments")
-  handleResponse(httr::POST(fullURL, body = body, httr::user_agent(ua)))
+  r <- httr::POST(fullURL,
+                  body = body,
+                  httr::user_agent(ua),
+                  httr::add_headers(.headers = pkg.env$auth))
+  handleResponse(r)
 }

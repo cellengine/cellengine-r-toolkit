@@ -154,7 +154,10 @@ getEvents <- function(experimentId,
   params <- c(params, subsamplingParams)
 
   if (is.null(destination)) {
-    response <- httr::GET(fullURL, query = params, httr::user_agent(ua))
+    response <- httr::GET(fullURL,
+                          query = params,
+                          httr::user_agent(ua),
+                          httr::add_headers(.headers = pkg.env$auth))
     httr::stop_for_status(response)
     if (format == "TSV") {
       content <- httr::content(response, "text")
@@ -176,7 +179,11 @@ getEvents <- function(experimentId,
     body <- jsonlite::toJSON(list(dest = body), null = "null", auto_unbox=TRUE)
     basePost(urlPath, body, params)
   } else if (is.character(destination)) {
-    response <- httr::GET(fullURL, query = params, httr::user_agent(ua), httr::write_disk(destination, overwrite))
+    response <- httr::GET(fullURL,
+                          query = params,
+                          httr::user_agent(ua),
+                          httr::write_disk(destination, overwrite),
+                          httr::add_headers(.headers = pkg.env$auth))
     httr::stop_for_status(response)
   } else {
     stop("'destination' must be NULL, an S3 transfer specification list, or a file path.")
