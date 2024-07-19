@@ -1,207 +1,71 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/CHANGELOG.html</loc>
-  </url>
-  <url>
-    <loc>/CONTRIBUTING.html</loc>
-  </url>
-  <url>
-    <loc>/articles/flowCut.html</loc>
-  </url>
-  <url>
-    <loc>/articles/flowDensity.html</loc>
-  </url>
-  <url>
-    <loc>/articles/gettingStarted.html</loc>
-  </url>
-  <url>
-    <loc>/articles/histogramSubtraction.html</loc>
-  </url>
-  <url>
-    <loc>/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>/articles/workingWithGates.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/FILE_INTERNAL.html</loc>
-  </url>
-  <url>
-    <loc>/reference/PER_FILE.html</loc>
-  </url>
-  <url>
-    <loc>/reference/UNCOMPENSATED.html</loc>
-  </url>
-  <url>
-    <loc>/reference/UNGATED.html</loc>
-  </url>
-  <url>
-    <loc>/reference/annotateFcsFile.html</loc>
-  </url>
-  <url>
-    <loc>/reference/applyScale.html</loc>
-  </url>
-  <url>
-    <loc>/reference/applyScaleSet.html</loc>
-  </url>
-  <url>
-    <loc>/reference/authenticate.html</loc>
-  </url>
-  <url>
-    <loc>/reference/byName.html</loc>
-  </url>
-  <url>
-    <loc>/reference/createCompensation.html</loc>
-  </url>
-  <url>
-    <loc>/reference/createEllipseGate.html</loc>
-  </url>
-  <url>
-    <loc>/reference/createExperiment.html</loc>
-  </url>
-  <url>
-    <loc>/reference/createGates.html</loc>
-  </url>
-  <url>
-    <loc>/reference/createLookup.html</loc>
-  </url>
-  <url>
-    <loc>/reference/createPolygonGate.html</loc>
-  </url>
-  <url>
-    <loc>/reference/createPopulation.html</loc>
-  </url>
-  <url>
-    <loc>/reference/createQuadrantGate.html</loc>
-  </url>
-  <url>
-    <loc>/reference/createRangeGate.html</loc>
-  </url>
-  <url>
-    <loc>/reference/createRectangleGate.html</loc>
-  </url>
-  <url>
-    <loc>/reference/createSplitGate.html</loc>
-  </url>
-  <url>
-    <loc>/reference/deleteCompensation.html</loc>
-  </url>
-  <url>
-    <loc>/reference/deleteExperiment.html</loc>
-  </url>
-  <url>
-    <loc>/reference/deleteFcsFile.html</loc>
-  </url>
-  <url>
-    <loc>/reference/deleteGates.html</loc>
-  </url>
-  <url>
-    <loc>/reference/deletePopulationAuto.html</loc>
-  </url>
-  <url>
-    <loc>/reference/downloadAttachment.html</loc>
-  </url>
-  <url>
-    <loc>/reference/downloadFcsFiles.html</loc>
-  </url>
-  <url>
-    <loc>/reference/fromFlowCore.html</loc>
-  </url>
-  <url>
-    <loc>/reference/generateId.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getAttachments.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getCompensation.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getCompensations.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getErrorInfo.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getEvents.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getExperiment.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getExperiments.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getFcsFile.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getFcsFiles.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getGate.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getGates.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getPlot.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getPopulation.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getPopulations.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getScaleSets.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getStatistics.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/setFcsFilePanel.html</loc>
-  </url>
-  <url>
-    <loc>/reference/setServer.html</loc>
-  </url>
-  <url>
-    <loc>/reference/toFlowCore.html</loc>
-  </url>
-  <url>
-    <loc>/reference/updateCompensation.html</loc>
-  </url>
-  <url>
-    <loc>/reference/updateExperiment.html</loc>
-  </url>
-  <url>
-    <loc>/reference/updateFcsFile.html</loc>
-  </url>
-  <url>
-    <loc>/reference/updateGate.html</loc>
-  </url>
-  <url>
-    <loc>/reference/updateGateFamily.html</loc>
-  </url>
-  <url>
-    <loc>/reference/updatePopulation.html</loc>
-  </url>
-  <url>
-    <loc>/reference/uploadAttachment.html</loc>
-  </url>
-  <url>
-    <loc>/reference/uploadFcsFile.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/CHANGELOG.html</loc></url>
+<url><loc>/CONTRIBUTING.html</loc></url>
+<url><loc>/articles/flowCut.html</loc></url>
+<url><loc>/articles/flowDensity.html</loc></url>
+<url><loc>/articles/gettingStarted.html</loc></url>
+<url><loc>/articles/histogramSubtraction.html</loc></url>
+<url><loc>/articles/index.html</loc></url>
+<url><loc>/articles/workingWithGates.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/reference/FILE_INTERNAL.html</loc></url>
+<url><loc>/reference/PER_FILE.html</loc></url>
+<url><loc>/reference/UNCOMPENSATED.html</loc></url>
+<url><loc>/reference/UNGATED.html</loc></url>
+<url><loc>/reference/annotateFcsFile.html</loc></url>
+<url><loc>/reference/applyScale.html</loc></url>
+<url><loc>/reference/applyScaleSet.html</loc></url>
+<url><loc>/reference/authenticate.html</loc></url>
+<url><loc>/reference/byName.html</loc></url>
+<url><loc>/reference/createCompensation.html</loc></url>
+<url><loc>/reference/createEllipseGate.html</loc></url>
+<url><loc>/reference/createExperiment.html</loc></url>
+<url><loc>/reference/createGates.html</loc></url>
+<url><loc>/reference/createLookup.html</loc></url>
+<url><loc>/reference/createPolygonGate.html</loc></url>
+<url><loc>/reference/createPopulation.html</loc></url>
+<url><loc>/reference/createQuadrantGate.html</loc></url>
+<url><loc>/reference/createRangeGate.html</loc></url>
+<url><loc>/reference/createRectangleGate.html</loc></url>
+<url><loc>/reference/createSplitGate.html</loc></url>
+<url><loc>/reference/deleteCompensation.html</loc></url>
+<url><loc>/reference/deleteExperiment.html</loc></url>
+<url><loc>/reference/deleteFcsFile.html</loc></url>
+<url><loc>/reference/deleteGates.html</loc></url>
+<url><loc>/reference/deletePopulationAuto.html</loc></url>
+<url><loc>/reference/downloadAttachment.html</loc></url>
+<url><loc>/reference/downloadFcsFiles.html</loc></url>
+<url><loc>/reference/fromFlowCore.html</loc></url>
+<url><loc>/reference/generateId.html</loc></url>
+<url><loc>/reference/getAttachments.html</loc></url>
+<url><loc>/reference/getCompensation.html</loc></url>
+<url><loc>/reference/getCompensations.html</loc></url>
+<url><loc>/reference/getErrorInfo.html</loc></url>
+<url><loc>/reference/getEvents.html</loc></url>
+<url><loc>/reference/getExperiment.html</loc></url>
+<url><loc>/reference/getExperiments.html</loc></url>
+<url><loc>/reference/getFcsFile.html</loc></url>
+<url><loc>/reference/getFcsFiles.html</loc></url>
+<url><loc>/reference/getGate.html</loc></url>
+<url><loc>/reference/getGates.html</loc></url>
+<url><loc>/reference/getPlot.html</loc></url>
+<url><loc>/reference/getPopulation.html</loc></url>
+<url><loc>/reference/getPopulations.html</loc></url>
+<url><loc>/reference/getScaleSets.html</loc></url>
+<url><loc>/reference/getStatistics.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/setFcsFilePanel.html</loc></url>
+<url><loc>/reference/setServer.html</loc></url>
+<url><loc>/reference/toFlowCore.html</loc></url>
+<url><loc>/reference/updateCompensation.html</loc></url>
+<url><loc>/reference/updateExperiment.html</loc></url>
+<url><loc>/reference/updateFcsFile.html</loc></url>
+<url><loc>/reference/updateGate.html</loc></url>
+<url><loc>/reference/updateGateFamily.html</loc></url>
+<url><loc>/reference/updatePopulation.html</loc></url>
+<url><loc>/reference/uploadAttachment.html</loc></url>
+<url><loc>/reference/uploadFcsFile.html</loc></url>
 </urlset>
+
