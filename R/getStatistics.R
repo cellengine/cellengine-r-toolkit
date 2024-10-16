@@ -271,7 +271,6 @@ lookupPopulationsByName <- function(experimentId, populationIds, populations) {
       fields = "+name",
       query = sprintf("in(name, [%s])", queryPopulations)
     ))
-    serverPopNames = lapply(serverPops, function(p) p$name)
     if (length(serverPops) == 0) {
       pkg.env$lastError <- populations
       stop(sprintf(
@@ -279,6 +278,7 @@ lookupPopulationsByName <- function(experimentId, populationIds, populations) {
         length(populations)
       ))
     }
+    serverPopNames = lapply(serverPops, function(p) p$name)
     diff <- setdiff(populations, serverPopNames) # populations absent from server
     if (length(diff) != 0) {
       pkg.env$lastError <- diff
@@ -294,7 +294,7 @@ lookupPopulationsByName <- function(experimentId, populationIds, populations) {
         "Call getErrorInfo() for a list of duplicate names."
       ))
     }
-    populationIds <- serverPops[[1]]$`_id`
+    populationIds <- sapply(serverPops, function(p) p$`_id`)
   }
   return(populationIds)
 }

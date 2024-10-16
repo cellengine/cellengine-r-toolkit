@@ -247,6 +247,68 @@ test_that("looks up population by name; unambiguous match", {
   )
 })
 
+test_that("looks up multiple populations by name", {
+  with_mock(
+    `httr::request_perform` = function(req, handle, refresh) {
+      switch(req$url,
+        "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/populations?fields=%2Bname&query=in%28name%2C%20%5B%22pname1%22%2C%22pname2%22%5D%29" = { # nolint
+          expect_equal(req$method, "GET")
+          response <- httptest::fake_response(
+            req$url,
+            req$method,
+            content = '[
+              {"_id":"591a3b5f1d725115208a7088","name":"pname1"},
+              {"_id":"591a3b5f1d725115208a7089","name":"pname2"}
+            ]',
+            status_code = 200,
+            headers = list(`Content-Type` = "application/json")
+          )
+          return(response)
+        },
+        "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/bulkstatistics" = {
+          expect_equal(req$method, "POST")
+          body <- rawToChar(req$options$postfields)
+          expect_equal(body, "{\"fcsFileIds\":[\"591a3b441d725115208a6fdb\"],\"statistics\":[\"percent\"],\"populationIds\":[\"591a3b5f1d725115208a7088\",\"591a3b5f1d725115208a7089\"],\"compensationId\":0,\"q\":0.5,\"format\":\"json\",\"annotations\":true,\"layout\":\"medium\"}") # nolint
+          response <- httptest::fake_response(
+            req$url,
+            req$method,
+            content = '[
+              {
+                "fcsFileId":"591a3b441d725115208a6fdb","filename":"abc.fcs","populationId":"591a3b5f1d725115208a7088",
+                "population":"pname1","annotations":{"row":"A","column":"1"},"parentPopulation":"singlets",
+                "parentPopulationId":"591a3b441d725115208a6fde","percent":21.89535144846171
+              },
+              {
+                "fcsFileId":"591a3b441d725115208a6fdb","filename":"abc.fcs","populationId":"591a3b5f1d725115208a7089",
+                "population":"pname2","annotations":{"row":"A","column":"1"},"parentPopulation":"singlets",
+                "parentPopulationId":"591a3b441d725115208a6fde","percent":22.234
+              }
+            ]',
+            status_code = 200,
+            headers = list(`Content-Type` = "application/json")
+          )
+          return(response)
+        },
+        {
+          stop(sprintf("Unexpected request URL: %s", req$url))
+        }
+      )
+    },
+    {
+      setServer("https://my.server.com")
+      res = getStatistics(
+        "591a3b441d725115208a6fda",
+        statistics = c("percent"),
+        compensationId = 0,
+        fcsFileIds = c("591a3b441d725115208a6fdb"),
+        populations = c("pname1", "pname2")
+      )
+      expect_true(is.data.frame(res))
+      expect_equal(nrow(res), 2)
+    }
+  )
+})
+
 test_that("looks up populations by name; errors with ambiguous results", {
   with_mock(
     `httr::request_perform` = function(req, handle, refresh) {

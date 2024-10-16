@@ -50,5 +50,7 @@ breaking changes compared to the pre-release version.
 - `getStatistics(fcsFileIds=NULL, ...)` should return statistics for all
   non-control FCS files.
 - `getStatistics()` should support `percentOf=c("PARENT")`.
+- `getSTatistics(populations=c("pop1", "pop2", ...))` should return statistics
+  for all specified populations.
 
 ### Removed
