@@ -32,7 +32,7 @@ toFlowCore <- function(cellengineObject) {
     "PolygonGate" = toFlowCorePolygonGate(cellengineObject),
     "QuadrantGate" = stop("This gate representation is not yet implemented"),
     "SplitGate" = stop("This gate representation is not yet implemented"),
-    "RangeGate" = stop("This gate representation is not yet implemented"),
+    "RangeGate" = toFlowCoreRangeGate(cellengineObject),
     "ScaleSet" = scaleSetToTransformList(cellengineObject),
     "Compensation" = toFlowCoreCompensation(cellengineObject)
   )
@@ -74,6 +74,16 @@ toFlowCorePolygonGate <- function(gate) {
   }
   colnames(m) <- c(gate$xChannel, gate$yChannel)
   flowCore::polygonGate(filterId = gate$name, m)
+}
+
+toFlowCoreRangeGate <- function(gate) {
+  flowCore::rectangleGate(
+    filterId = gate$name,
+    stats::setNames(
+      list(c(gate$model$range$x1, gate$model$range$x2)),
+      gate$xChannel
+    )
+  )
 }
 
 #' Convert ScaleSet

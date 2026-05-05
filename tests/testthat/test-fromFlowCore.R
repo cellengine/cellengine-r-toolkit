@@ -41,6 +41,23 @@ test_that("fromFlowCore overloads for rectangle gate", {
   })
 })
 
+test_that("fromFlowCore routes 1D rectangleGate to createRangeGate", {
+  skip_if_not_installed("flowCore")
+  library("flowCore")
+
+  mock <- mock("good")
+  with_mock(`cellengine::createRangeGate` = mock, {
+    # given: a 1D flowCore rectangleGate
+    flowObject <- rectangleGate(filterId = "myRangeGate", "FSC-H" = c(200, 600))
+
+    # when:
+    res <- fromFlowCore(flowObject, "some-experiment-id", "my range gate")
+
+    # then: createRangeGate should be called
+    expect_equal(res, "good")
+  })
+})
+
 test_that("fromFlowCore overloads for polygon gate", {
   skip_if_not_installed("flowCore")
   library("flowCore")

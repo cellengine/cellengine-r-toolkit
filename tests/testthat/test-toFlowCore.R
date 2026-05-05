@@ -128,6 +128,45 @@ test_that("rectangle gate makes correct round-trip: CE -> flowCore -> CE", {
   expect_equal(m1$y2, m2$y2)
 })
 
+test_that("range gate is converted to flowCore", {
+  skip_if_not_installed("flowCore")
+  library("flowCore")
+
+  content <- '{"__v":0,"experimentId":"591a3b441d725115208a6fda","model":{"label":[56440.46,0.5],"range":{"x1":12502.34,"x2":95102.78,"y":0.5},"locked":false},"gid":"592640a5a6a1d6256ec9b08b","xChannel":"FSC-A","type":"RangeGate","name":"my range gate","parentPopulationId":null,"_id":"592640aa298f1480900e10e5","tailoredPerFile":false}' # nolint
+  gate <- jsonlite::fromJSON(content)
+
+  flowGate <- toFlowCore(gate)
+  expect_equal(class(flowGate)[1], "rectangleGate")
+  expect_equal(flowGate@filterId, "my range gate")
+  expect_equal(length(flowGate@min), 1L)
+  expect_equal(names(flowGate@min), gate$xChannel)
+  expect_true(flowGate@min[[1]] == gate$model$range$x1)
+  expect_true(flowGate@max[[1]] == gate$model$range$x2)
+})
+
+test_that("range gate makes correct round-trip: CE -> flowCore -> CE", {
+  skip_if_not_installed("flowCore")
+  library("flowCore")
+
+  # given
+  experimentId <- "5d2f8b4b21fd0676fb3a6a70"
+  content <- '{"__v":0,"experimentId":"591a3b441d725115208a6fda","model":{"label":[56440.46,0.5],"range":{"x1":12502.34,"x2":95102.78,"y":0.5},"locked":false},"gid":"592640a5a6a1d6256ec9b08b","xChannel":"FSC-H","type":"RangeGate","name":"my range gate","parentPopulationId":null,"_id":"592640aa298f1480900e10e5","tailoredPerFile":false}' # nolint
+  gate <- jsonlite::fromJSON(content)
+  mock <- mock(gate)
+
+  with_mock(`cellengine::createRangeGate` = mock, {
+    # when
+    flowGate <- toFlowCore(gate)
+    newCEGate <- fromFlowCore(flowGate, experimentId, "my range gate")
+  })
+
+  # then
+  m1 <- gate$model$range
+  m2 <- newCEGate$model$range
+  expect_equal(m1$x1, m2$x1)
+  expect_equal(m1$x2, m2$x2)
+})
+
 test_that("toFlowCore converts a ScaleSet", {
   skip_if_not_installed("flowCore")
   library("flowCore")

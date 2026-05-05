@@ -66,17 +66,28 @@ convertEllipsoidGate <- function(fcGate, experimentId, name, ...) {
 }
 
 convertRectangleGate <- function(fcGate, experimentId, name, ...) {
-  createRectangleGate(
-    experimentId,
-    names(fcGate@min)[1],
-    names(fcGate@min)[2],
-    name,
-    fcGate@min[[1]],
-    fcGate@max[[1]],
-    fcGate@min[[2]],
-    fcGate@max[[2]],
-    ...
-  )
+  if (length(fcGate@min) == 1) {
+    createRangeGate(
+      experimentId,
+      names(fcGate@min)[1],
+      name,
+      fcGate@min[[1]],
+      fcGate@max[[1]],
+      ...
+    )
+  } else {
+    createRectangleGate(
+      experimentId,
+      names(fcGate@min)[1],
+      names(fcGate@min)[2],
+      name,
+      fcGate@min[[1]],
+      fcGate@max[[1]],
+      fcGate@min[[2]],
+      fcGate@max[[2]],
+      ...
+    )
+  }
 }
 
 convertCompensation <- function(fcComp, experimentId, name) {
