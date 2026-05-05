@@ -167,6 +167,37 @@ test_that("range gate makes correct round-trip: CE -> flowCore -> CE", {
   expect_equal(m1$x2, m2$x2)
 })
 
+test_that("split gate is converted to flowCore", {
+  skip_if_not_installed("flowCore")
+  library("flowCore")
+
+  content <- '{"__v":0,"experimentId":"591a3b441d725115208a6fda","model":{"labels":[[50000,0.95],[200000,0.95]],"split":{"x":144000,"y":0.5},"gids":["aaa111","bbb222"],"locked":false},"gid":"top123","xChannel":"FSC-A","type":"SplitGate","names":["my gate (L)","my gate (R)"],"parentPopulationId":null,"_id":"abc123","tailoredPerFile":false}' # nolint
+  gate <- jsonlite::fromJSON(content)
+
+  result <- toFlowCore(gate)
+
+  expect_true(is.list(result))
+  expect_equal(length(result), 2L)
+  expect_equal(names(result), gate$names)
+
+  leftGate <- result[[1]]
+  rightGate <- result[[2]]
+
+  expect_equal(class(leftGate)[1], "rectangleGate")
+  expect_equal(class(rightGate)[1], "rectangleGate")
+
+  expect_equal(leftGate@filterId, gate$names[1])
+  expect_equal(rightGate@filterId, gate$names[2])
+
+  expect_equal(names(leftGate@min), gate$xChannel)
+  expect_equal(names(rightGate@min), gate$xChannel)
+
+  expect_true(leftGate@min[[gate$xChannel]] == -Inf)
+  expect_true(leftGate@max[[gate$xChannel]] == gate$model$split$x)
+  expect_true(rightGate@min[[gate$xChannel]] == gate$model$split$x)
+  expect_true(rightGate@max[[gate$xChannel]] == Inf)
+})
+
 test_that("toFlowCore converts a ScaleSet", {
   skip_if_not_installed("flowCore")
   library("flowCore")
