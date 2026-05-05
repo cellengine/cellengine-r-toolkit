@@ -82,7 +82,7 @@
 <li>
 <strong>Breaking</strong> All functions now return lists instead of data.frames. (In the future, the lists may be changed to S3 classes.)</li>
 <li>
-<strong>Breaking</strong> The <code>xVertices</code> and <code>yVertices</code> parameters of <code>createPolygonGate</code> are replaced <code>vertices=list(c(x1, y1), c(x2, y2), c(x3, y3))</code>.</li>
+<strong>Breaking</strong> The <code>xVertices</code> and <code>yVertices</code> parameters of <code>createPolygonGate</code> are replaced with <code>vertices=list(c(x1, y1), c(x2, y2), c(x3, y3))</code>.</li>
 <li>
 <strong>Breaking</strong> The <code>create__Gate()</code> functions previously had two parameters for specifying the FCS file for tailoring (<code>fcsFileId</code> and <code>fcsFile</code>) and two parameters for specifying the parent population (<code>parentPopulationId</code> and <code>parentPopulation</code>), with the latter parameters performing a lookup by name. To be consistent with the rest of the toolkit, <code>fcsFile</code> and <code>parentPopulation</code> have been removed. Instead, use <code><a href="reference/byName.html">byName()</a></code> expressions, e.g. <code>createRectangleGate(..., fcsFileId=byName("Sample1.fcs"), parentPopulationId=byName("CD3+"), ...)</code>.</li>
 <li>
@@ -92,7 +92,7 @@
 <li>
 <code><a href="reference/getStatistics.html">getStatistics()</a></code> should support <code>percentOf=c("PARENT")</code>.</li>
 <li>
-<code>getSTatistics(populations=c("pop1", "pop2", ...))</code> should return statistics for all specified populations.</li>
+<code>getStatistics(populations=c("pop1", "pop2", ...))</code> should return statistics for all specified populations.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="removed">Removed<a class="anchor" aria-label="anchor" href="#removed"></a></h3>
@@ -115,7 +115,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer></div>
