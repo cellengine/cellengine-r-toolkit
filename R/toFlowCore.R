@@ -141,10 +141,10 @@ toFlowCoreQuadrantGate <- function(gate) {
 #' @param scaleSet The CellEngine scaleSet to be converted
 #' @noRd
 scaleSetToTransformList <- function(scaleSet) {
-  scales <- scaleSet$scales[[1]]
+  scales <- scaleSet$scales
 
-  funs <- sapply(seq_len(nrow(scales)), function(i) {
-    x <- scales$scale[i, ]
+  funs <- sapply(seq_len(length(scales)), function(i) {
+    x <- scales[[i]]$scale
     switch(x$type,
       "LinearScale" = function(a) a,
       "LogScale" = function(a) log10(pmax(1, a)),
@@ -153,7 +153,7 @@ scaleSetToTransformList <- function(scaleSet) {
   })
 
   flowCore::transformList(
-    from = scales$channelName,
+    from = sapply(scales, "[[", "channelName"),
     tfun = funs,
     transformationId = scaleSet$name
   )
