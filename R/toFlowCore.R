@@ -4,6 +4,11 @@ library("stats")
 #'
 #' Converts a CellEngine object to its flowCore analogue.
 #'
+#' Notes: Split gates and quadrant gates will be converted to lists of two
+#' and four rectangle gates, respectively. Skewed quadrant gates from CellEngine
+#' will be converted to orthogonal quadrant gates, as flowCore's quadGate class
+#' does not support skewing.
+#'
 #' @param cellengineObject The CellEngine object to be converted.
 #' @examples
 #' \dontrun{
@@ -30,7 +35,7 @@ toFlowCore <- function(cellengineObject) {
     "RectangleGate" = toFlowCoreRectangleGate(cellengineObject),
     "EllipseGate" = toFlowCoreEllipsoidGate(cellengineObject),
     "PolygonGate" = toFlowCorePolygonGate(cellengineObject),
-    "QuadrantGate" = stop("This gate representation is not yet implemented"),
+    "QuadrantGate" = toFlowCoreQuadrantGate(cellengineObject),
     "SplitGate" = toFlowCoreSplitGate(cellengineObject),
     "RangeGate" = toFlowCoreRangeGate(cellengineObject),
     "ScaleSet" = scaleSetToTransformList(cellengineObject),
@@ -98,6 +103,35 @@ toFlowCoreSplitGate <- function(gate) {
     stats::setNames(list(c(x, Inf)), gate$xChannel)
   )
   stats::setNames(list(left, right), sector_names)
+}
+
+toFlowCoreQuadrantGate <- function(gate) {
+  if (isTRUE(gate$model$skewable)) {
+    warning(
+      "CellEngine QuadrantGate '", gate$gid,
+      "' has skewable=TRUE. flowCore only supports orthogonal quadrant gates; ",
+      "the gate will be converted using the center point only, ignoring skew."
+    )
+  }
+  x <- gate$model$quadrant$x
+  y <- gate$model$quadrant$y
+  sector_names <- gate$names  # order: UR, UL, LL, LR
+  make_sector <- function(filterId, xmin, xmax, ymin, ymax) {
+    flowCore::rectangleGate(
+      filterId = filterId,
+      stats::setNames(
+        list(c(xmin, xmax), c(ymin, ymax)),
+        c(gate$xChannel, gate$yChannel)
+      )
+    )
+  }
+  gates <- list(
+    make_sector(sector_names[1],  x,   Inf,  y,   Inf),  # UR
+    make_sector(sector_names[2], -Inf,  x,   y,   Inf),  # UL
+    make_sector(sector_names[3], -Inf,  x,  -Inf,  y),   # LL
+    make_sector(sector_names[4],  x,   Inf, -Inf,  y)    # LR
+  )
+  stats::setNames(gates, sector_names)
 }
 
 #' Convert ScaleSet

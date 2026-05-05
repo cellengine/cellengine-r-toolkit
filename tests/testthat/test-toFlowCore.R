@@ -198,6 +198,69 @@ test_that("split gate is converted to flowCore", {
   expect_true(rightGate@max[[gate$xChannel]] == Inf)
 })
 
+test_that("quadrant gate is converted to flowCore", {
+  skip_if_not_installed("flowCore")
+  library("flowCore")
+
+  content <- '{"__v":0,"experimentId":"591a3b441d725115208a6fda","model":{"labels":[[200000,200000],[-200000,200000],[-200000,-200000],[200000,-200000]],"quadrant":{"x":144000,"y":96000,"angles":[1.5707963,3.1415927,4.7123890,0.0]},"gids":["g1","g2","g3","g4"],"locked":false,"skewable":false},"gid":"top456","xChannel":"FSC-A","yChannel":"SSC-A","type":"QuadrantGate","names":["my gate (UR)","my gate (UL)","my gate (LL)","my gate (LR)"],"parentPopulationId":null,"_id":"def456","tailoredPerFile":false}' # nolint
+  gate <- jsonlite::fromJSON(content)
+
+  result <- toFlowCore(gate)
+
+  expect_true(is.list(result))
+  expect_equal(length(result), 4L)
+  expect_equal(names(result), gate$names)
+
+  ur <- result[[1]]
+  ul <- result[[2]]
+  ll <- result[[3]]
+  lr <- result[[4]]
+
+  expect_equal(class(ur)[1], "rectangleGate")
+
+  x <- gate$model$quadrant$x
+  y <- gate$model$quadrant$y
+
+  expect_equal(ur@filterId, gate$names[1])
+  expect_equal(ul@filterId, gate$names[2])
+  expect_equal(ll@filterId, gate$names[3])
+  expect_equal(lr@filterId, gate$names[4])
+
+  # UR: [x, Inf] x [y, Inf]
+  expect_equal(ur@min[[gate$xChannel]], x)
+  expect_equal(ur@max[[gate$xChannel]], Inf)
+  expect_equal(ur@min[[gate$yChannel]], y)
+  expect_equal(ur@max[[gate$yChannel]], Inf)
+
+  # UL: [-Inf, x] x [y, Inf]
+  expect_equal(ul@min[[gate$xChannel]], -Inf)
+  expect_equal(ul@max[[gate$xChannel]], x)
+  expect_equal(ul@min[[gate$yChannel]], y)
+  expect_equal(ul@max[[gate$yChannel]], Inf)
+
+  # LL: [-Inf, x] x [-Inf, y]
+  expect_equal(ll@min[[gate$xChannel]], -Inf)
+  expect_equal(ll@max[[gate$xChannel]], x)
+  expect_equal(ll@min[[gate$yChannel]], -Inf)
+  expect_equal(ll@max[[gate$yChannel]], y)
+
+  # LR: [x, Inf] x [-Inf, y]
+  expect_equal(lr@min[[gate$xChannel]], x)
+  expect_equal(lr@max[[gate$xChannel]], Inf)
+  expect_equal(lr@min[[gate$yChannel]], -Inf)
+  expect_equal(lr@max[[gate$yChannel]], y)
+})
+
+test_that("quadrant gate with skewable=TRUE warns on conversion", {
+  skip_if_not_installed("flowCore")
+  library("flowCore")
+
+  content <- '{"__v":0,"experimentId":"591a3b441d725115208a6fda","model":{"labels":[[200000,200000],[-200000,200000],[-200000,-200000],[200000,-200000]],"quadrant":{"x":144000,"y":96000,"angles":[1.5707963,3.1415927,4.7123890,0.0]},"gids":["g1","g2","g3","g4"],"locked":false,"skewable":true},"gid":"top456","xChannel":"FSC-A","yChannel":"SSC-A","type":"QuadrantGate","names":["my gate (UR)","my gate (UL)","my gate (LL)","my gate (LR)"],"parentPopulationId":null,"_id":"def456","tailoredPerFile":false}' # nolint
+  gate <- jsonlite::fromJSON(content)
+
+  expect_warning(toFlowCore(gate), "skewable=TRUE")
+})
+
 test_that("toFlowCore converts a ScaleSet", {
   skip_if_not_installed("flowCore")
   library("flowCore")

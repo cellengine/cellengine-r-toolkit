@@ -36,7 +36,7 @@ breaking changes compared to the pre-release version.
 - **Breaking** All functions now return lists instead of data.frames. (In the
   future, the lists may be changed to S3 classes.)
 - **Breaking** The `xVertices` and `yVertices` parameters of `createPolygonGate`
-  are replaced `vertices=list(c(x1, y1), c(x2, y2), c(x3, y3))`.
+  are replaced with `vertices=list(c(x1, y1), c(x2, y2), c(x3, y3))`.
 - **Breaking** The `create__Gate()` functions previously had two parameters for
   specifying the FCS file for tailoring (`fcsFileId` and `fcsFile`) and two
   parameters for specifying the parent population (`parentPopulationId` and
@@ -50,7 +50,7 @@ breaking changes compared to the pre-release version.
 - `getStatistics(fcsFileIds=NULL, ...)` should return statistics for all
   non-control FCS files.
 - `getStatistics()` should support `percentOf=c("PARENT")`.
-- `getSTatistics(populations=c("pop1", "pop2", ...))` should return statistics
+- `getStatistics(populations=c("pop1", "pop2", ...))` should return statistics
   for all specified populations.
 
 ### Removed

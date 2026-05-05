@@ -12,6 +12,12 @@ toFlowCore(cellengineObject)
 \description{
 Converts a CellEngine object to its flowCore analogue.
 }
+\details{
+Notes: Split gates and quadrant gates will be converted to lists of two
+and four rectangle gates, respectively. Skewed quadrant gates from CellEngine
+will be converted to orthogonal quadrant gates, as flowCore's quadGate class
+does not support skewing.
+}
 \examples{
 \dontrun{
 # Converting a compensation:
