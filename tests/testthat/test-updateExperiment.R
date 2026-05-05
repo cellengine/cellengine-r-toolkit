@@ -1,8 +1,8 @@
 context("updateExperiment")
 
 test_that("Correct HTTP request is made", {
-  with_mock(
-    `httr::request_perform` = function(req, handle, refresh) {
+  local_mocked_bindings(
+    request_perform = function(req, handle, refresh) {
       expect_equal(req$method, "PATCH")
       expect_equal(req$url, "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda")
       body <- rawToChar(req$options$postfields)
@@ -17,10 +17,9 @@ test_that("Correct HTTP request is made", {
       )
       return(response)
     },
-    {
-      setServer("https://my.server.com")
-      resp <- updateExperiment("591a3b441d725115208a6fda", list("name" = "new name"))
-      expect_equal(resp$name, "new name")
-    }
+    .package = "httr"
   )
+  setServer("https://my.server.com")
+  resp <- updateExperiment("591a3b441d725115208a6fda", list("name" = "new name"))
+  expect_equal(resp$name, "new name")
 })

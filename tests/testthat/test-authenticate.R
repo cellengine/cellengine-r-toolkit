@@ -1,8 +1,8 @@
 context("authenticate")
 
 test_that("Correct HTTP request is made", {
-  with_mock(
-    `httr::request_perform` = function(req, handle, refresh) {
+  local_mocked_bindings(
+    request_perform = function(req, handle, refresh) {
       expect_equal(req$method, "POST")
       expect_equal(req$url, "https://my.server.com/api/v1/signin")
       body <- rawToChar(req$options$postfields)
@@ -16,16 +16,15 @@ test_that("Correct HTTP request is made", {
       )
       return(response)
     },
-    {
-      setServer("https://my.server.com")
-      authenticate("user1", "p@ssword")
-    }
+    .package = "httr"
   )
+  setServer("https://my.server.com")
+  authenticate("user1", "p@ssword")
 })
 
 test_that("Correct HTTP request is made with OTP", {
-  with_mock(
-    `httr::request_perform` = function(req, handle, refresh) {
+  local_mocked_bindings(
+    request_perform = function(req, handle, refresh) {
       expect_equal(req$method, "POST")
       expect_equal(req$url, "https://my.server.com/api/v1/signin")
       body <- rawToChar(req$options$postfields)
@@ -39,16 +38,15 @@ test_that("Correct HTTP request is made with OTP", {
       )
       return(response)
     },
-    {
-      setServer("https://my.server.com")
-      authenticate("user1", "p@ssword", "012345")
-    }
+    .package = "httr"
   )
+  setServer("https://my.server.com")
+  authenticate("user1", "p@ssword", "012345")
 })
 
 test_that("Authenticating with an access token sets token on subsequent requests", {
-  with_mock(
-    `httr::request_perform` = function(req, handle, refresh) {
+  local_mocked_bindings(
+    request_perform = function(req, handle, refresh) {
       expect_equal(req$method, "GET")
       expect_equal(req$url, "https://my.server.com/api/v1/experiments")
       expect_equal(req$headers, c("Authorization" = "Bearer cep_mypersonalaccesstoken"))
@@ -61,10 +59,9 @@ test_that("Authenticating with an access token sets token on subsequent requests
       )
       return(response)
     },
-    {
-      setServer("https://my.server.com")
-      authenticate(token = "cep_mypersonalaccesstoken")
-      getExperiments()
-    }
+    .package = "httr"
   )
+  setServer("https://my.server.com")
+  authenticate(token = "cep_mypersonalaccesstoken")
+  getExperiments()
 })

@@ -1,8 +1,8 @@
 context("createPolygonGate")
 
 test_that("Correct HTTP request is made", {
-  with_mock(
-    `httr::request_perform` = function(req, handle, refresh) {
+  local_mocked_bindings(
+    request_perform = function(req, handle, refresh) {
       expect_equal(req$method, "POST")
       expect_equal(req$url, "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/gates")
       body <- rawToChar(req$options$postfields)
@@ -18,35 +18,34 @@ test_that("Correct HTTP request is made", {
       )
       return(response)
     },
-    {
-      setServer("https://my.server.com")
-      resp <- createPolygonGate("591a3b441d725115208a6fda", "FSC-A", "FSC-W", "my gate",
-        list(c(37836.07, 971.51), c(1588732.12, 154.646), c(8139.405, 664.78), c(9441.949, 781.32)),
-        createPopulation = FALSE
-      )
-      expect_equal(resp$gate$experimentId, "591a3b441d725115208a6fda")
-      expect_equal(resp$gate$`_id`, "592640aa298f1480900e10e4") # assigned server-side
-      expect_equal(resp$gate$xChannel, "FSC-A")
-      expect_equal(resp$gate$yChannel, "FSC-W")
-      expect_equal(resp$gate$name, "my gate")
-      expect_equal(resp$gate$model$label, c(150440.453608247, 202688.886597938))
-      expect_equal(resp$gate$model$polygon$vertices, matrix(c(
-        37836.07, 971.51,
-        1588732.12, 154.646,
-        8139.405, 664.78,
-        9441.949, 781.32
-      ), ncol = 2, byrow = TRUE))
-      expect_equal(resp$gate$model$locked, FALSE)
-      expect_equal(resp$gate$gid, "592640a5a6a1d6256ec9b08a")
-      expect_equal(resp$gate$type, "PolygonGate")
-      expect_equal(resp$gate$tailoredPerFile, FALSE)
-    }
+    .package = "httr"
   )
+  setServer("https://my.server.com")
+  resp <- createPolygonGate("591a3b441d725115208a6fda", "FSC-A", "FSC-W", "my gate",
+    list(c(37836.07, 971.51), c(1588732.12, 154.646), c(8139.405, 664.78), c(9441.949, 781.32)),
+    createPopulation = FALSE
+  )
+  expect_equal(resp$gate$experimentId, "591a3b441d725115208a6fda")
+  expect_equal(resp$gate$`_id`, "592640aa298f1480900e10e4") # assigned server-side
+  expect_equal(resp$gate$xChannel, "FSC-A")
+  expect_equal(resp$gate$yChannel, "FSC-W")
+  expect_equal(resp$gate$name, "my gate")
+  expect_equal(resp$gate$model$label, c(150440.453608247, 202688.886597938))
+  expect_equal(resp$gate$model$polygon$vertices, matrix(c(
+    37836.07, 971.51,
+    1588732.12, 154.646,
+    8139.405, 664.78,
+    9441.949, 781.32
+  ), ncol = 2, byrow = TRUE))
+  expect_equal(resp$gate$model$locked, FALSE)
+  expect_equal(resp$gate$gid, "592640a5a6a1d6256ec9b08a")
+  expect_equal(resp$gate$type, "PolygonGate")
+  expect_equal(resp$gate$tailoredPerFile, FALSE)
 })
 
 test_that("Correct HTTP request is made, fcsFileId specified", {
-  with_mock(
-    `httr::request_perform` = function(req, handle, refresh) {
+  local_mocked_bindings(
+    request_perform = function(req, handle, refresh) {
       expect_equal(req$method, "POST")
       expect_equal(req$url, "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/gates")
       body <- rawToChar(req$options$postfields)
@@ -62,36 +61,35 @@ test_that("Correct HTTP request is made, fcsFileId specified", {
       )
       return(response)
     },
-    {
-      setServer("https://my.server.com")
-      resp <- createPolygonGate("591a3b441d725115208a6fda", "FSC-A", "FSC-W", "my gate",
-        list(c(37836.07, 971.51), c(1588732.12, 154.646), c(8139.405, 664.78), c(9441.949, 781.32)),
-        tailoredPerFile = TRUE, fcsFileId = "591a3b441d725115208a6fdf", createPopulation = FALSE
-      )
-      expect_equal(resp$gate$experimentId, "591a3b441d725115208a6fda")
-      expect_equal(resp$gate$`_id`, "592640aa298f1480900e10e4") # assigned server-side
-      expect_equal(resp$gate$xChannel, "FSC-A")
-      expect_equal(resp$gate$yChannel, "FSC-W")
-      expect_equal(resp$gate$name, "my gate")
-      expect_equal(resp$gate$model$label, c(150440.453608247, 202688.886597938))
-      expect_equal(resp$gate$model$polygon$vertices, matrix(c(
-        37836.07, 971.51,
-        1588732.12, 154.646,
-        8139.405, 664.78,
-        9441.949, 781.32
-      ), ncol = 2, byrow = TRUE))
-      expect_equal(resp$gate$model$locked, FALSE)
-      expect_equal(resp$gate$gid, "592640a5a6a1d6256ec9b08a")
-      expect_equal(resp$gate$type, "PolygonGate")
-      expect_equal(resp$gate$tailoredPerFile, TRUE)
-      expect_equal(resp$gate$fcsFileId, "591a3b441d725115208a6fdf")
-    }
+    .package = "httr"
   )
+  setServer("https://my.server.com")
+  resp <- createPolygonGate("591a3b441d725115208a6fda", "FSC-A", "FSC-W", "my gate",
+    list(c(37836.07, 971.51), c(1588732.12, 154.646), c(8139.405, 664.78), c(9441.949, 781.32)),
+    tailoredPerFile = TRUE, fcsFileId = "591a3b441d725115208a6fdf", createPopulation = FALSE
+  )
+  expect_equal(resp$gate$experimentId, "591a3b441d725115208a6fda")
+  expect_equal(resp$gate$`_id`, "592640aa298f1480900e10e4") # assigned server-side
+  expect_equal(resp$gate$xChannel, "FSC-A")
+  expect_equal(resp$gate$yChannel, "FSC-W")
+  expect_equal(resp$gate$name, "my gate")
+  expect_equal(resp$gate$model$label, c(150440.453608247, 202688.886597938))
+  expect_equal(resp$gate$model$polygon$vertices, matrix(c(
+    37836.07, 971.51,
+    1588732.12, 154.646,
+    8139.405, 664.78,
+    9441.949, 781.32
+  ), ncol = 2, byrow = TRUE))
+  expect_equal(resp$gate$model$locked, FALSE)
+  expect_equal(resp$gate$gid, "592640a5a6a1d6256ec9b08a")
+  expect_equal(resp$gate$type, "PolygonGate")
+  expect_equal(resp$gate$tailoredPerFile, TRUE)
+  expect_equal(resp$gate$fcsFileId, "591a3b441d725115208a6fdf")
 })
 
 test_that("Correct HTTP request is made, createPopulation=TRUE, parentPopulationId=byName()", {
-  with_mock(
-    `httr::request_perform` = function(req, handle, refresh) {
+  local_mocked_bindings(
+    request_perform = function(req, handle, refresh) {
       switch(req$url,
         "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/populations?query=eq%28name%2C%20%22singlets%22%29&limit=2" = { # nolint
           expect_equal(req$method, "GET")
@@ -133,33 +131,32 @@ test_that("Correct HTTP request is made, createPopulation=TRUE, parentPopulation
         }
       )
     },
-    {
-      setServer("https://my.server.com")
-      resp <- createPolygonGate("591a3b441d725115208a6fda", "FSC-A", "FSC-W", "my gate",
-        list(c(37836.07, 971.51), c(1588732.12, 154.646), c(8139.405, 664.78), c(9441.949, 781.32)),
-        parentPopulationId = byName("singlets"), createPopulation = TRUE
-      )
-      expect_equal(resp$gate$experimentId, "591a3b441d725115208a6fda")
-      expect_equal(resp$gate$`_id`, "592640aa298f1480900e10e4") # assigned server-side
-      expect_equal(resp$gate$xChannel, "FSC-A")
-      expect_equal(resp$gate$yChannel, "FSC-W")
-      expect_equal(resp$gate$name, "my gate")
-      expect_equal(resp$gate$model$label, c(150440.453608247, 202688.886597938))
-      expect_equal(resp$gate$model$polygon$vertices, matrix(c(
-        37836.07, 971.51,
-        1588732.12, 154.646,
-        8139.405, 664.78,
-        9441.949, 781.32
-      ), ncol = 2, byrow = TRUE))
-      expect_equal(resp$gate$model$locked, FALSE)
-      expect_equal(resp$gate$gid, "592640a5a6a1d6256ec9b08a")
-      expect_equal(resp$gate$type, "PolygonGate")
-      expect_equal(resp$gate$tailoredPerFile, FALSE)
-      expect_equal(resp$population$experimentId, "591a3b441d725115208a6fda")
-      expect_equal(resp$population$parentId, "591a3b5f1d725115208a7087")
-      expect_equal(resp$population$name, "my gate")
-      expect_equal(resp$population$terminalGateGid, "592640a5a6a1d6256ec9b08a")
-      expect_equal(resp$population$`_id`, "62fc44da8500a029b981e350")
-    }
+    .package = "httr"
   )
+  setServer("https://my.server.com")
+  resp <- createPolygonGate("591a3b441d725115208a6fda", "FSC-A", "FSC-W", "my gate",
+    list(c(37836.07, 971.51), c(1588732.12, 154.646), c(8139.405, 664.78), c(9441.949, 781.32)),
+    parentPopulationId = byName("singlets"), createPopulation = TRUE
+  )
+  expect_equal(resp$gate$experimentId, "591a3b441d725115208a6fda")
+  expect_equal(resp$gate$`_id`, "592640aa298f1480900e10e4") # assigned server-side
+  expect_equal(resp$gate$xChannel, "FSC-A")
+  expect_equal(resp$gate$yChannel, "FSC-W")
+  expect_equal(resp$gate$name, "my gate")
+  expect_equal(resp$gate$model$label, c(150440.453608247, 202688.886597938))
+  expect_equal(resp$gate$model$polygon$vertices, matrix(c(
+    37836.07, 971.51,
+    1588732.12, 154.646,
+    8139.405, 664.78,
+    9441.949, 781.32
+  ), ncol = 2, byrow = TRUE))
+  expect_equal(resp$gate$model$locked, FALSE)
+  expect_equal(resp$gate$gid, "592640a5a6a1d6256ec9b08a")
+  expect_equal(resp$gate$type, "PolygonGate")
+  expect_equal(resp$gate$tailoredPerFile, FALSE)
+  expect_equal(resp$population$experimentId, "591a3b441d725115208a6fda")
+  expect_equal(resp$population$parentId, "591a3b5f1d725115208a7087")
+  expect_equal(resp$population$name, "my gate")
+  expect_equal(resp$population$terminalGateGid, "592640a5a6a1d6256ec9b08a")
+  expect_equal(resp$population$`_id`, "62fc44da8500a029b981e350")
 })

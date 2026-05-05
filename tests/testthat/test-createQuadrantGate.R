@@ -1,8 +1,8 @@
 context("createQuadrantGate")
 
 test_that("Correct HTTP request is made", {
-  with_mock(
-    `httr::request_perform` = function(req, handle, refresh) {
+  local_mocked_bindings(
+    request_perform = function(req, handle, refresh) {
       expect_equal(req$method, "POST")
       expect_equal(req$url, "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/gates")
       body <- rawToChar(req$options$postfields)
@@ -18,36 +18,35 @@ test_that("Correct HTTP request is made", {
       )
       return(response)
     },
-    {
-      setServer("https://my.server.com")
-      resp <- createQuadrantGate("591a3b441d725115208a6fda", "FSC-A", "FSC-W", "my gate",
-        118010.39175257733, 182870.51546391752,
-        labels = list(c(196608.00, 196608.00), c(0.75, 196608.00), c(0.75, 0.75), c(196608.00, 0.75)),
-        createPopulation = FALSE
-      )
-      expect_equal(resp$gate$experimentId, "591a3b441d725115208a6fda")
-      expect_equal(resp$gate$`_id`, "592640aa298f1480900e10e4") # assigned server-side
-      expect_equal(resp$gate$xChannel, "FSC-A")
-      expect_equal(resp$gate$yChannel, "FSC-W")
-      expect_equal(resp$gate$names, c("my gate (UR)","my gate (UL)","my gate (LL)","my gate (LR)"))
-      expect_equal(
-        resp$gate$model$labels,
-        matrix(c(c(196608.00, 196608.00), c(0.75, 196608.00), c(0.75, 0.75), c(196608.00, 0.75)), byrow = TRUE, ncol = 2)
-      )
-      expect_equal(resp$gate$model$quadrant$x, 118010.391752577)
-      expect_equal(resp$gate$model$quadrant$y, 182870.515463918)
-      expect_equal(resp$gate$model$locked, FALSE)
-      expect_equal(resp$gate$model$gids, c("5d30960a417e4bc767a428a3", "5d30960a417e4bc767a428a4", "5d30960a417e4bc767a428a5", "5d30960a417e4bc767a428a6")) # nolint
-      expect_equal(resp$gate$gid, "592640a5a6a1d6256ec9b08a")
-      expect_equal(resp$gate$type, "QuadrantGate")
-      expect_equal(resp$gate$tailoredPerFile, FALSE)
-    }
+    .package = "httr"
   )
+  setServer("https://my.server.com")
+  resp <- createQuadrantGate("591a3b441d725115208a6fda", "FSC-A", "FSC-W", "my gate",
+    118010.39175257733, 182870.51546391752,
+    labels = list(c(196608.00, 196608.00), c(0.75, 196608.00), c(0.75, 0.75), c(196608.00, 0.75)),
+    createPopulation = FALSE
+  )
+  expect_equal(resp$gate$experimentId, "591a3b441d725115208a6fda")
+  expect_equal(resp$gate$`_id`, "592640aa298f1480900e10e4") # assigned server-side
+  expect_equal(resp$gate$xChannel, "FSC-A")
+  expect_equal(resp$gate$yChannel, "FSC-W")
+  expect_equal(resp$gate$names, c("my gate (UR)","my gate (UL)","my gate (LL)","my gate (LR)"))
+  expect_equal(
+    resp$gate$model$labels,
+    matrix(c(c(196608.00, 196608.00), c(0.75, 196608.00), c(0.75, 0.75), c(196608.00, 0.75)), byrow = TRUE, ncol = 2)
+  )
+  expect_equal(resp$gate$model$quadrant$x, 118010.391752577)
+  expect_equal(resp$gate$model$quadrant$y, 182870.515463918)
+  expect_equal(resp$gate$model$locked, FALSE)
+  expect_equal(resp$gate$model$gids, c("5d30960a417e4bc767a428a3", "5d30960a417e4bc767a428a4", "5d30960a417e4bc767a428a5", "5d30960a417e4bc767a428a6")) # nolint
+  expect_equal(resp$gate$gid, "592640a5a6a1d6256ec9b08a")
+  expect_equal(resp$gate$type, "QuadrantGate")
+  expect_equal(resp$gate$tailoredPerFile, FALSE)
 })
 
 test_that("Correct HTTP request is made, fcsFileId specified", {
-  with_mock(
-    `httr::request_perform` = function(req, handle, refresh) {
+  local_mocked_bindings(
+    request_perform = function(req, handle, refresh) {
       expect_equal(req$method, "POST")
       expect_equal(req$url, "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/gates")
       body <- rawToChar(req$options$postfields)
@@ -63,46 +62,45 @@ test_that("Correct HTTP request is made, fcsFileId specified", {
       )
       return(response)
     },
-    {
-      setServer("https://my.server.com")
-      resp <- createQuadrantGate("591a3b441d725115208a6fda", "FSC-A", "FSC-W", "my gate",
-        118010.39175257733, 182870.51546391752,
-        labels = list(c(196608.00, 196608.00), c(0.75, 196608.00), c(0.75, 0.75), c(196608.00, 0.75)),
-        tailoredPerFile = TRUE, fcsFileId = "591a3b441d725115208a6fdf", createPopulation = FALSE
-      )
-      expect_equal(resp$gate$experimentId, "591a3b441d725115208a6fda")
-      expect_equal(resp$gate$`_id`, "592640aa298f1480900e10e4") # assigned server-side
-      expect_equal(resp$gate$xChannel, "FSC-A")
-      expect_equal(resp$gate$yChannel, "FSC-W")
-      expect_equal(resp$gate$names, c("my gate (UR)","my gate (UL)","my gate (LL)","my gate (LR)"))
-      expect_equal(
-        resp$gate$model$labels,
-        matrix(c(c(196608.00, 196608.00), c(0.75, 196608.00), c(0.75, 0.75), c(196608.00, 0.75)), byrow = T, ncol = 2)
-      )
-      expect_equal(resp$gate$model$quadrant$x, 118010.391752577)
-      expect_equal(resp$gate$model$quadrant$y, 182870.515463918)
-      expect_equal(resp$gate$model$locked, FALSE)
-      expect_equal(
-        resp$gate$model$gids,
-        c(
-          "5d30960a417e4bc767a428a3",
-          "5d30960a417e4bc767a428a4",
-          "5d30960a417e4bc767a428a5",
-          "5d30960a417e4bc767a428a6"
-        )
-      )
-      expect_equal(resp$gate$gid, "592640a5a6a1d6256ec9b08a")
-      expect_equal(resp$gate$type, "QuadrantGate")
-      expect_equal(resp$gate$tailoredPerFile, TRUE)
-      expect_equal(resp$gate$fcsFileId, "591a3b441d725115208a6fdf")
-    }
+    .package = "httr"
   )
+  setServer("https://my.server.com")
+  resp <- createQuadrantGate("591a3b441d725115208a6fda", "FSC-A", "FSC-W", "my gate",
+    118010.39175257733, 182870.51546391752,
+    labels = list(c(196608.00, 196608.00), c(0.75, 196608.00), c(0.75, 0.75), c(196608.00, 0.75)),
+    tailoredPerFile = TRUE, fcsFileId = "591a3b441d725115208a6fdf", createPopulation = FALSE
+  )
+  expect_equal(resp$gate$experimentId, "591a3b441d725115208a6fda")
+  expect_equal(resp$gate$`_id`, "592640aa298f1480900e10e4") # assigned server-side
+  expect_equal(resp$gate$xChannel, "FSC-A")
+  expect_equal(resp$gate$yChannel, "FSC-W")
+  expect_equal(resp$gate$names, c("my gate (UR)","my gate (UL)","my gate (LL)","my gate (LR)"))
+  expect_equal(
+    resp$gate$model$labels,
+    matrix(c(c(196608.00, 196608.00), c(0.75, 196608.00), c(0.75, 0.75), c(196608.00, 0.75)), byrow = T, ncol = 2)
+  )
+  expect_equal(resp$gate$model$quadrant$x, 118010.391752577)
+  expect_equal(resp$gate$model$quadrant$y, 182870.515463918)
+  expect_equal(resp$gate$model$locked, FALSE)
+  expect_equal(
+    resp$gate$model$gids,
+    c(
+      "5d30960a417e4bc767a428a3",
+      "5d30960a417e4bc767a428a4",
+      "5d30960a417e4bc767a428a5",
+      "5d30960a417e4bc767a428a6"
+    )
+  )
+  expect_equal(resp$gate$gid, "592640a5a6a1d6256ec9b08a")
+  expect_equal(resp$gate$type, "QuadrantGate")
+  expect_equal(resp$gate$tailoredPerFile, TRUE)
+  expect_equal(resp$gate$fcsFileId, "591a3b441d725115208a6fdf")
 })
 
 
 test_that("Correct HTTP request is made, createPopulation=TRUE, parentPopulationId=byName()", {
-  with_mock(
-    `httr::request_perform` = function(req, handle, refresh) {
+  local_mocked_bindings(
+    request_perform = function(req, handle, refresh) {
       switch(req$url,
         "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/populations?query=eq%28name%2C%20%22singlets%22%29&limit=2" = { # nolint
           expect_equal(req$method, "GET")
@@ -148,37 +146,36 @@ test_that("Correct HTTP request is made, createPopulation=TRUE, parentPopulation
         }
       )
     },
-    {
-      setServer("https://my.server.com")
-      resp <- createQuadrantGate("591a3b441d725115208a6fda", "FSC-A", "FSC-W", "my gate",
-        118010.39175257733, 182870.51546391752,
-        labels = list(c(196608.00, 196608.00), c(0.75, 196608.00), c(0.75, 0.75), c(196608.00, 0.75)),
-        parentPopulationId = byName("singlets"), createPopulation = TRUE, tailoredPerFile = FALSE
-      )
-      expect_equal(resp$gate$experimentId, "591a3b441d725115208a6fda")
-      expect_equal(resp$gate$`_id`, "592640aa298f1480900e10e4") # assigned server-side
-      expect_equal(resp$gate$xChannel, "FSC-A")
-      expect_equal(resp$gate$yChannel, "FSC-W")
-      expect_equal(resp$gate$names, c("my gate (UR)","my gate (UL)","my gate (LL)","my gate (LR)"))
-      expect_equal(
-        resp$gate$model$labels,
-        matrix(c(c(196608.00, 196608.00), c(0.75, 196608.00), c(0.75, 0.75), c(196608.00, 0.75)), byrow = TRUE, ncol = 2)
-      )
-      expect_equal(resp$gate$model$quadrant$x, 118010.391752577)
-      expect_equal(resp$gate$model$quadrant$y, 182870.515463918)
-      expect_equal(resp$gate$model$locked, FALSE)
-      expect_equal(
-        resp$gate$model$gids,
-        c(
-          "5d30960a417e4bc767a428a3",
-          "5d30960a417e4bc767a428a4",
-          "5d30960a417e4bc767a428a5",
-          "5d30960a417e4bc767a428a6"
-        )
-      )
-      expect_equal(resp$gate$gid, "592640a5a6a1d6256ec9b08a")
-      expect_equal(resp$gate$type, "QuadrantGate")
-      expect_equal(resp$gate$tailoredPerFile, FALSE)
-    }
+    .package = "httr"
   )
+  setServer("https://my.server.com")
+  resp <- createQuadrantGate("591a3b441d725115208a6fda", "FSC-A", "FSC-W", "my gate",
+    118010.39175257733, 182870.51546391752,
+    labels = list(c(196608.00, 196608.00), c(0.75, 196608.00), c(0.75, 0.75), c(196608.00, 0.75)),
+    parentPopulationId = byName("singlets"), createPopulation = TRUE, tailoredPerFile = FALSE
+  )
+  expect_equal(resp$gate$experimentId, "591a3b441d725115208a6fda")
+  expect_equal(resp$gate$`_id`, "592640aa298f1480900e10e4") # assigned server-side
+  expect_equal(resp$gate$xChannel, "FSC-A")
+  expect_equal(resp$gate$yChannel, "FSC-W")
+  expect_equal(resp$gate$names, c("my gate (UR)","my gate (UL)","my gate (LL)","my gate (LR)"))
+  expect_equal(
+    resp$gate$model$labels,
+    matrix(c(c(196608.00, 196608.00), c(0.75, 196608.00), c(0.75, 0.75), c(196608.00, 0.75)), byrow = TRUE, ncol = 2)
+  )
+  expect_equal(resp$gate$model$quadrant$x, 118010.391752577)
+  expect_equal(resp$gate$model$quadrant$y, 182870.515463918)
+  expect_equal(resp$gate$model$locked, FALSE)
+  expect_equal(
+    resp$gate$model$gids,
+    c(
+      "5d30960a417e4bc767a428a3",
+      "5d30960a417e4bc767a428a4",
+      "5d30960a417e4bc767a428a5",
+      "5d30960a417e4bc767a428a6"
+    )
+  )
+  expect_equal(resp$gate$gid, "592640a5a6a1d6256ec9b08a")
+  expect_equal(resp$gate$type, "QuadrantGate")
+  expect_equal(resp$gate$tailoredPerFile, FALSE)
 })

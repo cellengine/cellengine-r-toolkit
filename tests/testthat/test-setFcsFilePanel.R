@@ -1,8 +1,8 @@
 context("setFcsFilePanel")
 
 test_that("Correct HTTP request is made", {
-  with_mock(
-    `httr::request_perform` = function(req, handle, refresh) {
+  local_mocked_bindings(
+    request_perform = function(req, handle, refresh) {
       expect_equal(req$method, "PATCH")
       expect_equal(req$url, "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/fcsfiles/591a3b441d725115208a6fdc") # nolint
       body <- rawToChar(req$options$postfields)
@@ -16,13 +16,12 @@ test_that("Correct HTTP request is made", {
       )
       return(response)
     },
-    {
-      setServer("https://my.server.com")
-      panel <- list(
-        list("index" = 1, "channel" = "FSC-A"),
-        list("index" = 7, "channel" = "Blue530-A", "reagent" = "CD3")
-      )
-      resp <- setFcsFilePanel("591a3b441d725115208a6fda", "591a3b441d725115208a6fdc", "Panel 1", panel)
-    }
+    .package = "httr"
   )
+  setServer("https://my.server.com")
+  panel <- list(
+    list("index" = 1, "channel" = "FSC-A"),
+    list("index" = 7, "channel" = "Blue530-A", "reagent" = "CD3")
+  )
+  resp <- setFcsFilePanel("591a3b441d725115208a6fda", "591a3b441d725115208a6fdc", "Panel 1", panel)
 })

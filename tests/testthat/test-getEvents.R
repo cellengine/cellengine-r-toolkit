@@ -1,8 +1,8 @@
 context("getEvents")
 
 test_that("makes expected HTTP request", {
-  with_mock(
-    `httr::request_perform` = function(req, handle, refresh) {
+  local_mocked_bindings(
+    request_perform = function(req, handle, refresh) {
       expect_equal(req$method, "GET")
       expect_equal(req$url, "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/fcsfiles/591a3b441d725115208a6fdc.FCS?populationId=null&compensationId=0&compensatedQ=false&headers=true&addEventNumber=true") # nolint
       response <- httptest::fake_response(
@@ -14,16 +14,15 @@ test_that("makes expected HTTP request", {
       )
       return(response)
     },
-    {
-      setServer("https://my.server.com")
-      resp <- getEvents("591a3b441d725115208a6fda", "591a3b441d725115208a6fdc", addEventNumber = TRUE)
-    }
+    .package = "httr"
   )
+  setServer("https://my.server.com")
+  resp <- getEvents("591a3b441d725115208a6fda", "591a3b441d725115208a6fdc", addEventNumber = TRUE)
 })
 
 test_that("makes expected HTTP request with subsampling", {
-  with_mock(
-    `httr::request_perform` = function(req, handle, refresh) {
+  local_mocked_bindings(
+    request_perform = function(req, handle, refresh) {
       expect_equal(req$method, "GET")
       expect_equal(req$url, "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/fcsfiles/591a3b441d725115208a6fdc.FCS?populationId=null&compensationId=0&compensatedQ=false&headers=true&addEventNumber=false&preSubsampleN=50&seed=2.25") # nolint
       response <- httptest::fake_response(
@@ -35,20 +34,19 @@ test_that("makes expected HTTP request with subsampling", {
       )
       return(response)
     },
-    {
-      setServer("https://my.server.com")
-      resp <- getEvents(
-        "591a3b441d725115208a6fda",
-        "591a3b441d725115208a6fdc",
-        subsampling = list(preSubsampleN = 50, seed = 2.25)
-      )
-    }
+    .package = "httr"
+  )
+  setServer("https://my.server.com")
+  resp <- getEvents(
+    "591a3b441d725115208a6fda",
+    "591a3b441d725115208a6fdc",
+    subsampling = list(preSubsampleN = 50, seed = 2.25)
   )
 })
 
 test_that("doesn't mangle column names", {
-  with_mock(
-    `httr::request_perform` = function(req, handle, refresh) {
+  local_mocked_bindings(
+    request_perform = function(req, handle, refresh) {
       expect_equal(req$method, "GET")
       expect_equal(req$url, "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/fcsfiles/591a3b441d725115208a6fdc.TSV?populationId=null&compensationId=0&compensatedQ=false&headers=true&addEventNumber=false") # nolint
       response <- httptest::fake_response(
@@ -60,17 +58,16 @@ test_that("doesn't mangle column names", {
       )
       return(response)
     },
-    {
-      setServer("https://my.server.com")
-      resp <- getEvents("591a3b441d725115208a6fda", "591a3b441d725115208a6fdc", format = "TSV")
-      expect_equal(colnames(resp), c("FSC-A", "CD3 (Ax647-A)"))
-    }
+    .package = "httr"
   )
+  setServer("https://my.server.com")
+  resp <- getEvents("591a3b441d725115208a6fda", "591a3b441d725115208a6fdc", format = "TSV")
+  expect_equal(colnames(resp), c("FSC-A", "CD3 (Ax647-A)"))
 })
 
 test_that("makes expected HTTP request for S3 transfer", {
-  with_mock(
-    `httr::request_perform` = function(req, handle, refresh) {
+  local_mocked_bindings(
+    request_perform = function(req, handle, refresh) {
       expect_equal(req$method, "POST")
       expect_equal(req$url, "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/fcsfiles/591a3b441d725115208a6fdc.FCS?populationId=null&compensationId=0&compensatedQ=false&headers=true&addEventNumber=false") # nolint
       body <- rawToChar(req$options$postfields)
@@ -96,22 +93,21 @@ test_that("makes expected HTTP request for S3 transfer", {
       )
       return(response)
     },
-    {
-      setServer("https://my.server.com")
-      resp <- getEvents(
-        "591a3b441d725115208a6fda",
-        "591a3b441d725115208a6fdc",
-        destination=list(
-          host="ce-test-s3-b.s3.us-east-2.amazonaws.com",
-          path="/",
-          accessKey="access key",
-          secretKey="secret key",
-          headers=list(
-            `x-amz-storage-class`="REDUCED_REDUNDANCY",
-            `x-amz-server-side-encryption`="AES256"
-          )
-        )
+    .package = "httr"
+  )
+  setServer("https://my.server.com")
+  resp <- getEvents(
+    "591a3b441d725115208a6fda",
+    "591a3b441d725115208a6fdc",
+    destination=list(
+      host="ce-test-s3-b.s3.us-east-2.amazonaws.com",
+      path="/",
+      accessKey="access key",
+      secretKey="secret key",
+      headers=list(
+        `x-amz-storage-class`="REDUCED_REDUNDANCY",
+        `x-amz-server-side-encryption`="AES256"
       )
-    }
+    )
   )
 })

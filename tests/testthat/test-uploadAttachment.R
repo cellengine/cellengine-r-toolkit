@@ -1,8 +1,8 @@
 context("uploadAttachment")
 
 test_that("Correct HTTP request is made", {
-  with_mock(
-    `httr::request_perform` = function(req, handle, refresh) {
+  local_mocked_bindings(
+    request_perform = function(req, handle, refresh) {
       expect_equal(req$method, "POST")
       expect_equal(req$url, "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fdb/attachments")
       response <- httptest::fake_response(
@@ -14,11 +14,10 @@ test_that("Correct HTTP request is made", {
       )
       return(response)
     },
-    {
-      setServer("https://my.server.com")
-      resp <- uploadAttachment("591a3b441d725115208a6fdb", "../test.txt")
-      expect_equal(resp$`_id`, "591a3b441d725115208a6fda")
-      expect_equal(resp$filename, "test.txt")
-    }
+    .package = "httr"
   )
+  setServer("https://my.server.com")
+  resp <- uploadAttachment("591a3b441d725115208a6fdb", "../test.txt")
+  expect_equal(resp$`_id`, "591a3b441d725115208a6fda")
+  expect_equal(resp$filename, "test.txt")
 })

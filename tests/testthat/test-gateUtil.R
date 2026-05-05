@@ -17,8 +17,8 @@ test_that("works if tailoredPerFile=TRUE and fcsFileId is an ID", {
 })
 
 test_that("assigns the ID of a matching fcsFile given in byName()", {
-  with_mock(
-    `httr::request_perform` = function(req, handle, refresh) {
+  local_mocked_bindings(
+    request_perform = function(req, handle, refresh) {
       expect_equal(req$url, "https://cellengine.com/api/v1/experiments/591a3b441d725115208a6fda/fcsfiles?query=eq%28filename%2C%20%22name%22%29&limit=2") # nolint
       expect_equal(req$method, "GET")
       response <- httptest::fake_response(
@@ -32,13 +32,12 @@ test_that("assigns the ID of a matching fcsFile given in byName()", {
       )
       return(response)
     },
-    {
-      setServer("https://cellengine.com")
-      result <- parseFcsFileArgs(list(), TRUE, byName("name"), "591a3b441d725115208a6fda")
-      expect_equal(result, list(
-        tailoredPerFile = jsonlite::unbox(TRUE),
-        fcsFileId = jsonlite::unbox("591a3b5f1d725115208a7088")
-      ))
-    }
+    .package = "httr"
   )
+  setServer("https://cellengine.com")
+  result <- parseFcsFileArgs(list(), TRUE, byName("name"), "591a3b441d725115208a6fda")
+  expect_equal(result, list(
+    tailoredPerFile = jsonlite::unbox(TRUE),
+    fcsFileId = jsonlite::unbox("591a3b5f1d725115208a7088")
+  ))
 })

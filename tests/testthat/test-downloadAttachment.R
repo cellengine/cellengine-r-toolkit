@@ -1,8 +1,8 @@
 context("downloadAttachment")
 
 test_that("makes expected HTTP request", {
-  with_mock(
-    `httr::request_perform` = function(req, handle, refresh) {
+  local_mocked_bindings(
+    request_perform = function(req, handle, refresh) {
       expect_equal(req$method, "GET")
       expect_equal(req$url, "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/attachments/591a3b441d725115208a6fde") # nolint
       response <- httptest::fake_response(
@@ -14,9 +14,8 @@ test_that("makes expected HTTP request", {
       )
       return(response)
     },
-    {
-      setServer("https://my.server.com")
-      resp <- downloadAttachment("591a3b441d725115208a6fda", "591a3b441d725115208a6fde")
-    }
+    .package = "httr"
   )
+  setServer("https://my.server.com")
+  resp <- downloadAttachment("591a3b441d725115208a6fda", "591a3b441d725115208a6fde")
 })

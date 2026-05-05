@@ -1,5 +1,4 @@
 context("toFlowCore")
-library("mockthat")
 
 test_that("rectangle gate is converted to flowCore", {
   skip_if_not_installed("flowCore")
@@ -63,13 +62,14 @@ test_that("ellipse gate makes correct round-trip: CE -> flowCore -> CE", {
   experimentId <- "5d2f8b4b21fd0676fb3a6a70"
   content <- '{"__v":0,"experimentId":"5d2f8b4b21f0676fb3a6a70","model":{"label":[106299.536082474,85580.3298969073],"ellipse":{"angle":0.7039529178881421,"major":166096.6309940297,"minor":102655.51977381333,"center":[106299.53608247427,85580.32989690728]},"locked":false},"gid":"59289ff2461f1fd925fca4ff","xChannel":"FSC-H","type":"EllipseGate","name":"my gate","parentPopulationId":null,"yChannel":"SSC-H","_id":"59289ff59989cc7704ada3c0","tailoredPerFile":false}' # nolint
   gate <- jsonlite::fromJSON(content)
-  mock <- mock(gate)
 
-  with_mock(`cellengine::createEllipseGate` = mock, {
-    # when
-    flowGate <- toFlowCore(gate)
-    newCEGate <- fromFlowCore(flowGate, experimentId, "hek 2")
-  })
+  local_mocked_bindings(
+    createEllipseGate = function(...) gate,
+    .package = "cellengine"
+  )
+  # when
+  flowGate <- toFlowCore(gate)
+  newCEGate <- fromFlowCore(flowGate, experimentId, "hek 2")
 
   # then
   m1 <- gate$model$ellipse
@@ -89,13 +89,14 @@ test_that("polygon gate makes correct round-trip: CE -> flowCore -> CE", {
   experimentId <- "5d2f8b4b21fd0676fb3a6a70"
   content <- '{"__v":0,"experimentId":"591a3b441d725115208a6fda","model":{"label":[150440.453608247,202688.886597938],"polygon":{"vertices":[[37836.07,971.51],[1588732.12,154.646],[8139.405,664.78],[9441.949,781.32]]},"locked":false},"gid":"592640a5a6a1d6256ec9b08a","xChannel":"FSC-H","type":"PolygonGate","name":"my gate","parentPopulationId":null,"yChannel":"SSC-H","_id":"592640aa298f1480900e10e4","tailoredPerFile":false}' # nolint
   gate <- jsonlite::fromJSON(content)
-  mock <- mock(gate)
 
-  with_mock(`cellengine::createPolygonGate` = mock, {
-    # when
-    flowGate <- toFlowCore(gate)
-    newCEGate <- fromFlowCore(flowGate, experimentId, "test polygon gate")
-  })
+  local_mocked_bindings(
+    createPolygonGate = function(...) gate,
+    .package = "cellengine"
+  )
+  # when
+  flowGate <- toFlowCore(gate)
+  newCEGate <- fromFlowCore(flowGate, experimentId, "test polygon gate")
 
   # then
   m1 <- gate$model$polygon
@@ -111,13 +112,14 @@ test_that("rectangle gate makes correct round-trip: CE -> flowCore -> CE", {
   experimentId <- "5d2f8b4b21fd0676fb3a6a70"
   content <- '{"__v":0,"experimentId":"591a3b441d725115208a6fda","model":{"label":[150440.453608247,202688.886597938],"rectangle":{"y2":214399.74226804124,"x2":182870.51546391752,"y1":190978.03092783503,"x1":118010.39175257733},"locked":false},"gid":"592640a5a6a1d6256ec9b08a","xChannel":"FSC-H","type":"RectangleGate","name":"my gate","parentPopulationId":null,"yChannel":"SSC-H","_id":"592640aa298f1480900e10e4","tailoredPerFile":false}' # nolint
   gate <- jsonlite::fromJSON(content)
-  mock <- mock(gate)
 
-  with_mock(`cellengine::createRectangleGate` = mock, {
-    # when
-    flowGate <- toFlowCore(gate)
-    newCEGate <- fromFlowCore(flowGate, experimentId, "test rectangle gate")
-  })
+  local_mocked_bindings(
+    createRectangleGate = function(...) gate,
+    .package = "cellengine"
+  )
+  # when
+  flowGate <- toFlowCore(gate)
+  newCEGate <- fromFlowCore(flowGate, experimentId, "test rectangle gate")
 
   # then
   m1 <- gate$model$rectangle
@@ -152,13 +154,14 @@ test_that("range gate makes correct round-trip: CE -> flowCore -> CE", {
   experimentId <- "5d2f8b4b21fd0676fb3a6a70"
   content <- '{"__v":0,"experimentId":"591a3b441d725115208a6fda","model":{"label":[56440.46,0.5],"range":{"x1":12502.34,"x2":95102.78,"y":0.5},"locked":false},"gid":"592640a5a6a1d6256ec9b08b","xChannel":"FSC-H","type":"RangeGate","name":"my range gate","parentPopulationId":null,"_id":"592640aa298f1480900e10e5","tailoredPerFile":false}' # nolint
   gate <- jsonlite::fromJSON(content)
-  mock <- mock(gate)
 
-  with_mock(`cellengine::createRangeGate` = mock, {
-    # when
-    flowGate <- toFlowCore(gate)
-    newCEGate <- fromFlowCore(flowGate, experimentId, "my range gate")
-  })
+  local_mocked_bindings(
+    createRangeGate = function(...) gate,
+    .package = "cellengine"
+  )
+  # when
+  flowGate <- toFlowCore(gate)
+  newCEGate <- fromFlowCore(flowGate, experimentId, "my range gate")
 
   # then
   m1 <- gate$model$range
@@ -324,4 +327,3 @@ test_that("toFlowCore converts a Compensation", {
     )
   ))
 })
-

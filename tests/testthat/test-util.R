@@ -23,8 +23,8 @@ test_that("baseDelete requires baseURL to have been set", {{
 }})
 
 test_that("lookupByName stops for 0 matches", {
-  with_mock(
-    `httr::request_perform` = function(req, handle, refresh) {
+  local_mocked_bindings(
+    request_perform = function(req, handle, refresh) {
       expect_equal(req$method, "GET")
       expect_match(req$url, "https://cellengine.com/api/v1/experiments")
       response <- httptest::fake_response(
@@ -36,19 +36,18 @@ test_that("lookupByName stops for 0 matches", {
       )
       return(response)
     },
-    {
-      setServer("https://cellengine.com")
-      expect_error(
-        lookupByName("/api/v1/experiments", byName("My experiment")),
-        "Resource with the name 'My experiment' does not exist."
-      )
-    }
+    .package = "httr"
+  )
+  setServer("https://cellengine.com")
+  expect_error(
+    lookupByName("/api/v1/experiments", byName("My experiment")),
+    "Resource with the name 'My experiment' does not exist."
   )
 })
 
 test_that("lookupByName stops for >1 match", {
-  with_mock(
-    `httr::request_perform` = function(req, handle, refresh) {
+  local_mocked_bindings(
+    request_perform = function(req, handle, refresh) {
       expect_equal(req$method, "GET")
       expect_match(req$url, "https://cellengine.com/api/v1/experiments")
       response <- httptest::fake_response(
@@ -60,19 +59,18 @@ test_that("lookupByName stops for >1 match", {
       )
       return(response)
     },
-    {
-      setServer("https://cellengine.com")
-      expect_error(
-        lookupByName("/api/v1/experiments", byName("My experiment")),
-        "More than one resource with the name 'My experiment' exists."
-      )
-    }
+    .package = "httr"
+  )
+  setServer("https://cellengine.com")
+  expect_error(
+    lookupByName("/api/v1/experiments", byName("My experiment")),
+    "More than one resource with the name 'My experiment' exists."
   )
 })
 
 test_that("lookupByName returns for 1 match", {
-  with_mock(
-    `httr::request_perform` = function(req, handle, refresh) {
+  local_mocked_bindings(
+    request_perform = function(req, handle, refresh) {
       expect_equal(req$method, "GET")
       expect_match(req$url, "https://cellengine.com/api/v1/experiments")
       response <- httptest::fake_response(
@@ -84,12 +82,11 @@ test_that("lookupByName returns for 1 match", {
       )
       return(response)
     },
-    {
-      setServer("https://cellengine.com")
-      expect_equal(
-        lookupByName("/api/v1/experiments", byName("My experiment")),
-        "591a3b441d725115208a6fda"
-      )
-    }
+    .package = "httr"
+  )
+  setServer("https://cellengine.com")
+  expect_equal(
+    lookupByName("/api/v1/experiments", byName("My experiment")),
+    "591a3b441d725115208a6fda"
   )
 })

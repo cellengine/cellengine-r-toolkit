@@ -1,8 +1,8 @@
 context("createSplitGate")
 
 test_that("Correct HTTP request is made", {
-  with_mock(
-    `httr::request_perform` = function(req, handle, refresh) {
+  local_mocked_bindings(
+    request_perform = function(req, handle, refresh) {
       expect_equal(req$method, "POST")
       expect_equal(req$url, "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/gates")
       body <- rawToChar(req$options$postfields)
@@ -18,31 +18,30 @@ test_that("Correct HTTP request is made", {
       )
       return(response)
     },
-    {
-      setServer("https://my.server.com")
-      resp <- createSplitGate(
-        "591a3b441d725115208a6fda", "FSC-A", "my gate", 144000,
-        labels = list(c(26215.4, 0.95), c(235929.6, 0.95)), createPopulation = FALSE
-      )
-      expect_equal(resp$gate$experimentId, "591a3b441d725115208a6fda")
-      expect_equal(resp$gate$`_id`, "592640aa298f1480900e10e4") # assigned server-side
-      expect_equal(resp$gate$xChannel, "FSC-A")
-      expect_equal(resp$gate$name, "my gate")
-      expect_equal(resp$gate$model$labels, matrix(c(c(26215.4, 0.95), c(235929.6, 0.95)), byrow = TRUE, ncol = 2))
-      expect_equal(resp$gate$model$split$x, 144000)
-      expect_equal(resp$gate$model$split$y, 0.5)
-      expect_equal(resp$gate$model$locked, FALSE)
-      expect_equal(resp$gate$model$gids, c("5d30960a417e4bc767a428a3", "5d30960a417e4bc767a428a4"))
-      expect_equal(resp$gate$gid, "592640a5a6a1d6256ec9b08a")
-      expect_equal(resp$gate$type, "SplitGate")
-      expect_equal(resp$gate$tailoredPerFile, FALSE)
-    }
+    .package = "httr"
   )
+  setServer("https://my.server.com")
+  resp <- createSplitGate(
+    "591a3b441d725115208a6fda", "FSC-A", "my gate", 144000,
+    labels = list(c(26215.4, 0.95), c(235929.6, 0.95)), createPopulation = FALSE
+  )
+  expect_equal(resp$gate$experimentId, "591a3b441d725115208a6fda")
+  expect_equal(resp$gate$`_id`, "592640aa298f1480900e10e4") # assigned server-side
+  expect_equal(resp$gate$xChannel, "FSC-A")
+  expect_equal(resp$gate$name, "my gate")
+  expect_equal(resp$gate$model$labels, matrix(c(c(26215.4, 0.95), c(235929.6, 0.95)), byrow = TRUE, ncol = 2))
+  expect_equal(resp$gate$model$split$x, 144000)
+  expect_equal(resp$gate$model$split$y, 0.5)
+  expect_equal(resp$gate$model$locked, FALSE)
+  expect_equal(resp$gate$model$gids, c("5d30960a417e4bc767a428a3", "5d30960a417e4bc767a428a4"))
+  expect_equal(resp$gate$gid, "592640a5a6a1d6256ec9b08a")
+  expect_equal(resp$gate$type, "SplitGate")
+  expect_equal(resp$gate$tailoredPerFile, FALSE)
 })
 
 test_that("Correct HTTP request is made, fcsFileId specified", {
-  with_mock(
-    `httr::request_perform` = function(req, handle, refresh) {
+  local_mocked_bindings(
+    request_perform = function(req, handle, refresh) {
       expect_equal(req$method, "POST")
       expect_equal(req$url, "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/gates")
       body <- rawToChar(req$options$postfields)
@@ -58,32 +57,31 @@ test_that("Correct HTTP request is made, fcsFileId specified", {
       )
       return(response)
     },
-    {
-      setServer("https://my.server.com")
-      resp <- createSplitGate("591a3b441d725115208a6fda", "FSC-A", "my gate", 144000,
-        labels = list(c(26215.4, 0.95), c(235929.6, 0.95)),
-        tailoredPerFile = TRUE, fcsFileId = "591a3b441d725115208a6fdf", createPopulation = FALSE
-      )
-      expect_equal(resp$gate$experimentId, "591a3b441d725115208a6fda")
-      expect_equal(resp$gate$`_id`, "592640aa298f1480900e10e4") # assigned server-side
-      expect_equal(resp$gate$xChannel, "FSC-A")
-      expect_equal(resp$gate$name, "my gate")
-      expect_equal(resp$gate$model$labels, matrix(c(c(26215.4, 0.95), c(235929.6, 0.95)), byrow = TRUE, ncol = 2))
-      expect_equal(resp$gate$model$split$x, 144000)
-      expect_equal(resp$gate$model$split$y, 0.5)
-      expect_equal(resp$gate$model$locked, FALSE)
-      expect_equal(resp$gate$model$gids, c("5d30960a417e4bc767a428a3", "5d30960a417e4bc767a428a4"))
-      expect_equal(resp$gate$gid, "592640a5a6a1d6256ec9b08a")
-      expect_equal(resp$gate$type, "SplitGate")
-      expect_equal(resp$gate$tailoredPerFile, TRUE)
-      expect_equal(resp$gate$fcsFileId, "591a3b441d725115208a6fdf")
-    }
+    .package = "httr"
   )
+  setServer("https://my.server.com")
+  resp <- createSplitGate("591a3b441d725115208a6fda", "FSC-A", "my gate", 144000,
+    labels = list(c(26215.4, 0.95), c(235929.6, 0.95)),
+    tailoredPerFile = TRUE, fcsFileId = "591a3b441d725115208a6fdf", createPopulation = FALSE
+  )
+  expect_equal(resp$gate$experimentId, "591a3b441d725115208a6fda")
+  expect_equal(resp$gate$`_id`, "592640aa298f1480900e10e4") # assigned server-side
+  expect_equal(resp$gate$xChannel, "FSC-A")
+  expect_equal(resp$gate$name, "my gate")
+  expect_equal(resp$gate$model$labels, matrix(c(c(26215.4, 0.95), c(235929.6, 0.95)), byrow = TRUE, ncol = 2))
+  expect_equal(resp$gate$model$split$x, 144000)
+  expect_equal(resp$gate$model$split$y, 0.5)
+  expect_equal(resp$gate$model$locked, FALSE)
+  expect_equal(resp$gate$model$gids, c("5d30960a417e4bc767a428a3", "5d30960a417e4bc767a428a4"))
+  expect_equal(resp$gate$gid, "592640a5a6a1d6256ec9b08a")
+  expect_equal(resp$gate$type, "SplitGate")
+  expect_equal(resp$gate$tailoredPerFile, TRUE)
+  expect_equal(resp$gate$fcsFileId, "591a3b441d725115208a6fdf")
 })
 
 test_that("Correct HTTP request is made, createPopulation=TRUE, parentPopulationId=byName()", {
-  with_mock(
-    `httr::request_perform` = function(req, handle, refresh) {
+  local_mocked_bindings(
+    request_perform = function(req, handle, refresh) {
       switch(req$url,
         "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/populations?query=eq%28name%2C%20%22singlets%22%29&limit=2" = { # nolint
           expect_equal(req$method, "GET")
@@ -127,24 +125,23 @@ test_that("Correct HTTP request is made, createPopulation=TRUE, parentPopulation
         }
       )
     },
-    {
-      setServer("https://my.server.com")
-      resp <- createSplitGate("591a3b441d725115208a6fda", "FSC-A", "my gate", 144000,
-        labels = list(c(26215.4, 0.95), c(235929.6, 0.95)),
-        parentPopulationId = byName("singlets"), createPopulation = TRUE, tailoredPerFile = FALSE
-      )
-      expect_equal(resp$gate$experimentId, "591a3b441d725115208a6fda")
-      expect_equal(resp$gate$`_id`, "592640aa298f1480900e10e4") # assigned server-side
-      expect_equal(resp$gate$xChannel, "FSC-A")
-      expect_equal(resp$gate$name, "my gate")
-      expect_equal(resp$gate$model$labels, matrix(c(c(26215.4, 0.95), c(235929.6, 0.95)), byrow = TRUE, ncol = 2))
-      expect_equal(resp$gate$model$split$x, 144000)
-      expect_equal(resp$gate$model$split$y, 0.5)
-      expect_equal(resp$gate$model$locked, FALSE)
-      expect_equal(resp$gate$model$gids, c("5d30960a417e4bc767a428a3", "5d30960a417e4bc767a428a4"))
-      expect_equal(resp$gate$gid, "592640a5a6a1d6256ec9b08a")
-      expect_equal(resp$gate$type, "SplitGate")
-      expect_equal(resp$gate$tailoredPerFile, FALSE)
-    }
+    .package = "httr"
   )
+  setServer("https://my.server.com")
+  resp <- createSplitGate("591a3b441d725115208a6fda", "FSC-A", "my gate", 144000,
+    labels = list(c(26215.4, 0.95), c(235929.6, 0.95)),
+    parentPopulationId = byName("singlets"), createPopulation = TRUE, tailoredPerFile = FALSE
+  )
+  expect_equal(resp$gate$experimentId, "591a3b441d725115208a6fda")
+  expect_equal(resp$gate$`_id`, "592640aa298f1480900e10e4") # assigned server-side
+  expect_equal(resp$gate$xChannel, "FSC-A")
+  expect_equal(resp$gate$name, "my gate")
+  expect_equal(resp$gate$model$labels, matrix(c(c(26215.4, 0.95), c(235929.6, 0.95)), byrow = TRUE, ncol = 2))
+  expect_equal(resp$gate$model$split$x, 144000)
+  expect_equal(resp$gate$model$split$y, 0.5)
+  expect_equal(resp$gate$model$locked, FALSE)
+  expect_equal(resp$gate$model$gids, c("5d30960a417e4bc767a428a3", "5d30960a417e4bc767a428a4"))
+  expect_equal(resp$gate$gid, "592640a5a6a1d6256ec9b08a")
+  expect_equal(resp$gate$type, "SplitGate")
+  expect_equal(resp$gate$tailoredPerFile, FALSE)
 })

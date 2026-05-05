@@ -1,8 +1,8 @@
 context("annotateFcsFile")
 
 test_that("Correct HTTP request is made", {
-  with_mock(
-    `httr::request_perform` = function(req, handle, refresh) {
+  local_mocked_bindings(
+    request_perform = function(req, handle, refresh) {
       expect_equal(req$method, "PATCH")
       expect_equal(req$url, "https://my.server.com/api/v1/experiments/591a3b441d725115208a6fda/fcsfiles/591a3b441d725115208a6fdc") # nolint
       body <- rawToChar(req$options$postfields)
@@ -16,19 +16,18 @@ test_that("Correct HTTP request is made", {
       )
       return(response)
     },
-    {
-      setServer("https://my.server.com")
-      annos <- list(
-        list(
-          name = "annotation 1",
-          value = "myvalue"
-        ),
-        list(
-          name = "annotation 2",
-          value = 2.12
-        )
-      )
-      resp <- annotateFcsFile("591a3b441d725115208a6fda", "591a3b441d725115208a6fdc", annos)
-    }
+    .package = "httr"
   )
+  setServer("https://my.server.com")
+  annos <- list(
+    list(
+      name = "annotation 1",
+      value = "myvalue"
+    ),
+    list(
+      name = "annotation 2",
+      value = 2.12
+    )
+  )
+  resp <- annotateFcsFile("591a3b441d725115208a6fda", "591a3b441d725115208a6fdc", annos)
 })

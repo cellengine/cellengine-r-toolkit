@@ -1,6 +1,6 @@
 test_that("Correct HTTP request is made, parentPopulation specified", {
-  with_mock(
-    `httr::request_perform` = function(req, handle, refresh) {
+  local_mocked_bindings(
+    request_perform = function(req, handle, refresh) {
       switch(req$url,
         "https://my.server.com/api/v1/experiments/593b44a7ff5925084dd96ed1/gates?query=eq%28name%2C%20%22my%20gate%22%29&limit=2" = { # nolint
           expect_equal(req$method, "GET")
@@ -29,13 +29,12 @@ test_that("Correct HTTP request is made, parentPopulation specified", {
         }
       )
     },
-    {
-      setServer("https://my.server.com")
-      lookup <- createLookup("593b44a7ff5925084dd96ed1")
-      resp <- lookup("gates", "my gate")
-      expect_equal(resp$name, "my gate")
-      expect_equal(resp$experimentId, "591a3b441d725115208a6fda")
-      expect_equal(resp$`_id`, "592640aa298f1480900e10e4")
-    }
+    .package = "httr"
   )
+  setServer("https://my.server.com")
+  lookup <- createLookup("593b44a7ff5925084dd96ed1")
+  resp <- lookup("gates", "my gate")
+  expect_equal(resp$name, "my gate")
+  expect_equal(resp$experimentId, "591a3b441d725115208a6fda")
+  expect_equal(resp$`_id`, "592640aa298f1480900e10e4")
 })
