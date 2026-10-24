@@ -12,6 +12,7 @@ breaking changes compared to the pre-release version.
 ### Added
 - `createCompensation()` function
 - `getCompensation()` function
+- `getDefaultCompensation()` function
 - `updateCompensation()` function
 - `deleteCompensation()` function
 - All functions now consistently accept `byName()` expressions for any ID

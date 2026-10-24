@@ -47,6 +47,7 @@ reference:
       - createCompensation
       - deleteCompensation
       - getCompensation
+      - getDefaultCompensation
       - getCompensations
       - updateCompensation
 
