@@ -26,6 +26,7 @@ reference:
   - title: FCS Files
     contents:
       - annotateFcsFile
+      - createFcsFile
       - deleteFcsFile
       - downloadFcsFiles
       - getEvents

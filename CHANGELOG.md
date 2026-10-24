@@ -11,6 +11,7 @@ breaking changes compared to the pre-release version.
 
 ### Added
 - `createCompensation()` function
+- `createFcsFile()` function
 - `getCompensation()` function
 - `getDefaultCompensation()` function
 - `updateCompensation()` function
