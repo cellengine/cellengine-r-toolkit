@@ -16,6 +16,7 @@ breaking changes compared to the pre-release version.
 - `getDefaultCompensation()` function
 - `updateCompensation()` function
 - `deleteCompensation()` function
+- `exportPopulationsToNewExperiment()`
 - All functions now consistently accept `byName()` expressions for any ID
   parameter.
 - Support for transfers to S3 to `getEvents()`
